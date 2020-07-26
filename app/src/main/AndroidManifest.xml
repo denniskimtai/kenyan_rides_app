@@ -15,11 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.NoActionBar">
 
-        <activity android:name=".AddVehicle"></activity>
+        <activity android:name=".BookNowActivity"></activity>
 
         <activity android:name=".CarDetailsActivity"></activity>
-
-        <activity android:name=".ContactUsActivity"></activity>
 
         <activity android:name=".ForgotPasswordActivity"></activity>
 

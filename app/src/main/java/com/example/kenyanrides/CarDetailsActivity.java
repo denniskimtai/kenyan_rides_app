@@ -3,16 +3,14 @@ package com.example.kenyanrides;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
-import android.widget.ExpandableListView;
-
-import com.google.android.material.tabs.TabLayout;
+import android.widget.Button;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -25,6 +23,8 @@ public class CarDetailsActivity extends AppCompatActivity {
 
     private ArrayList<Integer> ImagesArray = new ArrayList<Integer>();
 
+    private Button btnBookNow;
+
 
 
 
@@ -34,6 +34,20 @@ public class CarDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_car_details);
 
         init();
+
+        btnBookNow = findViewById(R.id.btnBookNow);
+
+        btnBookNow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Dialog dialog = new Dialog(CarDetailsActivity.this, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+                dialog.setContentView(R.layout.activity_book_now);
+                dialog.show();
+
+
+            }
+        });
 
 
 
