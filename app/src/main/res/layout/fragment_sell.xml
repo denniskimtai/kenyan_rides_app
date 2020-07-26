@@ -4,277 +4,515 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:fillViewport="true"
-    android:background="@color/grey">
+    android:background="@color/white">
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+    <LinearLayout
+        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:background="@color/colorPrimary"
-        android:layout_alignParentLeft="true" >
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:background="@color/colorPrimaryDark"
+            android:layout_alignParentLeft="true">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Post A Vehicle"
+                android:textColor="@color/white"
+                android:textSize="20dp"/>
+
+        </androidx.appcompat.widget.Toolbar>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Dashboard"
-            android:typeface="serif"
-            android:textColor="@color/white"
-            android:textSize="20dp"/>
+            android:text="Basic Info"
+            android:textColor="#6E6E6D"
+            android:textStyle="bold"
+            android:textSize="12dp"
+            android:layout_margin="10dp"/>
 
-    </androidx.appcompat.widget.Toolbar>
-
-    <androidx.cardview.widget.CardView
-        android:layout_margin="15dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="3dp">
-
-        <LinearLayout
+        <com.google.android.material.textfield.TextInputLayout
+            android:background="@drawable/input_shape"
+            android:layout_margin="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@color/white">
+            android:textColorHint="@color/dark_grey"
+            >
 
-            <TextView
-                android:layout_margin="10dp"
+            <EditText
+                android:textColor="@color/black"
+                android:paddingLeft="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="50dp"
-                android:textStyle="bold"
-                android:text="0"
-                android:gravity="center_horizontal"
-                android:textColor="@color/black"/>
+                android:hint="Vehicle Title"
+                android:textSize="12dp"
+                />
+
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+        <TextView
+            android:padding="10dp"
+            android:background="@drawable/input_shape"
+            android:layout_width="0dp"
+            android:textSize="12dp"
+            android:textColor="@color/dark_grey"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Brand"/>
 
             <TextView
-                android:layout_marginBottom="10dp"
-                android:layout_width="match_parent"
+                android:layout_marginLeft="8dp"
+                android:padding="10dp"
+                android:background="@drawable/input_shape"
+                android:layout_width="0dp"
+                android:textSize="12dp"
+                android:textColor="@color/dark_grey"
                 android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:text="Listed Vehicles"
-                android:gravity="center_horizontal"
-                android:textColor="@color/black"/>
+                android:layout_weight="1"
+                android:text="Fuel"/>
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_margin="10dp"
-                android:background="@color/black"/>
-
-            <TextView
-                android:id="@+id/txt_view_add_vehicle"
-                android:layout_width="match_parent"
+                android:textColor="@color/dark_grey"
+                android:layout_marginLeft="8dp"
+                android:padding="10dp"
+                android:background="@drawable/input_shape"
+                android:layout_width="0dp"
+                android:textSize="12dp"
                 android:layout_height="wrap_content"
-                android:textSize="15dp"
-                android:text="Add Vehicles"
-                android:gravity="center_horizontal"
-                android:textColor="@color/black"/>
+                android:layout_weight="1"
+                android:text="seats"/>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_margin="10dp"
-                android:background="@color/black"/>
-
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="15dp"
-                android:text="My Vehicles"
-                android:layout_marginBottom="10dp"
-                android:gravity="center_horizontal"
-                android:textColor="@color/black"/>
 
         </LinearLayout>
 
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:layout_margin="15dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="3dp">
-
-        <LinearLayout
+        <com.google.android.material.textfield.TextInputLayout
+            android:background="@drawable/input_shape"
+            android:layout_margin="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@color/white">
+            android:textColorHint="@color/dark_grey"
+            android:textSize="12dp">
 
-            <TextView
-                android:layout_margin="10dp"
+            <EditText
+                android:textColor="@color/black"
+                android:textSize="12dp"
+                android:layout_marginLeft="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="50dp"
-                android:textStyle="bold"
-                android:text="0"
-                android:gravity="center_horizontal"
-                android:textColor="@color/black"/>
+                android:hint="Vehicle Overview"
+                android:lines="4"
+                android:textColorHint="@color/dark_grey"/>
+
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
 
             <TextView
-                android:layout_marginBottom="10dp"
-                android:layout_width="match_parent"
+                android:textColor="@color/dark_grey"
+                android:padding="10dp"
+                android:background="@drawable/input_shape"
+                android:layout_width="0dp"
+                android:textSize="12dp"
                 android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:text="Offline Vehicles"
-                android:gravity="center_horizontal"
-                android:textColor="@color/black"/>
+                android:layout_weight="1"
+                android:text="Driver Status"/>
 
             <TextView
-                android:layout_margin="10dp"
-                android:layout_width="match_parent"
+                android:textColor="@color/dark_grey"
+                android:layout_marginLeft="8dp"
+                android:padding="10dp"
+                android:background="@drawable/input_shape"
+                android:layout_width="0dp"
+                android:textSize="12dp"
                 android:layout_height="wrap_content"
-                android:textSize="50dp"
-                android:textStyle="bold"
-                android:text="0"
-                android:gravity="center_horizontal"
-                android:textColor="@color/black"/>
-
-            <TextView
-                android:layout_marginBottom="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:text="Online Vehicles"
-                android:gravity="center_horizontal"
-                android:textColor="@color/black"/>
-
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_margin="10dp"
-                android:background="@color/black"/>
-
-
-            <TextView
-                android:layout_marginBottom="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="15dp"
-                android:text="My Vehicles"
-                android:gravity="center_horizontal"
-                android:textColor="@color/black"/>
+                android:layout_weight="1"
+                android:text="Car Location"/>
 
         </LinearLayout>
 
-    </androidx.cardview.widget.CardView>
+        <com.google.android.material.textfield.TextInputLayout
+            android:textSize="12dp"
+            android:layout_marginTop="10dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/input_shape"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/black">
 
-    <androidx.cardview.widget.CardView
-        android:layout_margin="15dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="3dp">
+            <EditText
+                android:textColor="@color/black"
+                android:textSize="12dp"
+                android:paddingLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Price Per Day(in Ksh)"
+                android:textColorHint="@color/dark_grey"/>
+
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:textSize="12dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/input_shape"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/black">
+
+            <EditText
+                android:textColor="@color/black"
+                android:textSize="12dp"
+                android:paddingLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Model Year"
+                android:textColorHint="@color/dark_grey"/>
+
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/dark_grey"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Car Images"
+            android:textColor="#6E6E6D"
+            android:textStyle="bold"
+            android:textSize="12dp"
+            android:layout_margin="10dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@color/white">
+            android:orientation="horizontal"
+            android:background="@drawable/input_shape"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:weightSum="3">
 
             <TextView
-                android:layout_margin="10dp"
-                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textSize="50dp"
+                android:text="Choose file"
+                android:textSize="12dp"
                 android:textStyle="bold"
-                android:text="0"
-                android:gravity="center_horizontal"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black"
+                android:padding="10dp"/>
 
             <TextView
-                android:layout_marginBottom="10dp"
-                android:layout_width="match_parent"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/dark_grey"/>
+
+            <TextView
+                android:layout_weight="2"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:text="Logistics"
-                android:gravity="center_horizontal"
-                android:textColor="@color/black"/>
-
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_margin="10dp"
-                android:background="@color/black"/>
-
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="15dp"
-                android:layout_marginBottom="10dp"
-                android:text="Full Detail"
-                android:gravity="center_horizontal"
-                android:textColor="@color/black"/>
-
-        </LinearLayout>
-
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:layout_marginBottom="70dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="3dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@color/white">
-
-            <TextView
-                android:layout_margin="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="50dp"
-                android:textStyle="bold"
-                android:text="0"
-                android:gravity="center_horizontal"
-                android:textColor="@color/black"/>
-
-            <TextView
-                android:layout_marginBottom="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:text="Total Bookings"
-                android:gravity="center_horizontal"
-                android:textColor="@color/black"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_margin="10dp"
-                android:background="@color/black"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="15dp"
-                android:layout_marginBottom="10dp"
-                android:text="Full Detail"
-                android:gravity="center_horizontal"
-                android:textColor="@color/black"/>
+                android:text="No file choosen"
+                android:textSize="12dp"
+                android:textColor="@color/grey"
+                android:padding="10dp"/>
 
 
 
         </LinearLayout>
 
-    </androidx.cardview.widget.CardView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/input_shape"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:weightSum="3">
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Choose file"
+                android:textSize="12dp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:padding="10dp"/>
+
+            <TextView
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/dark_grey"/>
+
+            <TextView
+                android:layout_weight="2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="No file choosen"
+                android:textSize="12dp"
+                android:textColor="@color/grey"
+                android:padding="10dp"/>
 
 
 
-</LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/input_shape"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:weightSum="3">
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Choose file"
+                android:textSize="12dp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:padding="10dp"/>
+
+            <TextView
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/dark_grey"/>
+
+            <TextView
+                android:layout_weight="2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="No file choosen"
+                android:textSize="12dp"
+                android:textColor="@color/grey"
+                android:padding="10dp"/>
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/input_shape"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:weightSum="3">
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Choose file"
+                android:textSize="12dp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:padding="10dp"/>
+
+            <TextView
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/dark_grey"/>
+
+            <TextView
+                android:layout_weight="2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="No file choosen"
+                android:textSize="12dp"
+                android:textColor="@color/grey"
+                android:padding="10dp"/>
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/input_shape"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:weightSum="3">
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Choose file"
+                android:textSize="12dp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:padding="10dp"/>
+
+            <TextView
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/dark_grey"/>
+
+            <TextView
+                android:layout_weight="2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="No file choosen"
+                android:textSize="12dp"
+                android:textColor="@color/grey"
+                android:padding="10dp"/>
+
+
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/dark_grey"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Vehicle Accessories"
+            android:textColor="#6E6E6D"
+            android:textStyle="bold"
+            android:textSize="12dp"
+            android:layout_margin="10dp"/>
+
+        <CheckBox
+            android:buttonTint="@color/colorPrimary"
+            android:textColor="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Air Conditioner" />
+
+        <CheckBox
+            android:buttonTint="@color/colorPrimary"
+            android:textColor="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Power Door Locks" />
+
+        <CheckBox
+            android:buttonTint="@color/colorPrimary"
+            android:textColor="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Anti Lock Braking System" />
+
+        <CheckBox
+            android:buttonTint="@color/colorPrimary"
+            android:textColor="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Brake Assist" />
+
+        <CheckBox
+            android:buttonTint="@color/colorPrimary"
+            android:textColor="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Power Steering" />
+
+        <CheckBox
+            android:buttonTint="@color/colorPrimary"
+            android:textColor="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Driver Airbag" />
+
+        <CheckBox
+            android:buttonTint="@color/colorPrimary"
+            android:textColor="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Passenger Airbag" />
+
+        <CheckBox
+            android:buttonTint="@color/colorPrimary"
+            android:textColor="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Power Windows" />
+
+        <CheckBox
+            android:buttonTint="@color/colorPrimary"
+            android:textColor="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="CD Player" />
+
+        <CheckBox
+            android:buttonTint="@color/colorPrimary"
+            android:textColor="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Central Locking" />
+
+        <CheckBox
+            android:buttonTint="@color/colorPrimary"
+            android:textColor="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Crash Sensor" />
+
+        <CheckBox
+            android:buttonTint="@color/colorPrimary"
+            android:textColor="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Leather Seats"/>
+
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            android:layout_height="wrap_content"
+            android:text="Post Vehicle"
+            android:layout_marginTop="20dp"
+            android:textStyle="bold"
+            android:background="@drawable/buttom_background"
+            android:padding="15dp"
+            android:layout_marginBottom="70dp"
+            android:layout_gravity="center_horizontal"/>
+
+    </LinearLayout>
+
 </ScrollView>
