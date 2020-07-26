@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item
+        android:id="@+id/navigation_explore"
+        android:icon="@drawable/search_icon"
+        android:title="Explore" />
+
+    <item
+        android:id="@+id/navigation_sell"
+        android:icon="@drawable/icon_add"
+        android:title="Sell" />
+
+    <item
+        android:id="@+id/navigation_motors"
+        android:icon="@drawable/driver_icon"
+        android:title="My Motors" />
+
+    
+
+</menu>

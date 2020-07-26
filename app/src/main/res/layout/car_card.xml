@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_margin="1.5dp"
+        android:background="@color/white">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white">
+
+            <RelativeLayout
+                android:id="@+id/image_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/thumbnail"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/car" />
+
+                <ImageView
+                    android:id="@+id/imageview_favourite"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_margin="8dp"
+                    android:src="@drawable/icon_like"
+                    android:tint="@color/grey"
+                    android:layout_alignParentRight="true" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/carName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/image_layout"
+                android:paddingLeft="@dimen/album_title_padding"
+                android:paddingTop="@dimen/album_title_padding"
+                android:paddingRight="@dimen/album_title_padding"
+                android:text="Mercedes Benz"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                android:typeface="serif" />
+
+            <TextView
+                android:id="@+id/carPrice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/carName"
+                android:paddingLeft="@dimen/album_title_padding"
+                android:paddingRight="@dimen/album_title_padding"
+                android:paddingBottom="@dimen/songs_count_padding_bottom"
+                android:text="Ksh: 2000/day"
+                android:textColor="#4A4A4A"
+                android:textSize="12dp" />
+
+
+
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

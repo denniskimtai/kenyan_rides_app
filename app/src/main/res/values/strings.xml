@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<resources>
+
+    <string name="app_name">Kenyan Rides</string>
+    <string name="title_home">Home</string>
+    <string name="title_sell">sell</string>
+
+
+</resources>
