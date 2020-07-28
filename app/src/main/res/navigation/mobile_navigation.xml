@@ -21,7 +21,7 @@
 
     <fragment
         android:id="@+id/navigation_bookings"
-        android:name="com.example.kenyanrides.BookingsFragment"
+        android:name="com.example.kenyanrides.AccountFragment"
         android:label="@string/title_sell"
-        tools:layout="@layout/fragment_bookings" />
+        tools:layout="@layout/fragment_account" />
 </navigation>
