@@ -1,41 +1,54 @@
 package com.example.kenyanrides;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.kenyanrides.R;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class SignupActivity extends AppCompatActivity {
 
-    FloatingActionButton fabSignup;
 
     TextView txtLogin;
+
+    EditText EditTextFirstName, EditTextSecondName, EditTextId, EditTextPhoneNumber, EditTextEmail, EditTextPassword, EditTextConfirmPassword;
+
+    String strFirstName,strSecondName,strNationalId,strPhoneNumber,strEmail,strPassword,strConfirmPassword, strRegDate;
+
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-        fabSignup = findViewById(R.id.fab_signup);
+
+
+        //initialize views
+
+        EditTextFirstName = findViewById(R.id.edit_text_first_name);
+        EditTextSecondName = findViewById(R.id.edit_text_second_name);
+        EditTextId = findViewById(R.id.edit_text_id);
+        EditTextPhoneNumber = findViewById(R.id.edit_text_phone_number);
+        EditTextEmail = findViewById(R.id.edit_text_email);
+        EditTextPassword = findViewById(R.id.edit_text_password);
+        EditTextConfirmPassword = findViewById(R.id.edit_text_confirm_password);
+
 
         txtLogin = findViewById(R.id.txt_login);
 
-        fabSignup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                Intent intent = new Intent(SignupActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-
-            }
-        });
 
         txtLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,6 +60,91 @@ public class SignupActivity extends AppCompatActivity {
 
             }
         });
+
+    }
+
+    public void Onregister(View view){
+
+        //get text entered by user
+        strFirstName = EditTextFirstName.getText().toString();
+
+        //check if its empty
+        if(TextUtils.isEmpty(strFirstName)){
+            EditTextFirstName.setError("Please enter your first name");
+            return;
+        }
+
+        //get text entered by user
+        strSecondName = EditTextSecondName.getText().toString();
+
+        //check if its empty
+        if(TextUtils.isEmpty(strSecondName)){
+            EditTextSecondName.setError("Please enter your second name");
+            return;
+        }
+
+        //get text entered by user
+        strNationalId = EditTextId.getText().toString();
+
+        //check if its empty
+        if(TextUtils.isEmpty(strNationalId)){
+            EditTextId.setError("Please enter your National Id");
+            return;
+        }
+
+        //get text entered by user
+        strPhoneNumber = EditTextPhoneNumber.getText().toString();
+
+        //check if its empty
+        if(TextUtils.isEmpty(strPhoneNumber)){
+            EditTextPhoneNumber.setError("Please enter your Phone Number");
+            return;
+        }
+
+        //get text entered by user
+        strEmail = EditTextEmail.getText().toString();
+
+        //check if its empty
+        if(TextUtils.isEmpty(strEmail)){
+            EditTextEmail.setError("Please enter your Email Address");
+            return;
+        }
+
+        //get text entered by user
+        strPassword = EditTextPassword.getText().toString();
+
+        //check if its empty
+        if(TextUtils.isEmpty(strPassword)){
+            EditTextPassword.setError("Please enter a Password");
+            return;
+        }
+
+        strConfirmPassword = EditTextConfirmPassword.getText().toString();
+
+        //check if its empty
+        if(TextUtils.isEmpty(strConfirmPassword)){
+            EditTextConfirmPassword.setError("Please confirm your password");
+
+            return;
+        }
+
+        //check if passwords match
+        if (!strPassword.equals(strConfirmPassword))
+        {
+            EditTextConfirmPassword.setError("Passwords do not match");
+            return;
+        }
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss");
+        strRegDate = sdf.format(Calendar.getInstance().getTime());
+
+        Toast.makeText(this, strRegDate, Toast.LENGTH_SHORT).show();
+
+        String type = "register";
+
+        BackgroungHelperClass backgroungHelperClass = new BackgroungHelperClass(this);
+
+        backgroungHelperClass.execute(type,strFirstName, strSecondName, strNationalId, strPhoneNumber, strEmail, strPassword, strRegDate);
 
     }
 
