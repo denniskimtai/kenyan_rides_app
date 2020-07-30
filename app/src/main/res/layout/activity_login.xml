@@ -39,6 +39,7 @@
             android:layout_marginBottom="24dp"/>
 
         <com.google.android.material.textfield.TextInputLayout
+
             android:background="@drawable/input_shape"
             android:layout_margin="10dp"
             android:layout_width="match_parent"
@@ -47,6 +48,7 @@
             >
 
             <EditText
+                android:id="@+id/edit_text_email"
                 android:inputType="textEmailAddress"
                 android:layout_weight="1"
                 android:textColor="@color/dark_grey"
@@ -61,6 +63,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+
             android:background="@drawable/input_shape"
             android:layout_margin="10dp"
             android:layout_width="match_parent"
@@ -69,6 +72,7 @@
             >
 
             <EditText
+                android:id="@+id/edit_text_password"
                 android:inputType="textPassword"
                 android:layout_weight="1"
                 android:textColor="@color/dark_grey"
@@ -100,6 +104,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/arrow_forward"
             android:layout_gravity="center_horizontal"
+            android:onClick="login"
             android:layout_margin="20dp"
             android:backgroundTint="@color/colorPrimary"
             android:tint="@color/white"/>

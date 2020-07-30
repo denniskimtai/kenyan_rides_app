@@ -1,7 +1,11 @@
 package com.example.kenyanrides;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -14,6 +18,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class LoginActivity extends AppCompatActivity {
+
+    private AlertDialog.Builder alertDialogBuilder;
 
     TextView TxtSignup;
 
@@ -33,6 +39,8 @@ public class LoginActivity extends AppCompatActivity {
         mcontext = this;
 
         //Initialize views
+
+        alertDialogBuilder = new AlertDialog.Builder(this);
 
         TxtSignup = findViewById(R.id.txt_signup);
 
@@ -71,6 +79,16 @@ public class LoginActivity extends AppCompatActivity {
 
     //called when button is clicked
     public void login(View view) {
+
+        //check if network is connected
+        if (!isNetworkAvailable()){
+
+            alertDialogBuilder.setTitle("Network Failure");
+            alertDialogBuilder.setMessage("Please check your internet connection!");
+            alertDialogBuilder.show();
+            return;
+        }
+
         String email = EditTextEmail.getText().toString();
 
         //check if its empty
@@ -95,5 +113,14 @@ public class LoginActivity extends AppCompatActivity {
         backgroungHelperClass.execute(type,email, password);
 
     }
+
+    public boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) this
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        @SuppressLint("MissingPermission") NetworkInfo activeNetworkInfo = connectivityManager
+                .getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
 
 }

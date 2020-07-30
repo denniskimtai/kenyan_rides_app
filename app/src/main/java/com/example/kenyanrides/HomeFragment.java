@@ -5,12 +5,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +31,8 @@ public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
     private CarsAdapter carsAdapter;
     private List<car> carList;
+
+    private static final String vehicles_url = "https://kenyanrides.com/android/api.php";
 
 
     @Nullable
@@ -32,13 +45,13 @@ public class HomeFragment extends Fragment {
 
         carList = new ArrayList<>();
 
-        carsAdapter = new CarsAdapter(getActivity(), carList);
+
 
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
 
         recyclerView.setLayoutManager(layoutManager);
 
-        recyclerView.setAdapter(carsAdapter);
+
 
         prepareCars();
 
@@ -51,46 +64,85 @@ public class HomeFragment extends Fragment {
 
     private void prepareCars() {
 
-        int[] carsImages = new int[]{
-                R.drawable.mazda,
-                R.drawable.bmw,
-                R.drawable.allion,
-                R.drawable.vitz,
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, vehicles_url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
 
-                R.drawable.mazda,
-                R.drawable.bmw,
-                R.drawable.allion,
-                R.drawable.vitz
+                try {
+                    JSONArray carsJson = new JSONArray(response);
+
+                    for(int i = 0; i<carsJson.length(); i++) {
+
+                        //get json objects
+                        JSONObject carsObject = carsJson.getJSONObject(i);
+
+                        String vehicleTitle = carsObject.getString("VehiclesTitle");
+
+                        int pricePerDay = carsObject.getInt("PricePerDay");
+
+                        String vehicleImage = "https://kenyanrides.com/serviceprovider/img/vehicleimages/" + carsObject.getString("Vimage1");
+
+
+                        //
+                        String vehicleBrand = carsObject.getString("VehiclesBrand");
+                        String vehicleOverview = carsObject.getString("VehiclesOverview");
+                        String poweredBy = carsObject.getString("poweredby");
+                        String fuelType = carsObject.getString("FuelType");
+                        String modelYear = carsObject.getString("ModelYear");
+                        String seatingCapacity = carsObject.getString("SeatingCapacity");
+                        String driverStatus = carsObject.getString("Dstatus");
+                        String vehicleImage2 = "https://kenyanrides.com/serviceprovider/img/vehicleimages/" + carsObject.getString("Vimage2");
+                        String vehicleImage3 = "https://kenyanrides.com/serviceprovider/img/vehicleimages/" + carsObject.getString("Vimage3");
+                        String vehicleImage4 = "https://kenyanrides.com/serviceprovider/img/vehicleimages/" + carsObject.getString("Vimage4");
+                        String vehicleImage5 = "https://kenyanrides.com/serviceprovider/img/vehicleimages/" + carsObject.getString("Vimage5");
+                        String airConditioner = carsObject.getString("AirConditioner");
+                        String powerDoorLocks = carsObject.getString("PowerDoorLocks");
+                        String antiLockBrakingSystem = carsObject.getString("AntiLockBrakingSystem");
+                        String brakeAssist = carsObject.getString("BrakeAssist");
+                        String powerSteering = carsObject.getString("PowerSteering");
+                        String driverAirbag = carsObject.getString("DriverAirbag");
+                        String passengerAirbag = carsObject.getString("PassengerAirbag");
+                        String powerWindows = carsObject.getString("PowerWindows");
+                        String cdPlayer = carsObject.getString("CDPlayer");
+                        String centralLocking = carsObject.getString("CentralLocking");
+                        String crashSensor = carsObject.getString("CrashSensor");
+                        String leatherSeats = carsObject.getString("LeatherSeats");
+                        String ownerId = carsObject.getString("owner_id");
+                        String regDate = carsObject.getString("RegDate");
+                        String booked = carsObject.getString("booked");
+
+                        car car = new car(vehicleImage, vehicleTitle, pricePerDay, vehicleBrand,
+                                vehicleOverview, poweredBy, fuelType, modelYear, seatingCapacity,
+                                driverStatus, vehicleImage2, vehicleImage3, vehicleImage4, vehicleImage5,
+                                airConditioner, powerDoorLocks, antiLockBrakingSystem, brakeAssist, powerSteering,
+                                driverAirbag, passengerAirbag, powerWindows, cdPlayer, centralLocking,
+                                crashSensor, leatherSeats, ownerId, regDate, booked);
+
+                        carList.add(car);
 
 
 
-        };
+                    }
 
-        car a = new car(carsImages[0], "Mazda CX5","2000");
-        carList.add(a);
+                    carsAdapter = new CarsAdapter(getActivity(), carList);
+                    recyclerView.setAdapter(carsAdapter);
 
-        a = new car(carsImages[1], "BMW","5000");
-        carList.add(a);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
-        a = new car(carsImages[2], "Toyota Allion","1000");
-        carList.add(a);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
 
-        a = new car(carsImages[3], "Toyota Vitz","800");
-        carList.add(a);
+                Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
 
-        a = new car(carsImages[4], "Mazda CX5","1000");
-        carList.add(a);
+            }
+        });
 
-        a = new car(carsImages[5], "BMW","4000");
-        carList.add(a);
+        Volley.newRequestQueue(getActivity()).add(stringRequest);
 
-        a = new car(carsImages[6], "Toyota Allion","1200");
-        carList.add(a);
-
-        a = new car(carsImages[7], "Toyota Vitz","100");
-        carList.add(a);
-
-        carsAdapter.notifyDataSetChanged();
 
     }
 }

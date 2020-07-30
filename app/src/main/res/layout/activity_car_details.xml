@@ -9,344 +9,347 @@
     android:fillViewport="true">
 
     <LinearLayout
-        android:background="@color/grey"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/grey"
         android:orientation="vertical">
 
         <androidx.cardview.widget.CardView
-            android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:elevation="10dp"
-            >
-
-        <LinearLayout
             android:background="@color/white"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <androidx.viewpager.widget.ViewPager
-                android:id="@+id/pager"
-                android:layout_width="match_parent"
-                android:layout_height="250dp">
-
-
-            </androidx.viewpager.widget.ViewPager>
+            android:elevation="10dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:background="@color/white"
                 android:orientation="vertical">
 
-                <LinearLayout
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/pager"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_height="250dp">
 
-                <TextView
-                    android:layout_marginBottom="5dp"
-                    android:layout_weight="1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Toyota Supra"
-                    android:textColor="@color/black"
-                    android:textSize="25dp"
-                    android:typeface="serif"
-                    android:textStyle="bold"/>
 
-                    <ImageView
-                        android:layout_marginRight="10dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/icon_share"
-                        android:tint="#878783"/>
-
-                </LinearLayout>
+                </androidx.viewpager.widget.ViewPager>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_margin="10dp"
+                    android:orientation="vertical">
 
-                    <ImageView
-                        android:layout_marginRight="10dp"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/location"
-                        android:tint="#878783"/>
+                        android:orientation="horizontal">
 
-                    <TextView
+                        <TextView
+                            android:id="@+id/txt_vehicle_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:layout_weight="1"
+                            android:text="Toyota Supra"
+                            android:textColor="@color/black"
+                            android:textSize="25dp"
+                            android:textStyle="bold"
+                            android:typeface="serif" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:src="@drawable/icon_share"
+                            android:tint="#878783" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:src="@drawable/location"
+                            android:tint="#878783" />
+
+                        <TextView
+                            android:id="@+id/txt_vehicle_location"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:layout_weight="1"
+                            android:text="Kitengela"
+                            android:textColor="#878783"
+                            android:textSize="15dp"
+                            android:textStyle="bold" />
+
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
                         android:layout_weight="1"
-                        android:layout_width="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/txt_vehicle_price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="5dp"
+                            android:text="Ksh. 2000"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="18dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:layout_weight="1"
+                            android:text="/day"
+                            android:textColor="@color/grey"
+                            android:textSize="15dp" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/grey" />
+
+                    <TextView
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Kitengela"
+                        android:layout_margin="10dp"
+                        android:text="SPECIFICATION"
                         android:textColor="#878783"
-                        android:textSize="15dp"
-                        android:textStyle="bold"/>
+                        android:textSize="12dp"
+                        android:textStyle="bold" />
 
 
-
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_weight="1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="5dp">
-
-                <TextView
-
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Ksh. 2000"
-                    android:textStyle="bold"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="18dp"
-                    android:layout_marginRight="5dp"/>
-
-                <TextView
-                    android:layout_marginBottom="5dp"
-                    android:layout_weight="1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="/day"
-                    android:textColor="@color/grey"
-                    android:textSize="15dp"/>
-
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/grey"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="12dp"
-                    android:layout_margin="10dp"
-                    android:textStyle="bold"
-                    android:text="SPECIFICATION"
-                    android:textColor="#878783"/>
-
-
-                <LinearLayout
-                    android:background="@color/white"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <androidx.cardview.widget.CardView
-                        android:background="@color/white"
-                        android:layout_margin="10dp"
-                        android:elevation="5dp"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1">
-
-                        <LinearLayout
-                            android:background="@color/white"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:layout_margin="5dp"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/reg_year_icon"
-                                android:tint="@color/black"/>
-
-                            <TextView
-                                android:layout_marginBottom="5dp"
-                                android:gravity="center_horizontal"
-                                android:textColor="#878783"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="Reg Year"
-                                android:textSize="15dp"/>
-
-                            <TextView
-                                android:layout_marginBottom="5dp"
-                                android:gravity="center_horizontal"
-                                android:textColor="#878783"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="1998"
-                                android:textSize="15dp"/>
-
-                        </LinearLayout>
-
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
                         android:background="@color/white"
-                        android:layout_margin="10dp"
-                        android:elevation="5dp"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:layout_weight="1"
+                            android:background="@color/white"
+                            android:elevation="5dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@color/white"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="5dp"
+                                    android:src="@drawable/reg_year_icon"
+                                    android:tint="@color/black" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:gravity="center_horizontal"
+                                    android:text="Reg Year"
+                                    android:textColor="#878783"
+                                    android:textSize="15dp" />
+
+                                <TextView
+                                    android:id="@+id/txt_vehicle_model_year"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:gravity="center_horizontal"
+                                    android:text="1998"
+                                    android:textColor="#878783"
+                                    android:textSize="15dp" />
+
+                            </LinearLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:layout_weight="1"
+                            android:background="@color/white"
+                            android:elevation="5dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@color/white"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="5dp"
+                                    android:src="@drawable/icon_seat"
+                                    android:tint="@color/black" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:gravity="center_horizontal"
+                                    android:text="Seats"
+                                    android:textColor="#878783"
+                                    android:textSize="15dp" />
+
+                                <TextView
+                                    android:id="@+id/txt_vehicle_seats"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:gravity="center_horizontal"
+                                    android:text="4"
+                                    android:textColor="#878783"
+                                    android:textSize="15dp" />
+
+                            </LinearLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1">
+                        android:background="@color/white"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
 
-                        <LinearLayout
-                            android:background="@color/white"
+                        <androidx.cardview.widget.CardView
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical">
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:layout_weight="1"
+                            android:background="@color/white"
+                            android:elevation="5dp">
 
-                            <ImageView
-                                android:layout_margin="5dp"
+                            <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/icon_seat"
-                                android:tint="@color/black"/>
+                                android:layout_height="match_parent"
+                                android:background="@color/white"
+                                android:orientation="vertical">
 
-                            <TextView
-                                android:layout_marginBottom="5dp"
-                                android:gravity="center_horizontal"
-                                android:textColor="#878783"
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="5dp"
+                                    android:src="@drawable/driver_icon"
+                                    android:tint="@color/black" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:gravity="center_horizontal"
+                                    android:text="Driver"
+                                    android:textColor="#878783"
+                                    android:textSize="15dp" />
+
+                                <TextView
+                                    android:id="@+id/txt_vehicle_driver_status"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:gravity="center_horizontal"
+                                    android:text="Status"
+                                    android:textColor="#878783"
+                                    android:textSize="15dp" />
+
+                            </LinearLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:layout_weight="1"
+                            android:background="@color/white"
+                            android:elevation="5dp">
+
+                            <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="Seats"
-                                android:textSize="15dp"/>
+                                android:layout_height="match_parent"
+                                android:background="@color/white"
+                                android:orientation="vertical">
 
-                            <TextView
-                                android:layout_marginBottom="5dp"
-                                android:gravity="center_horizontal"
-                                android:textColor="#878783"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="4"
-                                android:textSize="15dp"/>
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="5dp"
+                                    android:src="@drawable/petrol_icon"
+                                    android:tint="@color/black" />
 
-                        </LinearLayout>
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:gravity="center_horizontal"
+                                    android:text="Fuel"
+                                    android:textColor="#878783"
+                                    android:textSize="15dp" />
 
-                    </androidx.cardview.widget.CardView>
+                                <TextView
+                                    android:id="@+id/txt_vehicle_powered_by"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:gravity="center_horizontal"
+                                    android:text="Petrol"
+                                    android:textColor="#878783"
+                                    android:textSize="15dp" />
 
+                            </LinearLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_margin="10dp"
+                        android:background="@color/grey" />
+
+                    <Button
+                        android:id="@+id/btnBookNow"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/wave"
+                        android:text="Book Now"
+                        android:textStyle="bold" />
 
                 </LinearLayout>
-
-                <LinearLayout
-                    android:background="@color/white"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <androidx.cardview.widget.CardView
-                        android:background="@color/white"
-                        android:layout_margin="10dp"
-                        android:elevation="5dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1">
-
-                        <LinearLayout
-                            android:background="@color/white"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:layout_margin="5dp"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/driver_icon"
-                                android:tint="@color/black"/>
-
-                            <TextView
-                                android:layout_marginBottom="5dp"
-                                android:gravity="center_horizontal"
-                                android:textColor="#878783"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="Driver Inclusive"
-                                android:textSize="15dp"/>
-
-                            <TextView
-                                android:layout_marginBottom="5dp"
-                                android:gravity="center_horizontal"
-                                android:textColor="#878783"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="Status"
-                                android:textSize="15dp"/>
-
-                        </LinearLayout>
-
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:background="@color/white"
-                        android:layout_margin="10dp"
-                        android:elevation="5dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1">
-
-                        <LinearLayout
-                            android:background="@color/white"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:layout_margin="5dp"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/petrol_icon"
-                                android:tint="@color/black"/>
-
-                            <TextView
-                                android:layout_marginBottom="5dp"
-                                android:gravity="center_horizontal"
-                                android:textColor="#878783"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="Fuel"
-                                android:textSize="15dp"/>
-
-                            <TextView
-                                android:layout_marginBottom="5dp"
-                                android:gravity="center_horizontal"
-                                android:textColor="#878783"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="Petrol"
-                                android:textSize="15dp"/>
-
-                        </LinearLayout>
-
-                    </androidx.cardview.widget.CardView>
-
-
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/grey"
-                    android:layout_margin="10dp"/>
-
-                <Button
-                    android:id="@+id/btnBookNow"
-                    android:layout_weight="1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/wave"
-                    android:text="Book Now"
-                    android:textStyle="bold"
-                    />
 
             </LinearLayout>
-
-        </LinearLayout>
 
         </androidx.cardview.widget.CardView>
 
@@ -356,69 +359,67 @@
 
 
             <androidx.cardview.widget.CardView
-                android:layout_marginTop="3dp"
-                android:layout_marginBottom="3dp"
                 android:id="@+id/card_vehicle_overview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:elevation="5dp"
-                android:background="@color/white">
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"
+                android:background="@color/white"
+                android:elevation="5dp">
 
                 <LinearLayout
 
-                    android:padding="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/white"
                     android:orientation="vertical"
-                    android:background="@color/white">
+                    android:padding="10dp">
 
                     <TextView
-                        android:layout_margin="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
                         android:text="VEHICLE OVERVIEW"
-                        android:textSize="12dp"
-                        android:textStyle="bold"
                         android:textColor="#878783"
-                        />
+                        android:textSize="12dp"
+                        android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/txt_vehicle_overview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod, Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod"
-                        android:textSize="15dp"
-                        android:textColor="@color/black"/>
+                        android:textColor="@color/black"
+                        android:textSize="15dp" />
 
                 </LinearLayout>
-
 
 
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                android:layout_marginBottom="3dp"
                 android:id="@+id/card_accessories"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:elevation="5dp"
-                android:layout_below="@+id/card_vehicle_overview">
+                android:layout_below="@+id/card_vehicle_overview"
+                android:layout_marginBottom="3dp"
+                android:elevation="5dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:background="@color/white"
+                    android:orientation="vertical"
                     android:padding="10dp">
 
                     <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_margin="10dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
                         android:text="CAR ACCESSORIES"
-                        android:textSize="12dp"
-                        android:textStyle="bold"
                         android:textColor="#878783"
-                        />
+                        android:textSize="12dp"
+                        android:textStyle="bold" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -426,19 +427,19 @@
                         android:orientation="horizontal">
 
                         <ImageView
+                            android:id="@+id/img_air_conditioner"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
                             android:src="@drawable/icon_checked_box"
-                            android:tint="@color/colorPrimary"
-                            android:layout_marginRight="10dp"/>
+                            android:tint="@color/colorPrimary" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15dp"
+                            android:text="Air Conditioner"
                             android:textColor="@color/black"
-                            android:text="Air Conditioner"/>
-
+                            android:textSize="15dp" />
 
 
                     </LinearLayout>
@@ -449,19 +450,19 @@
                         android:orientation="horizontal">
 
                         <ImageView
+                            android:id="@+id/img_antilock_braking_system"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
                             android:src="@drawable/icon_unchecked_box"
-                            android:tint="@color/grey"
-                            android:layout_marginRight="10dp"/>
+                            android:tint="@color/grey" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15dp"
-                            android:textColor="#878783"
-                            android:text="Antilock Braking System"/>
-
+                            android:text="Antilock Braking System"
+                            android:textColor="@color/black"
+                            android:textSize="15dp" />
 
 
                     </LinearLayout>
@@ -472,19 +473,19 @@
                         android:orientation="horizontal">
 
                         <ImageView
+                            android:id="@+id/img_power_steering"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
                             android:src="@drawable/icon_unchecked_box"
-                            android:tint="@color/grey"
-                            android:layout_marginRight="10dp"/>
+                            android:tint="@color/grey" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15dp"
-                            android:textColor="#878783"
-                            android:text="Power Steering"/>
-
+                            android:text="Power Steering"
+                            android:textColor="@color/black"
+                            android:textSize="15dp" />
 
 
                     </LinearLayout>
@@ -495,19 +496,19 @@
                         android:orientation="horizontal">
 
                         <ImageView
+                            android:id="@+id/img_power_windows"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
                             android:src="@drawable/icon_unchecked_box"
-                            android:tint="@color/grey"
-                            android:layout_marginRight="10dp"/>
+                            android:tint="@color/grey" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15dp"
-                            android:textColor="#878783"
-                            android:text="Power Windows"/>
-
+                            android:text="Power Windows"
+                            android:textColor="@color/black"
+                            android:textSize="15dp" />
 
 
                     </LinearLayout>
@@ -518,19 +519,19 @@
                         android:orientation="horizontal">
 
                         <ImageView
+                            android:id="@+id/img_cd_player"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
                             android:src="@drawable/icon_unchecked_box"
-                            android:tint="@color/grey"
-                            android:layout_marginRight="10dp"/>
+                            android:tint="@color/grey" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15dp"
-                            android:textColor="#878783"
-                            android:text="CD Player"/>
-
+                            android:text="CD Player"
+                            android:textColor="@color/black"
+                            android:textSize="15dp" />
 
 
                     </LinearLayout>
@@ -541,19 +542,19 @@
                         android:orientation="horizontal">
 
                         <ImageView
+                            android:id="@+id/img_leather_seats"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
                             android:src="@drawable/icon_unchecked_box"
-                            android:tint="@color/grey"
-                            android:layout_marginRight="10dp"/>
+                            android:tint="@color/grey" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15dp"
-                            android:textColor="#878783"
-                            android:text="Leather Seats"/>
-
+                            android:text="Leather Seats"
+                            android:textColor="@color/black"
+                            android:textSize="15dp" />
 
 
                     </LinearLayout>
@@ -564,19 +565,19 @@
                         android:orientation="horizontal">
 
                         <ImageView
+                            android:id="@+id/img_central_locking"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
                             android:src="@drawable/icon_unchecked_box"
-                            android:tint="@color/grey"
-                            android:layout_marginRight="10dp"/>
+                            android:tint="@color/grey" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15dp"
-                            android:textColor="#878783"
-                            android:text="Central Locking"/>
-
+                            android:text="Central Locking"
+                            android:textColor="@color/black"
+                            android:textSize="15dp" />
 
 
                     </LinearLayout>
@@ -587,19 +588,19 @@
                         android:orientation="horizontal">
 
                         <ImageView
+                            android:id="@+id/img_power_door_locks"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
                             android:src="@drawable/icon_checked_box"
-                            android:tint="@color/colorPrimary"
-                            android:layout_marginRight="10dp"/>
+                            android:tint="@color/colorPrimary" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15dp"
+                            android:text="Power Door Locks"
                             android:textColor="@color/black"
-                            android:text="Power Door Locks"/>
-
+                            android:textSize="15dp" />
 
 
                     </LinearLayout>
@@ -610,42 +611,19 @@
                         android:orientation="horizontal">
 
                         <ImageView
+                            android:id="@+id/img_brake_assist"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
                             android:src="@drawable/icon_unchecked_box"
-                            android:tint="@color/grey"
-                            android:layout_marginRight="10dp"/>
+                            android:tint="@color/grey" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15dp"
-                            android:textColor="#878783"
-                            android:text="Brake Assist"/>
-
-
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/icon_checked_box"
-                            android:tint="@color/colorPrimary"
-                            android:layout_marginRight="10dp"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="15dp"
+                            android:text="Brake Assist"
                             android:textColor="@color/black"
-                            android:text="Driver Airbag"/>
-
+                            android:textSize="15dp" />
 
 
                     </LinearLayout>
@@ -656,19 +634,19 @@
                         android:orientation="horizontal">
 
                         <ImageView
+                            android:id="@+id/img_driver_airbags"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
                             android:src="@drawable/icon_checked_box"
-                            android:tint="@color/colorPrimary"
-                            android:layout_marginRight="10dp"/>
+                            android:tint="@color/colorPrimary" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15dp"
+                            android:text="Driver Airbag"
                             android:textColor="@color/black"
-                            android:text="Passenger Airbag"/>
-
+                            android:textSize="15dp" />
 
 
                     </LinearLayout>
@@ -679,112 +657,131 @@
                         android:orientation="horizontal">
 
                         <ImageView
+                            android:id="@+id/img_passenger_airbag"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:src="@drawable/icon_checked_box"
+                            android:tint="@color/colorPrimary" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Passenger Airbag"
+                            android:textColor="@color/black"
+                            android:textSize="15dp" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/img_crash_sensor"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
                             android:src="@drawable/icon_unchecked_box"
-                            android:tint="@color/grey"
-                            android:layout_marginRight="10dp"/>
+                            android:tint="@color/grey" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15dp"
-                            android:textColor="#878783"
-                            android:text="Crash Sensor"/>
-
+                            android:text="Crash Sensor"
+                            android:textColor="@color/black"
+                            android:textSize="15dp" />
 
 
                     </LinearLayout>
 
                 </LinearLayout>
-
 
 
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                android:layout_marginBottom="3dp"
                 android:id="@+id/card_renter_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:elevation="10dp"
-                android:layout_below="@+id/card_accessories">
+                android:layout_below="@+id/card_accessories"
+                android:layout_marginBottom="3dp"
+                android:elevation="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:background="@color/white"
+                    android:orientation="vertical"
                     android:padding="10dp">
 
                     <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_margin="10dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
                         android:text="RENTER'S DETAILS"
-                        android:textSize="12dp"
-                        android:textStyle="bold"
                         android:textColor="#878783"
-                        />
+                        android:textSize="12dp"
+                        android:textStyle="bold" />
 
                     <LinearLayout
-                        android:layout_marginBottom="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
                         android:orientation="horizontal"
                         android:weightSum="2">
 
                         <TextView
-                            android:layout_weight="1"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:text="Email"
-                            android:textSize="15dp"
-                            android:textColor="@color/black"/>
+                            android:textColor="@color/black"
+                            android:textSize="15dp" />
 
                         <TextView
-                            android:layout_weight="1"
+                            android:id="@+id/txt_vehicle_owner_id"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:text="one@gmail.com"
-                            android:textSize="15dp"
-                            android:textColor="@color/black"/>
+                            android:textColor="@color/black"
+                            android:textSize="15dp" />
 
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_marginBottom="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
                         android:orientation="horizontal"
                         android:weightSum="2">
 
                         <TextView
-                            android:layout_weight="1"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:text="Phone Number"
-                            android:textSize="15dp"
-                            android:textColor="@color/black"/>
+                            android:textColor="@color/black"
+                            android:textSize="15dp" />
 
                         <TextView
-                            android:layout_weight="1"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:text="0712345678"
-                            android:textSize="15dp"
-                            android:textColor="@color/black"/>
+                            android:textColor="@color/black"
+                            android:textSize="15dp" />
 
                     </LinearLayout>
-
 
 
                 </LinearLayout>
 
 
-
             </androidx.cardview.widget.CardView>
-
 
 
         </RelativeLayout>

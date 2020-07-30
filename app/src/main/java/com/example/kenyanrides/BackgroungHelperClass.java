@@ -1,10 +1,13 @@
 package com.example.kenyanrides;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.widget.Toast;
@@ -178,11 +181,13 @@ public class BackgroungHelperClass extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPreExecute() {
+            dialog = new ProgressDialog(context);
+            dialog.setMessage("Loading, please wait...");
+            dialog.setCancelable(false);
+            dialog.show();
 
-        dialog = new ProgressDialog(context);
-        dialog.setMessage("Loading, please wait...");
-        dialog.setCancelable(false);
-        dialog.show();
+
+
     }
 
     @Override
@@ -194,34 +199,42 @@ public class BackgroungHelperClass extends AsyncTask<String, Void, String> {
 
         }
 
-        if (result.equals("Login successful") ){
-            Intent intent = new Intent(context, MainActivity.class);
-            context.startActivity(intent);
-            ((Activity)context).finish();
+        switch (result) {
+            case "Login successful":
+                Intent intent = new Intent(context, MainActivity.class);
+                context.startActivity(intent);
+                ((Activity)context).finish();
+
+              break;
+
+            case "Login not successful":
+                alertDialogBuilder.setTitle("Login Failed");
+                alertDialogBuilder.setMessage("Please try again! \nEnsure you have internet connection and your credentials are correct");
+                alertDialogBuilder.show();
+
+                break;
+
+            case "registration successful":
+                Intent regintent = new Intent(context, LoginActivity.class);
+                context.startActivity(regintent);
+                ((Activity)context).finish();
+
+                break;
+
+            case "registration failed":
+                alertDialogBuilder.setTitle("Registration Failed");
+                alertDialogBuilder.setMessage("Please try again! \nEnsure you have internet connection and your credentials are correct");
+                alertDialogBuilder.show();
+
+                break;
+
+            default:
+                alertDialogBuilder.setMessage("Failed\n Please try again! ");
+                alertDialogBuilder.show();
+                break;
 
         }
 
-        if (result.equals("Login not successful")) {
-
-            alertDialogBuilder.setTitle("Login Failed");
-            alertDialogBuilder.setMessage("Please try again! \nEnsure you have internet connection and your credentials are correct");
-            alertDialogBuilder.show();
-
-        }
-
-            //if registration is successful
-        if (result.equals("registration successful") ){
-            Intent intent = new Intent(context, MainActivity.class);
-            context.startActivity(intent);
-            ((Activity)context).finish();
-
-        } else {
-
-            alertDialogBuilder.setTitle("Registration Failed");
-            alertDialogBuilder.setMessage("Please try again! \nEnsure you have internet connection and your credentials are correct");
-            alertDialogBuilder.show();
-
-        }
 
     }
 
@@ -229,6 +242,8 @@ public class BackgroungHelperClass extends AsyncTask<String, Void, String> {
     protected void onProgressUpdate(Void... values) {
         super.onProgressUpdate(values);
     }
+
+
 
 
     public static String MD5_Hash(String s) {

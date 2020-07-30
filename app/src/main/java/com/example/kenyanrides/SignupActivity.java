@@ -1,7 +1,11 @@
 package com.example.kenyanrides;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -19,6 +23,7 @@ import java.util.Locale;
 
 public class SignupActivity extends AppCompatActivity {
 
+    private AlertDialog.Builder alertDialogBuilder;
 
     TextView txtLogin;
 
@@ -36,6 +41,7 @@ public class SignupActivity extends AppCompatActivity {
 
 
         //initialize views
+        alertDialogBuilder = new AlertDialog.Builder(this);
 
         EditTextFirstName = findViewById(R.id.edit_text_first_name);
         EditTextSecondName = findViewById(R.id.edit_text_second_name);
@@ -64,6 +70,14 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     public void Onregister(View view){
+
+        if (!isNetworkAvailable()){
+
+            alertDialogBuilder.setTitle("Network Failure");
+            alertDialogBuilder.setMessage("Please check your internet connection!");
+            alertDialogBuilder.show();
+            return;
+        }
 
         //get text entered by user
         strFirstName = EditTextFirstName.getText().toString();
@@ -146,6 +160,14 @@ public class SignupActivity extends AppCompatActivity {
 
         backgroungHelperClass.execute(type,strFirstName, strSecondName, strNationalId, strPhoneNumber, strEmail, strPassword, strRegDate);
 
+    }
+
+    public boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) this
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        @SuppressLint("MissingPermission") NetworkInfo activeNetworkInfo = connectivityManager
+                .getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
 }
