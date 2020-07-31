@@ -23,7 +23,7 @@
 
         <activity android:name=".ForgotPasswordActivity"></activity>
 
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".LoginActivity"></activity>
 
         <activity android:name=".ProfileSettings"></activity>
 
@@ -31,7 +31,7 @@
 
 
         <activity
-            android:name="com.example.kenyanrides.LoginActivity"
+            android:name="com.example.kenyanrides.MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

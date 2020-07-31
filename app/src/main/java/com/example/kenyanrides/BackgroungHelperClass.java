@@ -12,6 +12,9 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -36,7 +39,7 @@ public class BackgroungHelperClass extends AsyncTask<String, Void, String> {
 
     String hashed;
 
-    BackgroungHelperClass(Context ctx){
+    BackgroungHelperClass(Context ctx) {
 
         context = ctx;
         alertDialogBuilder = new AlertDialog.Builder(context);
@@ -54,7 +57,7 @@ public class BackgroungHelperClass extends AsyncTask<String, Void, String> {
         String register_url = "https://kenyanrides.com/android/registration.php";
 
         //login
-        if (type.equals("login")){
+        if (type.equals("login")) {
 
 
             try {
@@ -74,23 +77,23 @@ public class BackgroungHelperClass extends AsyncTask<String, Void, String> {
                 OutputStream outputStream = httpURLConnection.getOutputStream();
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
 
-                String postData = URLEncoder.encode("email","UTF-8") + "="+ URLEncoder.encode(email,"UTF-8") + "&"
-                        + URLEncoder.encode("password","UTF-8") + "="+ URLEncoder.encode(hashed,"UTF-8") ;
+                String postData = URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(email, "UTF-8") + "&"
+                        + URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(hashed, "UTF-8");
 
-                    bufferedWriter.write(postData);
-                    bufferedWriter.flush();
-                    bufferedWriter.close();
-                    outputStream.close();
+                bufferedWriter.write(postData);
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                outputStream.close();
 
-                    //read post request
+                //read post request
                 InputStream inputStream = httpURLConnection.getInputStream();
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
                 String result = "";
                 String line = "";
 
-                while ((line = bufferedReader.readLine() )!= null){
+                while ((line = bufferedReader.readLine()) != null) {
 
-                    result += line ;
+                    result += line;
 
                 }
 
@@ -108,9 +111,7 @@ public class BackgroungHelperClass extends AsyncTask<String, Void, String> {
                 e.printStackTrace();
             }
 
-        }
-
-        else if (type.equals("register")){
+        } else if (type.equals("register")) {
 
             try {
                 //variables
@@ -134,13 +135,13 @@ public class BackgroungHelperClass extends AsyncTask<String, Void, String> {
                 OutputStream outputStream = httpURLConnection.getOutputStream();
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
 
-                String postData = URLEncoder.encode("first_name","UTF-8") + "="+ URLEncoder.encode(first_name,"UTF-8") + "&" +
-                        URLEncoder.encode("second_name","UTF-8") + "="+ URLEncoder.encode(second_name,"UTF-8") + "&" +
-                        URLEncoder.encode("national_id","UTF-8") + "="+ URLEncoder.encode(national_id,"UTF-8") + "&" +
-                        URLEncoder.encode("mobile_number","UTF-8") + "="+ URLEncoder.encode(phone_number,"UTF-8") + "&" +
-                        URLEncoder.encode("email_address","UTF-8") + "="+ URLEncoder.encode(email_address,"UTF-8") + "&" +
-                        URLEncoder.encode("password","UTF-8") + "="+ URLEncoder.encode(hashed,"UTF-8") + "&" +
-                        URLEncoder.encode("reg_date","UTF-8") + "="+ URLEncoder.encode(reg_date,"UTF-8") ;
+                String postData = URLEncoder.encode("first_name", "UTF-8") + "=" + URLEncoder.encode(first_name, "UTF-8") + "&" +
+                        URLEncoder.encode("second_name", "UTF-8") + "=" + URLEncoder.encode(second_name, "UTF-8") + "&" +
+                        URLEncoder.encode("national_id", "UTF-8") + "=" + URLEncoder.encode(national_id, "UTF-8") + "&" +
+                        URLEncoder.encode("mobile_number", "UTF-8") + "=" + URLEncoder.encode(phone_number, "UTF-8") + "&" +
+                        URLEncoder.encode("email_address", "UTF-8") + "=" + URLEncoder.encode(email_address, "UTF-8") + "&" +
+                        URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(hashed, "UTF-8") + "&" +
+                        URLEncoder.encode("reg_date", "UTF-8") + "=" + URLEncoder.encode(reg_date, "UTF-8");
 
                 bufferedWriter.write(postData);
                 bufferedWriter.flush();
@@ -153,9 +154,9 @@ public class BackgroungHelperClass extends AsyncTask<String, Void, String> {
                 String result = "";
                 String line = "";
 
-                while ((line = bufferedReader.readLine() )!= null){
+                while ((line = bufferedReader.readLine()) != null) {
 
-                    result += line ;
+                    result += line;
 
                 }
 
@@ -181,11 +182,10 @@ public class BackgroungHelperClass extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPreExecute() {
-            dialog = new ProgressDialog(context);
-            dialog.setMessage("Loading, please wait...");
-            dialog.setCancelable(false);
-            dialog.show();
-
+        dialog = new ProgressDialog(context);
+        dialog.setMessage("Loading, please wait...");
+        dialog.setCancelable(false);
+        dialog.show();
 
 
     }
@@ -193,73 +193,112 @@ public class BackgroungHelperClass extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String result) {
 
-        if (dialog.isShowing()) {
-
-            dialog.dismiss();
-
-        }
-
-        switch (result) {
-            case "Login successful":
-                Intent intent = new Intent(context, MainActivity.class);
-                context.startActivity(intent);
-                ((Activity)context).finish();
-
-              break;
-
-            case "Login not successful":
-                alertDialogBuilder.setTitle("Login Failed");
-                alertDialogBuilder.setMessage("Please try again! \nEnsure you have internet connection and your credentials are correct");
-                alertDialogBuilder.show();
-
-                break;
-
-            case "registration successful":
-                Intent regintent = new Intent(context, LoginActivity.class);
-                context.startActivity(regintent);
-                ((Activity)context).finish();
-
-                break;
-
-            case "registration failed":
-                alertDialogBuilder.setTitle("Registration Failed");
-                alertDialogBuilder.setMessage("Please try again! \nEnsure you have internet connection and your credentials are correct");
-                alertDialogBuilder.show();
-
-                break;
-
-            default:
-                alertDialogBuilder.setMessage("Failed\n Please try again! ");
-                alertDialogBuilder.show();
-                break;
-
-        }
-
-
-    }
-
-    @Override
-    protected void onProgressUpdate(Void... values) {
-        super.onProgressUpdate(values);
-    }
-
-
-
-
-    public static String MD5_Hash(String s) {
-        MessageDigest m = null;
-
         try {
-            m = MessageDigest.getInstance("MD5");
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            if (dialog.isShowing()) {
+
+                dialog.dismiss();
+
+            }
+
+            switch (result) {
+
+                case "User already registered":
+                    alertDialogBuilder.setTitle("Registration Failed");
+                    alertDialogBuilder.setMessage("The email already exists in the system ");
+                    alertDialogBuilder.show();
+
+                    break;
+
+
+                case "registration successful":
+                    Intent regintent = new Intent(context, LoginActivity.class);
+                    context.startActivity(regintent);
+                    ((Activity) context).finish();
+
+                    break;
+
+                case "registration failed":
+                    alertDialogBuilder.setTitle("Registration Failed");
+                    alertDialogBuilder.setMessage("Please try again! \nEnsure you have internet connection and your credentials are correct");
+                    alertDialogBuilder.show();
+
+                    break;
+
+                default:
+                    try {
+                        //converting response to json object
+                        JSONObject obj = new JSONObject(result);
+
+                        //if no error in response
+                        if (!obj.getBoolean("error")) {
+                            Toast.makeText(context, obj.getString("message"), Toast.LENGTH_SHORT).show();
+
+                            //getting the user from the response
+                            JSONObject userJson = obj.getJSONObject("user");
+
+                            //creating a new user object
+                            user user = new user(
+                                    userJson.getInt("id"),
+                                    userJson.getInt("national_id"),
+                                    userJson.getString("first_name"),
+                                    userJson.getString("second_name"),
+                                    userJson.getString("email"),
+                                    userJson.getString("mobile_number"),
+                                    userJson.getString("reg_date")
+
+                            );
+
+                            //storing the user in shared preferences
+                            SharedPrefManager.getInstance(context).userLogin(user);
+
+                            //start main activity
+                            Intent intent = new Intent(context, MainActivity.class);
+                            context.startActivity(intent);
+                            ((Activity) context).finish();
+                        } else {
+
+                            alertDialogBuilder.setTitle("Login Failed");
+                            alertDialogBuilder.setMessage("Please try again! \nEnsure you have internet connection and your credentials are correct");
+                            alertDialogBuilder.show();
+
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+
+            }
+        } catch (Exception ex){
+
+            alertDialogBuilder.setMessage("System failed fetching vehciles! Please try again");
+            alertDialogBuilder.show();
+
         }
 
-        m.update(s.getBytes(),0,s.length());
-        String hash = new BigInteger(1, m.digest()).toString(16);
-        return hash;
+        }
+
+
+        @Override
+        protected void onProgressUpdate (Void...values){
+            super.onProgressUpdate(values);
+        }
+
+
+        public static String MD5_Hash (String s){
+            MessageDigest m = null;
+
+            try {
+                m = MessageDigest.getInstance("MD5");
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            }
+
+            m.update(s.getBytes(), 0, s.length());
+            String hash = new BigInteger(1, m.digest()).toString(16);
+            return hash;
+        }
+
     }
 
-}
 
 

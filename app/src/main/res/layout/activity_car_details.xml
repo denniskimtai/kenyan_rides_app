@@ -763,11 +763,12 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Phone Number"
+                            android:text="Owner Reg Date"
                             android:textColor="@color/black"
                             android:textSize="15dp" />
 
                         <TextView
+                            android:id="@+id/txt_owner_reg_date"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"

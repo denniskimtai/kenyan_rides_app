@@ -2,6 +2,7 @@ package com.example.kenyanrides;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -31,6 +32,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private Context mcontext;
 
+    private ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +42,9 @@ public class LoginActivity extends AppCompatActivity {
         mcontext = this;
 
         //Initialize views
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Signing In. Please wait...");
 
         alertDialogBuilder = new AlertDialog.Builder(this);
 

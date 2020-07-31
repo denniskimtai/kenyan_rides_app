@@ -1,5 +1,6 @@
 package com.example.kenyanrides;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -18,6 +19,13 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         //loading the default fragment
         loadFragment(new HomeFragment());
+
+        //if the user is not logged in
+        //starting the login activity
+        if (!SharedPrefManager.getInstance(this).isLoggedIn()) {
+            finish();
+            startActivity(new Intent(this, LoginActivity.class));
+        }
 
         //getting bottom navigation view and attaching the listener
         BottomNavigationView navigation = findViewById(R.id.bottom_nav_view);

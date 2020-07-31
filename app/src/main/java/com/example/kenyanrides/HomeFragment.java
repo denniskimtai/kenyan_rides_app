@@ -1,5 +1,12 @@
 package com.example.kenyanrides;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -32,7 +40,11 @@ public class HomeFragment extends Fragment {
     private CarsAdapter carsAdapter;
     private List<car> carList;
 
-    private static final String vehicles_url = "https://kenyanrides.com/android/api.php";
+    private AlertDialog.Builder alertDialogBuilder;
+
+    private ProgressDialog progressDialog;
+
+    private static final String vehicles_url = "https://kenyanrides.com/android/fetch_api.php";
 
 
     @Nullable
@@ -42,18 +54,30 @@ public class HomeFragment extends Fragment {
 
         recyclerView = myView.findViewById(R.id.cars_recycler_view);
 
-
         carList = new ArrayList<>();
-
-
 
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
 
         recyclerView.setLayoutManager(layoutManager);
 
+        progressDialog = new ProgressDialog(getActivity());
 
+        alertDialogBuilder = new AlertDialog.Builder(getActivity());
+
+        progressDialog.setMessage("Loading...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
 
         prepareCars();
+
+        final SwipeRefreshLayout pullToRefresh = myView.findViewById(R.id.pullToRefresh);
+        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                prepareCars();
+                pullToRefresh.setRefreshing(false);
+            }
+        });
 
 
 
@@ -62,7 +86,37 @@ public class HomeFragment extends Fragment {
 
     }
 
+    public boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getActivity()
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        @SuppressLint("MissingPermission") NetworkInfo activeNetworkInfo = connectivityManager
+                .getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
     private void prepareCars() {
+
+        //check if network is connected
+        if (!isNetworkAvailable()){
+            progressDialog.dismiss();
+
+            alertDialogBuilder.setTitle("Network Failure");
+            alertDialogBuilder.setMessage("Please check your internet connection!");
+            alertDialogBuilder.setPositiveButton("Try again", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+
+                    prepareCars();
+
+                }
+            });
+            alertDialogBuilder.setCancelable(false);
+            alertDialogBuilder.show();
+            return;
+        }
+
+
+
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, vehicles_url, new Response.Listener<String>() {
             @Override
@@ -123,6 +177,8 @@ public class HomeFragment extends Fragment {
 
 
                     }
+
+                    progressDialog.dismiss();
 
                     carsAdapter = new CarsAdapter(getActivity(), carList);
                     recyclerView.setAdapter(carsAdapter);

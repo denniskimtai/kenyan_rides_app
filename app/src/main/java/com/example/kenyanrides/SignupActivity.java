@@ -152,7 +152,6 @@ public class SignupActivity extends AppCompatActivity {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss");
         strRegDate = sdf.format(Calendar.getInstance().getTime());
 
-        Toast.makeText(this, strRegDate, Toast.LENGTH_SHORT).show();
 
         String type = "register";
 

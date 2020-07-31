@@ -28,7 +28,7 @@ public class CarDetailsActivity extends AppCompatActivity {
 
     private ArrayList<String> ImagesArray = new ArrayList<String>();
 
-    private TextView txt_vehicle_title, txt_vehicle_overview, txt_price_per_day, txt_powered_by, txt_location, txt_model_year, txt_seating_capacity, txt_driver_status, txt_owner_id;
+    private TextView txt_vehicle_title, txt_vehicle_overview, txt_price_per_day, txt_powered_by, txt_location, txt_model_year, txt_seating_capacity, txt_driver_status, txt_owner_id, txt_owner_reg_date;
 
     private ImageView imgAirConditioner, imgAntilockBrakingSystem, imgPowerSteering, imgPowerWindows, imgCdPlayer, imgLeatherSeats, imgCentralLocking,
     imgPowerDoorLocks, imgBrakeAssist, imgDriverAirbag, imgPassengerAirbag, imgCrashSensor;
@@ -51,6 +51,7 @@ public class CarDetailsActivity extends AppCompatActivity {
         txt_seating_capacity = findViewById(R.id.txt_vehicle_seats);
         txt_driver_status = findViewById(R.id.txt_vehicle_driver_status);
         txt_owner_id = findViewById(R.id.txt_vehicle_owner_id);
+        txt_owner_reg_date = findViewById(R.id.txt_owner_reg_date);
 
         //initializing image views
         imgAirConditioner = findViewById(R.id.img_air_conditioner);
@@ -76,6 +77,7 @@ public class CarDetailsActivity extends AppCompatActivity {
         String seating_capacity = getIntent().getStringExtra("seating_capacity");
         String driver_status = getIntent().getStringExtra("driver_status");
         String owner_id = getIntent().getStringExtra("owner_id");
+        String reg_date = getIntent().getStringExtra("reg_date");
 
         String airConditioner = getIntent().getStringExtra("airConditioner");
         String powerDoorLocks = getIntent().getStringExtra("powerDoorLocks");
@@ -101,6 +103,7 @@ public class CarDetailsActivity extends AppCompatActivity {
         txt_seating_capacity.setText(seating_capacity);
         txt_driver_status.setText(driver_status);
         txt_owner_id.setText(owner_id);
+        txt_owner_reg_date.setText(reg_date);
 
         //setimage resource
         if (airConditioner == "1") {
