@@ -114,9 +114,9 @@ public class LoginActivity extends AppCompatActivity {
 
         String type = "login";
 
-        BackgroungHelperClass backgroungHelperClass = new BackgroungHelperClass(mcontext);
+        BackgroundHelperClass backgroundHelperClass = new BackgroundHelperClass(mcontext);
 
-        backgroungHelperClass.execute(type,email, password);
+        backgroundHelperClass.execute(type,email, password);
 
     }
 

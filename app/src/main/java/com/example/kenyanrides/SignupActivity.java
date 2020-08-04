@@ -11,15 +11,12 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -155,9 +152,9 @@ public class SignupActivity extends AppCompatActivity {
 
         String type = "register";
 
-        BackgroungHelperClass backgroungHelperClass = new BackgroungHelperClass(this);
+        BackgroundHelperClass backgroundHelperClass = new BackgroundHelperClass(this);
 
-        backgroungHelperClass.execute(type,strFirstName, strSecondName, strNationalId, strPhoneNumber, strEmail, strPassword, strRegDate);
+        backgroundHelperClass.execute(type,strFirstName, strSecondName, strNationalId, strPhoneNumber, strEmail, strPassword, strRegDate);
 
     }
 

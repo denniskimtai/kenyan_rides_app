@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white">
 
     <LinearLayout
-        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:orientation="vertical">
 
         <androidx.appcompat.widget.Toolbar
@@ -17,177 +16,271 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:background="@color/colorPrimaryDark"
-            android:layout_alignParentLeft="true">
+            android:layout_alignParentLeft="true"
+            android:background="@color/colorPrimaryDark">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Post A Vehicle"
                 android:textColor="@color/white"
-                android:textSize="20dp"/>
+                android:textSize="20dp" />
 
         </androidx.appcompat.widget.Toolbar>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:text="Basic Info"
             android:textColor="#6E6E6D"
-            android:textStyle="bold"
             android:textSize="12dp"
-            android:layout_margin="10dp"/>
+            android:textStyle="bold" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:background="@drawable/input_shape"
-            android:layout_margin="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColorHint="@color/dark_grey"
-            >
+            android:layout_margin="10dp"
+            android:background="@drawable/input_shape"
+            android:textColorHint="@color/dark_grey">
 
             <EditText
-                android:textColor="@color/black"
-                android:paddingLeft="10dp"
+                android:id="@+id/edit_text_vehicle_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Vehicle Title"
-                android:textSize="12dp"
-                />
+                android:paddingLeft="10dp"
+                android:textColor="@color/black"
+                android:textSize="12dp" />
 
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <LinearLayout
-            android:layout_margin="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:weightSum="3">
 
-        <TextView
-            android:padding="10dp"
-            android:background="@drawable/input_shape"
-            android:layout_width="0dp"
-            android:textSize="12dp"
-            android:textColor="@color/dark_grey"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Brand"/>
-
-            <TextView
-                android:layout_marginLeft="8dp"
-                android:padding="10dp"
-                android:background="@drawable/input_shape"
+            <LinearLayout
                 android:layout_width="0dp"
-                android:textSize="12dp"
-                android:textColor="@color/dark_grey"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Fuel"/>
+                android:orientation="vertical">
 
-            <TextView
-                android:textColor="@color/dark_grey"
-                android:layout_marginLeft="8dp"
-                android:padding="10dp"
-                android:background="@drawable/input_shape"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Brand"
+                    android:textColor="@color/black"
+                    android:textSize="12dp" />
+
+                <Spinner
+                    android:id="@+id/brand_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/input_shape"
+                    android:backgroundTint="@color/grey"
+                    android:padding="8dp"
+                    android:textColor="@color/black"
+                    android:textSize="12dp" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
                 android:layout_width="0dp"
-                android:textSize="12dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="seats"/>
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Fuel"
+                    android:textColor="@color/black"
+                    android:textSize="12dp" />
+
+                <Spinner
+                    android:id="@+id/fuel_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/input_shape"
+                    android:backgroundTint="@color/grey"
+                    android:padding="8dp"
+                    android:textColor="@color/black"
+                    android:textSize="12dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Seats"
+                    android:textColor="@color/black"
+                    android:textSize="12dp" />
+
+                <Spinner
+                    android:id="@+id/seats_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/input_shape"
+                    android:backgroundTint="@color/grey"
+                    android:padding="10dp"
+                    android:textColor="@color/black"
+                    android:textSize="12dp" />
+
+            </LinearLayout>
 
 
         </LinearLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:background="@drawable/input_shape"
-            android:layout_margin="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/input_shape"
             android:textColorHint="@color/dark_grey"
             android:textSize="12dp">
 
             <EditText
-                android:textColor="@color/black"
-                android:textSize="12dp"
-                android:layout_marginLeft="10dp"
+                android:id="@+id/edit_text_vehicle_overview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
                 android:hint="Vehicle Overview"
                 android:lines="4"
-                android:textColorHint="@color/dark_grey"/>
+                android:textColor="@color/black"
+                android:textColorHint="@color/dark_grey"
+                android:textSize="12dp" />
 
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <LinearLayout
-            android:layout_margin="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:orientation="horizontal"
             android:weightSum="2">
 
-            <TextView
-                android:textColor="@color/dark_grey"
-                android:padding="10dp"
-                android:background="@drawable/input_shape"
+            <LinearLayout
                 android:layout_width="0dp"
-                android:textSize="12dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Driver Status"/>
+                android:orientation="vertical">
 
-            <TextView
-                android:textColor="@color/dark_grey"
-                android:layout_marginLeft="8dp"
-                android:padding="10dp"
-                android:background="@drawable/input_shape"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Driver Status"
+                    android:textColor="@color/black"
+                    android:textSize="12dp" />
+
+                <Spinner
+                    android:layout_marginRight="10dp"
+                    android:id="@+id/driver_status_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/input_shape"
+                    android:backgroundTint="@color/grey"
+                    android:padding="8dp"
+                    android:textColor="@color/black"
+                    android:textSize="12dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="0dp"
-                android:textSize="12dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Car Location"/>
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Location"
+                    android:textColor="@color/black"
+                    android:textSize="12dp" />
+
+                <Spinner
+                    android:id="@+id/location_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/input_shape"
+                    android:backgroundTint="@color/grey"
+                    android:padding="8dp"
+                    android:textColor="@color/black"
+                    android:textSize="12dp" />
+
+            </LinearLayout>
+
 
         </LinearLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:textSize="12dp"
-            android:layout_marginTop="10dp"
-            android:layout_margin="10dp"
-            android:background="@drawable/input_shape"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColorHint="@color/black">
+            android:layout_margin="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/input_shape"
+            android:textColorHint="@color/black"
+            android:textSize="12dp">
 
             <EditText
-                android:textColor="@color/black"
-                android:textSize="12dp"
-                android:paddingLeft="10dp"
+                android:inputType="number"
+                android:id="@+id/edit_text_price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Price Per Day(in Ksh)"
-                android:textColorHint="@color/dark_grey"/>
+                android:hint="Price Per Day(in Ksh) Enter number only"
+                android:paddingLeft="10dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/dark_grey"
+                android:textSize="12dp" />
 
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:textSize="12dp"
-            android:layout_margin="10dp"
-            android:background="@drawable/input_shape"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColorHint="@color/black">
+            android:layout_margin="10dp"
+            android:background="@drawable/input_shape"
+            android:textColorHint="@color/black"
+            android:textSize="12dp">
 
             <EditText
-                android:textColor="@color/black"
-                android:textSize="12dp"
-                android:paddingLeft="10dp"
+                android:inputType="number"
+                android:id="@+id/edit_text_model_year"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Model Year"
-                android:textColorHint="@color/dark_grey"/>
+                android:hint="Vehicle Model Year"
+                android:paddingLeft="10dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/dark_grey"
+                android:textSize="12dp" />
 
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -195,53 +288,54 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/dark_grey"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginBottom="10dp"
+            android:background="@color/dark_grey" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:text="Car Images"
             android:textColor="#6E6E6D"
-            android:textStyle="bold"
             android:textSize="12dp"
-            android:layout_margin="10dp"/>
+            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@drawable/input_shape"
-            android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
+            android:background="@drawable/input_shape"
+            android:orientation="horizontal"
             android:weightSum="3">
 
             <TextView
-                android:layout_weight="1"
+                android:id="@+id/image1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="10dp"
                 android:text="Choose file"
-                android:textSize="12dp"
-                android:textStyle="bold"
                 android:textColor="@color/black"
-                android:padding="10dp"/>
+                android:textSize="12dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="@color/dark_grey"/>
+                android:background="@color/dark_grey" />
 
             <TextView
-                android:layout_weight="2"
+                android:id="@+id/image1_file_path"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:padding="10dp"
                 android:text="No file choosen"
-                android:textSize="12dp"
-                android:textColor="@color/grey"
-                android:padding="10dp"/>
-
+                android:textColor="@color/dark_grey"
+                android:textSize="12dp" />
 
 
         </LinearLayout>
@@ -249,37 +343,38 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@drawable/input_shape"
-            android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
+            android:background="@drawable/input_shape"
+            android:orientation="horizontal"
             android:weightSum="3">
 
             <TextView
-                android:layout_weight="1"
+                android:id="@+id/image2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="10dp"
                 android:text="Choose file"
-                android:textSize="12dp"
-                android:textStyle="bold"
                 android:textColor="@color/black"
-                android:padding="10dp"/>
+                android:textSize="12dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="@color/dark_grey"/>
+                android:background="@color/dark_grey" />
 
             <TextView
-                android:layout_weight="2"
+                android:id="@+id/image2_file_path"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:padding="10dp"
                 android:text="No file choosen"
-                android:textSize="12dp"
-                android:textColor="@color/grey"
-                android:padding="10dp"/>
-
+                android:textColor="@color/dark_grey"
+                android:textSize="12dp" />
 
 
         </LinearLayout>
@@ -287,37 +382,38 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@drawable/input_shape"
-            android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
+            android:background="@drawable/input_shape"
+            android:orientation="horizontal"
             android:weightSum="3">
 
             <TextView
-                android:layout_weight="1"
+                android:id="@+id/image3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="10dp"
                 android:text="Choose file"
-                android:textSize="12dp"
-                android:textStyle="bold"
                 android:textColor="@color/black"
-                android:padding="10dp"/>
+                android:textSize="12dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="@color/dark_grey"/>
+                android:background="@color/dark_grey" />
 
             <TextView
-                android:layout_weight="2"
+                android:id="@+id/image3_file_path"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:padding="10dp"
                 android:text="No file choosen"
-                android:textSize="12dp"
-                android:textColor="@color/grey"
-                android:padding="10dp"/>
-
+                android:textColor="@color/dark_grey"
+                android:textSize="12dp" />
 
 
         </LinearLayout>
@@ -325,37 +421,38 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@drawable/input_shape"
-            android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
+            android:background="@drawable/input_shape"
+            android:orientation="horizontal"
             android:weightSum="3">
 
             <TextView
-                android:layout_weight="1"
+                android:id="@+id/image4"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="10dp"
                 android:text="Choose file"
-                android:textSize="12dp"
-                android:textStyle="bold"
                 android:textColor="@color/black"
-                android:padding="10dp"/>
+                android:textSize="12dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="@color/dark_grey"/>
+                android:background="@color/dark_grey" />
 
             <TextView
-                android:layout_weight="2"
+                android:id="@+id/image4_file_path"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:padding="10dp"
                 android:text="No file choosen"
-                android:textSize="12dp"
-                android:textColor="@color/grey"
-                android:padding="10dp"/>
-
+                android:textColor="@color/dark_grey"
+                android:textSize="12dp" />
 
 
         </LinearLayout>
@@ -363,38 +460,39 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@drawable/input_shape"
-            android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp"
+            android:background="@drawable/input_shape"
+            android:orientation="horizontal"
             android:weightSum="3">
 
             <TextView
-                android:layout_weight="1"
+                android:id="@+id/image5"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="10dp"
                 android:text="Choose file"
-                android:textSize="12dp"
-                android:textStyle="bold"
                 android:textColor="@color/black"
-                android:padding="10dp"/>
+                android:textSize="12dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="@color/dark_grey"/>
+                android:background="@color/dark_grey" />
 
             <TextView
-                android:layout_weight="2"
+                android:id="@+id/image5_file_path"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:padding="10dp"
                 android:text="No file choosen"
-                android:textSize="12dp"
-                android:textColor="@color/grey"
-                android:padding="10dp"/>
-
+                android:textColor="@color/dark_grey"
+                android:textSize="12dp" />
 
 
         </LinearLayout>
@@ -402,116 +500,129 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/dark_grey"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginBottom="10dp"
+            android:background="@color/dark_grey" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:text="Vehicle Accessories"
             android:textColor="#6E6E6D"
-            android:textStyle="bold"
             android:textSize="12dp"
-            android:layout_margin="10dp"/>
+            android:textStyle="bold" />
 
         <CheckBox
-            android:buttonTint="@color/colorPrimary"
-            android:textColor="@color/black"
+            android:id="@+id/chkbox_airconditioner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Air Conditioner" />
+            android:buttonTint="@color/colorPrimary"
+            android:text="Air Conditioner"
+            android:textColor="@color/black" />
 
         <CheckBox
-            android:buttonTint="@color/colorPrimary"
-            android:textColor="@color/black"
+            android:id="@+id/chkbox_power_door_locks"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Power Door Locks" />
+            android:buttonTint="@color/colorPrimary"
+            android:text="Power Door Locks"
+            android:textColor="@color/black" />
 
         <CheckBox
-            android:buttonTint="@color/colorPrimary"
-            android:textColor="@color/black"
+            android:id="@+id/chkbox_anti_lock_braking_system"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Anti Lock Braking System" />
+            android:buttonTint="@color/colorPrimary"
+            android:text="Anti Lock Braking System"
+            android:textColor="@color/black" />
 
         <CheckBox
-            android:buttonTint="@color/colorPrimary"
-            android:textColor="@color/black"
+            android:id="@+id/chkbox_brake_assist"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Brake Assist" />
+            android:buttonTint="@color/colorPrimary"
+            android:text="Brake Assist"
+            android:textColor="@color/black" />
 
         <CheckBox
-            android:buttonTint="@color/colorPrimary"
-            android:textColor="@color/black"
+            android:id="@+id/chkbox_power_steering"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Power Steering" />
+            android:buttonTint="@color/colorPrimary"
+            android:text="Power Steering"
+            android:textColor="@color/black" />
 
         <CheckBox
-            android:buttonTint="@color/colorPrimary"
-            android:textColor="@color/black"
+            android:id="@+id/chkbox_driver_airbag"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Driver Airbag" />
+            android:buttonTint="@color/colorPrimary"
+            android:text="Driver Airbag"
+            android:textColor="@color/black" />
 
         <CheckBox
-            android:buttonTint="@color/colorPrimary"
-            android:textColor="@color/black"
+            android:id="@+id/chkbox_passenger_airbag"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Passenger Airbag" />
+            android:buttonTint="@color/colorPrimary"
+            android:text="Passenger Airbag"
+            android:textColor="@color/black" />
 
         <CheckBox
-            android:buttonTint="@color/colorPrimary"
-            android:textColor="@color/black"
+            android:id="@+id/chkbox_power_windows"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Power Windows" />
+            android:buttonTint="@color/colorPrimary"
+            android:text="Power Windows"
+            android:textColor="@color/black" />
 
         <CheckBox
-            android:buttonTint="@color/colorPrimary"
-            android:textColor="@color/black"
+            android:id="@+id/chkbox_cdplayer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="CD Player" />
+            android:buttonTint="@color/colorPrimary"
+            android:text="CD Player"
+            android:textColor="@color/black" />
 
         <CheckBox
-            android:buttonTint="@color/colorPrimary"
-            android:textColor="@color/black"
+            android:id="@+id/chkbox_central_locking"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Central Locking" />
+            android:buttonTint="@color/colorPrimary"
+            android:text="Central Locking"
+            android:textColor="@color/black" />
 
         <CheckBox
-            android:buttonTint="@color/colorPrimary"
-            android:textColor="@color/black"
+            android:id="@+id/chkbox_crash_sensor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Crash Sensor" />
+            android:buttonTint="@color/colorPrimary"
+            android:text="Crash Sensor"
+            android:textColor="@color/black" />
 
         <CheckBox
-            android:buttonTint="@color/colorPrimary"
-            android:textColor="@color/black"
+            android:id="@+id/chkbox_leather_seats"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Leather Seats"/>
+            android:buttonTint="@color/colorPrimary"
+            android:text="Leather Seats"
+            android:textColor="@color/black" />
 
 
         <Button
+            android:id="@+id/btnPostVehicle"
             android:layout_width="match_parent"
-            android:layout_marginRight="30dp"
-            android:layout_marginLeft="30dp"
             android:layout_height="wrap_content"
-            android:text="Post Vehicle"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="30dp"
             android:layout_marginTop="20dp"
-            android:textStyle="bold"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="70dp"
             android:background="@drawable/buttom_background"
             android:padding="15dp"
-            android:layout_marginBottom="70dp"
-            android:layout_gravity="center_horizontal"/>
+            android:text="Post Vehicle"
+            android:textStyle="bold" />
 
     </LinearLayout>
 

@@ -106,147 +106,147 @@ public class CarDetailsActivity extends AppCompatActivity {
         txt_owner_reg_date.setText(reg_date);
 
         //setimage resource
-        if (airConditioner == "1") {
-            imgAirConditioner.setImageResource(R.drawable.icon_checked_box);
+        if (airConditioner.equals("1")) {
+            imgAirConditioner.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.icon_checked_box));
             imgAirConditioner.setColorFilter(ContextCompat.getColor(this,
                     R.color.colorPrimary));
 
 
         }else {
-            imgAirConditioner.setImageResource(R.drawable.icon_unchecked_box);
+            imgAirConditioner.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.icon_unchecked_box));
             imgAirConditioner.setColorFilter(ContextCompat.getColor(this,
                     R.color.grey));
         }
 
-        if (antiLockBrakingSystem == "1") {
-            imgAirConditioner.setImageResource(R.drawable.icon_checked_box);
-            imgAirConditioner.setColorFilter(ContextCompat.getColor(this,
+        if (antiLockBrakingSystem.equals("1")) {
+            imgAntilockBrakingSystem.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.icon_checked_box));
+            imgAntilockBrakingSystem.setColorFilter(ContextCompat.getColor(this,
                     R.color.colorPrimary));
 
 
         }else {
-            imgAirConditioner.setImageResource(R.drawable.icon_unchecked_box);
-            imgAirConditioner.setColorFilter(ContextCompat.getColor(this,
+            imgAntilockBrakingSystem.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.icon_unchecked_box));
+            imgAntilockBrakingSystem.setColorFilter(ContextCompat.getColor(this,
                     R.color.grey));
         }
 
-        if (powerSteering == "1") {
-            imgAirConditioner.setImageResource(R.drawable.icon_checked_box);
-            imgAirConditioner.setColorFilter(ContextCompat.getColor(this,
+        if (powerSteering.equals("1")) {
+            imgPowerSteering.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.icon_checked_box));
+            imgPowerSteering.setColorFilter(ContextCompat.getColor(this,
                     R.color.colorPrimary));
 
 
         }else {
-            imgAirConditioner.setImageResource(R.drawable.icon_unchecked_box);
-            imgAirConditioner.setColorFilter(ContextCompat.getColor(this,
+            imgPowerSteering.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.icon_unchecked_box));
+            imgPowerSteering.setColorFilter(ContextCompat.getColor(this,
                     R.color.grey));
         }
 
-        if (powerWindows == "1") {
-            imgAirConditioner.setImageResource(R.drawable.icon_checked_box);
-            imgAirConditioner.setColorFilter(ContextCompat.getColor(this,
+        if (powerWindows.equals("1")) {
+            imgPowerWindows.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.icon_checked_box));
+            imgPowerWindows.setColorFilter(ContextCompat.getColor(this,
                     R.color.colorPrimary));
 
 
         }else {
-            imgAirConditioner.setImageResource(R.drawable.icon_unchecked_box);
-            imgAirConditioner.setColorFilter(ContextCompat.getColor(this,
+            imgPowerWindows.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.icon_unchecked_box));
+            imgPowerWindows.setColorFilter(ContextCompat.getColor(this,
                     R.color.grey));
         }
 
-        if (cdPlayer == "1") {
-            imgAirConditioner.setImageResource(R.drawable.icon_checked_box);
-            imgAirConditioner.setColorFilter(ContextCompat.getColor(this,
+        if (cdPlayer.equals("1")) {
+            imgCdPlayer.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.icon_checked_box));
+            imgCdPlayer.setColorFilter(ContextCompat.getColor(this,
                     R.color.colorPrimary));
 
 
         }else {
-            imgAirConditioner.setImageResource(R.drawable.icon_unchecked_box);
-            imgAirConditioner.setColorFilter(ContextCompat.getColor(this,
+            imgCdPlayer.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.icon_unchecked_box));
+            imgCdPlayer.setColorFilter(ContextCompat.getColor(this,
                     R.color.grey));
         }
 
-        if (leatherSeats == "1") {
-            imgAirConditioner.setImageResource(R.drawable.icon_checked_box);
-            imgAirConditioner.setColorFilter(ContextCompat.getColor(this,
+        if (leatherSeats.equals("1")) {
+            imgLeatherSeats.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.icon_checked_box));
+            imgLeatherSeats.setColorFilter(ContextCompat.getColor(this,
                     R.color.colorPrimary));
 
 
         }else {
-            imgAirConditioner.setImageResource(R.drawable.icon_unchecked_box);
-            imgAirConditioner.setColorFilter(ContextCompat.getColor(this,
+            imgLeatherSeats.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.icon_unchecked_box));
+            imgLeatherSeats.setColorFilter(ContextCompat.getColor(this,
                     R.color.grey));
         }
 
-        if (centralLocking == "1") {
-            imgAirConditioner.setImageResource(R.drawable.icon_checked_box);
-            imgAirConditioner.setColorFilter(ContextCompat.getColor(this,
+        if (centralLocking.equals("1")) {
+            imgCentralLocking.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.icon_checked_box));
+            imgCentralLocking.setColorFilter(ContextCompat.getColor(this,
                     R.color.colorPrimary));
 
 
         }else {
-            imgAirConditioner.setImageResource(R.drawable.icon_unchecked_box);
-            imgAirConditioner.setColorFilter(ContextCompat.getColor(this,
+            imgCentralLocking.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.icon_unchecked_box));
+            imgCentralLocking.setColorFilter(ContextCompat.getColor(this,
                     R.color.grey));
         }
 
-        if (powerDoorLocks == "1") {
-            imgAirConditioner.setImageResource(R.drawable.icon_checked_box);
-            imgAirConditioner.setColorFilter(ContextCompat.getColor(this,
+        if (powerDoorLocks.equals("1")) {
+            imgPowerDoorLocks.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.icon_checked_box));
+            imgPowerDoorLocks.setColorFilter(ContextCompat.getColor(this,
                     R.color.colorPrimary));
 
 
         }else {
-            imgAirConditioner.setImageResource(R.drawable.icon_unchecked_box);
-            imgAirConditioner.setColorFilter(ContextCompat.getColor(this,
+            imgPowerDoorLocks.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.icon_unchecked_box));
+            imgPowerDoorLocks.setColorFilter(ContextCompat.getColor(this,
                     R.color.grey));
         }
 
-        if (brakeAssist == "1") {
-            imgAirConditioner.setImageResource(R.drawable.icon_checked_box);
-            imgAirConditioner.setColorFilter(ContextCompat.getColor(this,
+        if (brakeAssist.equals("1")) {
+            imgBrakeAssist.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.icon_checked_box));
+            imgBrakeAssist.setColorFilter(ContextCompat.getColor(this,
                     R.color.colorPrimary));
 
 
         }else {
-            imgAirConditioner.setImageResource(R.drawable.icon_unchecked_box);
-            imgAirConditioner.setColorFilter(ContextCompat.getColor(this,
+            imgBrakeAssist.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.icon_unchecked_box));
+            imgBrakeAssist.setColorFilter(ContextCompat.getColor(this,
                     R.color.grey));
         }
 
-        if (driverAirbag == "1") {
-            imgAirConditioner.setImageResource(R.drawable.icon_checked_box);
-            imgAirConditioner.setColorFilter(ContextCompat.getColor(this,
+        if (driverAirbag.equals("1")) {
+            imgDriverAirbag.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.icon_checked_box));
+            imgDriverAirbag.setColorFilter(ContextCompat.getColor(this,
                     R.color.colorPrimary));
 
 
         }else {
-            imgAirConditioner.setImageResource(R.drawable.icon_unchecked_box);
-            imgAirConditioner.setColorFilter(ContextCompat.getColor(this,
+            imgDriverAirbag.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.icon_unchecked_box));
+            imgDriverAirbag.setColorFilter(ContextCompat.getColor(this,
                     R.color.grey));
         }
 
-        if (passengerAirbag == "1") {
-            imgAirConditioner.setImageResource(R.drawable.icon_checked_box);
-            imgAirConditioner.setColorFilter(ContextCompat.getColor(this,
+        if (passengerAirbag.equals("1")) {
+            imgDriverAirbag.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.icon_checked_box));
+            imgDriverAirbag.setColorFilter(ContextCompat.getColor(this,
                     R.color.colorPrimary));
 
 
         }else {
-            imgAirConditioner.setImageResource(R.drawable.icon_unchecked_box);
-            imgAirConditioner.setColorFilter(ContextCompat.getColor(this,
+            imgDriverAirbag.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.icon_unchecked_box));
+            imgDriverAirbag.setColorFilter(ContextCompat.getColor(this,
                     R.color.grey));
         }
 
-        if (crashSensor == "1") {
-            imgAirConditioner.setImageResource(R.drawable.icon_checked_box);
-            imgAirConditioner.setColorFilter(ContextCompat.getColor(this,
+        if (crashSensor.equals("1")) {
+            imgCrashSensor.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.icon_checked_box));
+            imgCrashSensor.setColorFilter(ContextCompat.getColor(this,
                     R.color.colorPrimary));
 
 
         }else {
-            imgAirConditioner.setImageResource(R.drawable.icon_unchecked_box);
-            imgAirConditioner.setColorFilter(ContextCompat.getColor(this,
+            imgCrashSensor.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.icon_unchecked_box));
+            imgCrashSensor.setColorFilter(ContextCompat.getColor(this,
                     R.color.grey));
         }
 

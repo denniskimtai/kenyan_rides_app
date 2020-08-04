@@ -58,7 +58,8 @@
         android:layout_below="@+id/toolbar2"
         android:id="@+id/pullToRefresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginBottom="60dp">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cars_recycler_view"

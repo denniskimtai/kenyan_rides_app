@@ -431,8 +431,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
-                            android:src="@drawable/icon_checked_box"
-                            android:tint="@color/colorPrimary" />
+                            android:src="@drawable/icon_unchecked_box"
+                            android:tint="@color/grey" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -592,8 +592,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
-                            android:src="@drawable/icon_checked_box"
-                            android:tint="@color/colorPrimary" />
+                            android:src="@drawable/icon_unchecked_box"
+                            android:tint="@color/grey" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -638,8 +638,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
-                            android:src="@drawable/icon_checked_box"
-                            android:tint="@color/colorPrimary" />
+                            android:src="@drawable/icon_unchecked_box"
+                            android:tint="@color/grey" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -661,8 +661,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
-                            android:src="@drawable/icon_checked_box"
-                            android:tint="@color/colorPrimary" />
+                            android:src="@drawable/icon_unchecked_box"
+                            android:tint="@color/grey" />
 
                         <TextView
                             android:layout_width="wrap_content"
