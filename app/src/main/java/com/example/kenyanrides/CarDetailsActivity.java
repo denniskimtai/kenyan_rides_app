@@ -6,6 +6,7 @@ import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.viewpager.widget.ViewPager;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -271,9 +272,8 @@ public class CarDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Dialog dialog = new Dialog(CarDetailsActivity.this, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
-                dialog.setContentView(R.layout.activity_book_now);
-                dialog.show();
+                Intent intent = new Intent(CarDetailsActivity.this, BookNowActivity.class);
+                startActivity(intent);
 
 
             }

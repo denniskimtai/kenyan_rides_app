@@ -1,41 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white">
 
     <LinearLayout
-        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         android:orientation="vertical">
 
         <LinearLayout
-            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:orientation="horizontal">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dp"
                 android:src="@drawable/icon_book"
-                android:tint="@color/dark_grey"
-                android:layout_margin="10dp"/>
+                android:tint="@color/dark_grey" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dp"
                 android:text="BOOK NOW"
                 android:textColor="@color/dark_grey"
                 android:textSize="15dp"
-                android:layout_margin="10dp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
         </LinearLayout>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_margin="8dp"
+            android:background="@color/grey"/>
 
 
         <LinearLayout
@@ -44,68 +49,53 @@
             android:orientation="horizontal"
             android:weightSum="2">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_weight="1"
-            android:layout_margin="10dp"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textColorHint="@color/dark_grey"
-            >
-
-            <EditText
-                android:layout_weight="1"
-                android:textColor="@color/black"
-                android:paddingLeft="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Pickup Date"
-                android:textSize="12dp"
-                />
-
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_weight="1"
-                android:layout_margin="10dp"
+            <TextView
+                android:background="@drawable/input_shape"
+                android:id="@+id/pickupDate"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textColorHint="@color/dark_grey"
-                >
-
-                <EditText
-                    android:layout_weight="1"
-                    android:textColor="@color/black"
-                    android:paddingLeft="10dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Pickup Time"
-                    android:textSize="12dp"
-                    />
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:padding="15dp"
+                android:paddingLeft="10dp"
+                android:text="Pickup Date"
+                android:textColor="@color/black"
+                android:textSize="12dp" />
 
 
-            </com.google.android.material.textfield.TextInputLayout>
+            <TextView
+                android:background="@drawable/input_shape"
+                android:id="@+id/pickupTime"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:padding="15dp"
+                android:text="Pickup Time"
+                android:textColor="@color/black"
+                android:textSize="12dp" />
+
 
         </LinearLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_weight="1"
-            android:layout_margin="10dp"
+            android:background="@drawable/input_shape"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColorHint="@color/dark_grey"
-            >
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:textColorHint="@color/dark_grey">
 
             <EditText
-                android:layout_weight="1"
-                android:textColor="@color/black"
-                android:paddingLeft="10dp"
+                android:id="@+id/edit_text_vehicle_travel_destination"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:hint="Vehicle Travel Destination"
-                android:textSize="12dp"
-                />
+                android:paddingLeft="10dp"
+                android:textColor="@color/black"
+                android:textSize="12dp" />
 
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -116,68 +106,53 @@
             android:orientation="horizontal"
             android:weightSum="2">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_weight="1"
-                android:layout_margin="10dp"
+            <TextView
+                android:background="@drawable/input_shape"
+                android:id="@+id/returnDate"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textColorHint="@color/dark_grey"
-                >
-
-                <EditText
-                    android:layout_weight="1"
-                    android:textColor="@color/black"
-                    android:paddingLeft="10dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Return Date"
-                    android:textSize="12dp"
-                    />
-
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_weight="1"
                 android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:padding="15dp"
+                android:paddingLeft="10dp"
+                android:text="Return Date"
+                android:textColor="@color/black"
+                android:textSize="12dp" />
+
+
+            <TextView
+                android:background="@drawable/input_shape"
+                android:id="@+id/returnTime"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textColorHint="@color/dark_grey"
-                >
-
-                <EditText
-                    android:layout_weight="1"
-                    android:textColor="@color/black"
-                    android:paddingLeft="10dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Return Time"
-                    android:textSize="12dp"
-                    />
-
-
-            </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:padding="15dp"
+                android:text="Return Time"
+                android:textColor="@color/black"
+                android:textSize="12dp" />
 
         </LinearLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_weight="1"
-            android:layout_margin="10dp"
+            android:background="@drawable/input_shape"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColorHint="@color/dark_grey"
-            >
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:textColorHint="@color/dark_grey">
 
             <EditText
-                android:layout_weight="1"
-                android:textColor="@color/black"
-                android:paddingLeft="10dp"
+                android:id="@+id/edit_text_mpesa_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:hint="Mpesa Number Transacting(+254)"
-                android:textSize="12dp"
-                />
+                android:inputType="phone"
+                android:paddingLeft="10dp"
+                android:textColor="@color/black"
+                android:textSize="12dp" />
 
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -189,44 +164,44 @@
             android:weightSum="2">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_weight="1"
-                android:layout_margin="10dp"
+                android:background="@drawable/input_shape"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textColorHint="@color/dark_grey"
-                >
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:textColorHint="@color/dark_grey">
 
                 <EditText
-                    android:layout_weight="1"
-                    android:textColor="@color/black"
-                    android:paddingLeft="10dp"
+                    android:id="@+id/edit_text_pickup_location"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:hint="Pickup Location"
-                    android:textSize="12dp"
-                    />
+                    android:paddingLeft="10dp"
+                    android:textColor="@color/black"
+                    android:textSize="12dp" />
 
 
             </com.google.android.material.textfield.TextInputLayout>
 
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_weight="1"
-                android:layout_margin="10dp"
+                android:background="@drawable/input_shape"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textColorHint="@color/dark_grey"
-                >
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:textColorHint="@color/dark_grey">
 
                 <EditText
-                    android:layout_weight="1"
-                    android:textColor="@color/black"
-                    android:paddingLeft="10dp"
+                    android:id="@+id/edit_text_return_location"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:hint="Return Location"
-                    android:textSize="12dp"
-                    />
+                    android:paddingLeft="10dp"
+                    android:textColor="@color/black"
+                    android:textSize="12dp" />
 
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -234,15 +209,15 @@
         </LinearLayout>
 
         <Button
+            android:id="@+id/btnBookNow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="BOOK NOW"
-            android:padding="15dp"
-            android:textColor="@color/white"
-            android:textStyle="bold"
+            android:layout_margin="30dp"
             android:background="@drawable/buttom_background"
-            android:layout_margin="30dp"/>
-
+            android:padding="15dp"
+            android:text="BOOK NOW"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
 
 
     </LinearLayout>

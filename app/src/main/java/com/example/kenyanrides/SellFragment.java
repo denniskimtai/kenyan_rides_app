@@ -875,6 +875,7 @@ private class BackTask extends AsyncTask<Void, Void, String> {
         super.onPreExecute();
         dialog = new ProgressDialog(getActivity());
         dialog.setMessage("Loading...");
+        dialog.setCancelable(false);
         dialog.show();
     }
 
