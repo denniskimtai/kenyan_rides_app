@@ -16,6 +16,10 @@ public class SharedPrefManager {
     private static final String KEY_NATIONAL_ID = "id";
     private static final String KEY_MOBILE_NUMBER = "mobileumber";
     private static final String KEY_REG_DATE = "date";
+    private static final String KEY_dob = "dob";
+    private static final String KEY_address = "address";
+    private static final String KEY_city = "city";
+    private static final String KEY_country = "country";
 
     private static SharedPrefManager mInstance;
     private static Context mCtx;
@@ -44,6 +48,10 @@ public class SharedPrefManager {
         editor.putInt(KEY_NATIONAL_ID, user.getNational_id());
         editor.putString(KEY_MOBILE_NUMBER, user.getMobile_number());
         editor.putString(KEY_REG_DATE, user.getReg_date());
+        editor.putString(KEY_dob, user.getDob());
+        editor.putString(KEY_address, user.getAddress());
+        editor.putString(KEY_city, user.getCity());
+        editor.putString(KEY_country, user.getCountry());
 
         editor.apply();
     }
@@ -71,7 +79,11 @@ public class SharedPrefManager {
                 sharedPreferences.getString(KEY_SECOND_NAME, null),
                 sharedPreferences.getString(KEY_EMAIL, null),
                 sharedPreferences.getString(KEY_MOBILE_NUMBER, null),
-                sharedPreferences.getString(KEY_REG_DATE, null)
+                sharedPreferences.getString(KEY_REG_DATE, null),
+                sharedPreferences.getString(KEY_dob, null),
+                sharedPreferences.getString(KEY_address, null),
+                sharedPreferences.getString(KEY_city, null),
+                sharedPreferences.getString(KEY_country, null)
         );
     }
 

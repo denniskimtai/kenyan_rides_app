@@ -75,6 +75,7 @@ public class CarsAdapter extends RecyclerView.Adapter<CarsAdapter.MyViewHolder> 
 
                 //send car details to cardetails activity
 
+                intent.putExtra("vehicle_id", car.getId());
                 intent.putExtra("vehicle_title", car.getCarName());
                 intent.putExtra("vehicle_brand", car.getVehicleBrand());
                 intent.putExtra("vehicle_overview", car.getVehicleOverview());

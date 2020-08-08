@@ -6,6 +6,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -26,6 +27,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 import Model.AccessToken;
 import Model.STKPush;
@@ -56,6 +62,15 @@ public class BookNowActivity extends AppCompatActivity implements View.OnClickLi
     private EditText editTextVehicleTravelLocation, editTextMpesaNumber, editTextPickupLocation, editTextReturnLocation;
 
     private int mYear, mMonth, mDay, mHour, mMinute;
+
+    String vehicleTravelLocation;
+    String mpesaNumber;
+    String pickupLocation;
+    String returnLocation;
+    String pickUpDate;
+    String pickUpTime;
+    String returnDate;
+    String returnTime;
 
     private AlertDialog.Builder alertDialog;
 
@@ -139,6 +154,7 @@ public class BookNowActivity extends AppCompatActivity implements View.OnClickLi
                         public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
 
                             TxtPickupDate.setText(i2 + "/" + (i1 + 1) + "/" + i);
+
 
                         }
                     }, mYear, mMonth, mDay);
@@ -225,27 +241,55 @@ public class BookNowActivity extends AppCompatActivity implements View.OnClickLi
     private void BookCar() {
 
         //check if every field has been field
-        String vehicleTravelLocation = editTextVehicleTravelLocation.getText().toString();
+        vehicleTravelLocation = editTextVehicleTravelLocation.getText().toString();
         if(TextUtils.isEmpty(vehicleTravelLocation)){
             editTextVehicleTravelLocation.setError("Please enter your travel destination");
             return;
         }
 
-        String mpesaNumber = editTextMpesaNumber.getText().toString();
+        mpesaNumber = editTextMpesaNumber.getText().toString();
         if(TextUtils.isEmpty(mpesaNumber)){
             editTextMpesaNumber.setError("Please enter your Mpesa number that you will pay with");
             return;
         }
 
-        String pickupLocation = editTextPickupLocation.getText().toString();
+        pickupLocation = editTextPickupLocation.getText().toString();
         if(TextUtils.isEmpty(pickupLocation)){
             editTextPickupLocation.setError("Please enter a pickup location");
             return;
         }
 
-        String returnLocation = editTextReturnLocation.getText().toString();
+        returnLocation = editTextReturnLocation.getText().toString();
         if(TextUtils.isEmpty(returnLocation)){
             editTextReturnLocation.setError("Please enter a return location");
+            return;
+        }
+
+        pickUpDate = TxtPickupDate.getText().toString();
+
+        if (pickUpDate.equals("Pickup Date")){
+            TxtPickupDate.setError("Please select a date you'll pickup the vehicle");
+            return;
+        }
+
+        pickUpTime = TxtPickupTime.getText().toString();
+
+        if (pickUpTime.equals("Pickup Time")){
+            TxtPickupTime.setError("Please select a Time you'll pickup the vehicle");
+            return;
+        }
+
+        returnDate = TxtReturnDate.getText().toString();
+
+        if (returnDate.equals("Pickup Date")){
+            TxtReturnDate.setError("Please select a date you'll return the vehicle");
+            return;
+        }
+
+        returnTime = TxtReturnTime.getText().toString();
+
+        if (returnTime.equals("Pickup Date")){
+            TxtReturnTime.setError("Please select a time you'll return the vehicle");
             return;
         }
 
@@ -257,6 +301,7 @@ public class BookNowActivity extends AppCompatActivity implements View.OnClickLi
     public void performSTKPush(String phone_number,String amount) {
         mProgressDialog.setMessage("Processing your request");
         mProgressDialog.setTitle("Please Wait...");
+        mProgressDialog.setCancelable(false);
         mProgressDialog.setIndeterminate(true);
         mProgressDialog.show();
         String timestamp = Utils.getTimestamp();
@@ -284,11 +329,47 @@ public class BookNowActivity extends AppCompatActivity implements View.OnClickLi
                 try {
                     if (response.isSuccessful()) {
                         Toast.makeText(BookNowActivity.this, "post submitted to API. %s" + response.body(), Toast.LENGTH_SHORT).show();
+                        //show alert dialog
+                        alertDialog.setMessage("Please check your phone for a service fee payment of 10%");
+                        alertDialog.setCancelable(false);
+                        alertDialog.setPositiveButton("I have paid", new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                                //get vehicle id and user email from intent
+                                int vehicleId = getIntent().getIntExtra("vehicle_id", 0);
+                                String userEmail = getIntent().getStringExtra("user_email");
+                                int price_per_day = (int) (getIntent().getIntExtra("price_per_day", 0)/1.1);
+
+                                //verify transaction
+                                String type = "payment";
+
+                                BackgroundHelperClass backgroundHelperClass = new BackgroundHelperClass(BookNowActivity.this);
+
+                                backgroundHelperClass.execute(type,pickUpDate, pickUpTime, vehicleTravelLocation, returnDate, returnTime,
+                                        Utils.sanitizePhoneNumber(phone_number), pickupLocation, returnLocation, String.valueOf(vehicleId), userEmail, String.valueOf(price_per_day));
+
+
+                            }
+                        });
+
+                        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                return;
+
+                            }
+                        });
 
                     } else {
-                        Toast.makeText(BookNowActivity.this, "Response %s"+ response.errorBody(), Toast.LENGTH_SHORT).show();
+                        //if stk push was not successful
+                        Toast.makeText(BookNowActivity.this, "Response %s" + response.errorBody().string(), Toast.LENGTH_SHORT).show();
+                        alertDialog.setTitle("Error");
+                        alertDialog.setMessage("There seems to be an issue getting your payment. Please try again");
 
                     }
+                    alertDialog.show();
                 } catch (Exception e) {
                     Toast.makeText(BookNowActivity.this, "here" + e.getMessage(), Toast.LENGTH_SHORT).show();
                     e.printStackTrace();

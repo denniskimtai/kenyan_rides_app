@@ -62,6 +62,8 @@ public class BackgroundHelperClass extends AsyncTask<String, Void, String> {
 
         String update_user_data = "https://kenyanrides.com/android/update_user_data.php";
 
+        String confirm_payment_url = "https://kenyanrides.com/android/verify_payment.php";
+
 
         //login
         if (type.equals("login")) {
@@ -249,6 +251,75 @@ public class BackgroundHelperClass extends AsyncTask<String, Void, String> {
                 e.printStackTrace();
             }
 
+        } else if (type.equals("payment")){
+
+            try {
+
+                //variables
+                String pickupDate = params[1];
+                String pickupTime = params[2];
+                String vehicleTravelDestination = params[3];
+                String returnDate = params[4];
+                String returnTime = params[5];
+                String phoneNumber = params[6];
+                String pickupLocation = params[7];
+                String returnLocation = params[8];
+                String vehicle_id = params[9];
+                String userEmail = params[10];
+                String price_per_day = params[10];
+
+                URL url = new URL(confirm_payment_url);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+
+                String postData = URLEncoder.encode("pickupDate", "UTF-8") + "=" + URLEncoder.encode(pickupDate, "UTF-8") + "&"
+                        + URLEncoder.encode("pickupTime", "UTF-8") + "=" + URLEncoder.encode(pickupTime, "UTF-8") + "&"
+                        + URLEncoder.encode("vehicleTravelDestination", "UTF-8") + "=" + URLEncoder.encode(vehicleTravelDestination, "UTF-8") + "&"
+                        + URLEncoder.encode("returnDate", "UTF-8") + "=" + URLEncoder.encode(returnDate, "UTF-8") + "&"
+                        + URLEncoder.encode("returnTime", "UTF-8") + "=" + URLEncoder.encode(returnTime, "UTF-8") + "&"
+                        + URLEncoder.encode("phoneNumber", "UTF-8") + "=" + URLEncoder.encode(phoneNumber, "UTF-8") + "&"
+                        + URLEncoder.encode("pickupLocation", "UTF-8") + "=" + URLEncoder.encode(pickupLocation, "UTF-8") + "&"
+                        + URLEncoder.encode("returnLocation", "UTF-8") + "=" + URLEncoder.encode(returnLocation, "UTF-8") + "&"
+                        + URLEncoder.encode("vehicle_id", "UTF-8") + "=" + URLEncoder.encode(vehicle_id, "UTF-8") + "&"
+                        + URLEncoder.encode("userEmail", "UTF-8") + "=" + URLEncoder.encode(userEmail, "UTF-8") + "&"
+                        + URLEncoder.encode("price_per_day", "UTF-8") + "=" + URLEncoder.encode(price_per_day, "UTF-8");
+
+                bufferedWriter.write(postData);
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                outputStream.close();
+
+                //read post request
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+                String result = "";
+                String line = "";
+
+                while ((line = bufferedReader.readLine()) != null) {
+
+                    result += line;
+
+                }
+
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+
+                //return result
+                return result;
+
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         }
 
 
@@ -338,6 +409,20 @@ public class BackgroundHelperClass extends AsyncTask<String, Void, String> {
 
                         break;
 
+                    case "payment verified":
+                        alertDialogBuilder.setTitle("Verified!");
+                        alertDialogBuilder.setMessage("Payment is verified. Booking request has been sent to vehicle owner");
+                        alertDialogBuilder.show();
+
+                        break;
+
+                    case "payment unverified":
+                        alertDialogBuilder.setTitle("Failed!");
+                        alertDialogBuilder.setMessage("We could not verify you payment. Please try again");
+                        alertDialogBuilder.show();
+
+                        break;
+
                     default:
                         try {
                             //converting response to json object
@@ -358,7 +443,11 @@ public class BackgroundHelperClass extends AsyncTask<String, Void, String> {
                                         userJson.getString("second_name"),
                                         userJson.getString("email"),
                                         userJson.getString("mobile_number"),
-                                        userJson.getString("reg_date")
+                                        userJson.getString("reg_date"),
+                                        userJson.getString("dob"),
+                                        userJson.getString("Address"),
+                                        userJson.getString("city"),
+                                        userJson.getString("country")
 
                                 );
 

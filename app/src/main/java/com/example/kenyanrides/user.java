@@ -3,9 +3,19 @@ package com.example.kenyanrides;
 public class user {
 
     private int id, national_id;
-    private String first_name, second_name, email, mobile_number, reg_date;
+    private String first_name;
+    private String second_name;
+    private String email;
+    private String mobile_number;
+    private String reg_date;
+    private String dob;
+    private String address;
+    private String city;
 
-    public user(int id, int national_id, String first_name, String second_name, String email, String mobile_number, String reg_date) {
+    private String country;
+
+    public user(int id, int national_id, String first_name, String second_name, String email,
+                String mobile_number, String reg_date, String dob, String address, String city, String country) {
         this.id = id;
         this.national_id = national_id;
         this.first_name = first_name;
@@ -13,6 +23,10 @@ public class user {
         this.second_name = second_name;
         this.mobile_number = mobile_number;
         this.reg_date = reg_date;
+        this.dob = dob;
+        this.address = address;
+        this.city = city;
+        this.country = country;
     }
 
     public int getId() {
@@ -41,6 +55,38 @@ public class user {
 
     public String getReg_date() {
         return reg_date;
+    }
+
+    public String getDob() {
+        return dob;
+    }
+
+    public void setDob(String dob) {
+        this.dob = dob;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 }
 

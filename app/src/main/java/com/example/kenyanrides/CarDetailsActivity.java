@@ -69,6 +69,7 @@ public class CarDetailsActivity extends AppCompatActivity {
         imgCrashSensor = findViewById(R.id.img_crash_sensor);
 
         //get text from intent
+        int vehicle_id = getIntent().getIntExtra("vehicle_id", 0);
         String vehicle_title = getIntent().getStringExtra("vehicle_title");
         String vehicle_overview = getIntent().getStringExtra("vehicle_overview");
         int price_per_day = getIntent().getIntExtra("price_per_day", 0);
@@ -271,8 +272,15 @@ public class CarDetailsActivity extends AppCompatActivity {
         btnBookNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //getting the current user
+                user user = SharedPrefManager.getInstance(CarDetailsActivity.this).getUser();
 
                 Intent intent = new Intent(CarDetailsActivity.this, BookNowActivity.class);
+
+                intent.putExtra("vehicle_id", vehicle_id);
+                intent.putExtra("user_email", user.getEmail());
+                intent.putExtra("price_per_day", price_per_day);
+
                 startActivity(intent);
 
 

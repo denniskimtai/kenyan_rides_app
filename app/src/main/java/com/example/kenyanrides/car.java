@@ -5,6 +5,7 @@ public class car {
     public String image;
     public String carName;
     public int carPrice;
+    public int id;
 
     public String vehicleBrand;
     public String vehicleOverview;
@@ -36,7 +37,7 @@ public class car {
     public String booked;
 
 
-    public car(String image, String carName, int carPrice, String vehicleBrand, String vehicleOverview, String poweredBy, String location, String modelYear,
+    public car(String image, String carName, int carPrice, int id, String vehicleBrand, String vehicleOverview, String poweredBy, String location, String modelYear,
                String seatingCapacity, String driverStatus, String image2, String image3, String image4, String image5, String airConditioner,
                String powerDoorLocks, String antiLockBrakingSystem, String brakeAssist, String powerSteering, String driverAirbag, String passengerAirbag,
                String powerWindows, String cdPlayer, String centralLocking, String crashSensor, String leatherSeats, String ownerId, String regDate, String booked ){
@@ -44,6 +45,7 @@ public class car {
         this.image =image;
         this.carName = carName;
         this.carPrice =carPrice;
+        this.id = id;
 
         this.vehicleBrand = vehicleBrand;
         this.vehicleOverview = vehicleOverview;
@@ -96,6 +98,14 @@ public class car {
 
     public void setCarPrice(int carPrice) {
         this.carPrice = carPrice;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getVehicleBrand() {

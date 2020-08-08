@@ -138,6 +138,7 @@ public class HomeFragment extends Fragment {
 
 
                         //
+                        int id = carsObject.getInt("id");
                         String vehicleBrand = carsObject.getString("VehiclesBrand");
                         String vehicleOverview = carsObject.getString("VehiclesOverview");
                         String poweredBy = carsObject.getString("poweredby");
@@ -165,7 +166,8 @@ public class HomeFragment extends Fragment {
                         String regDate = carsObject.getString("RegDate");
                         String booked = carsObject.getString("booked");
 
-                        car car = new car(vehicleImage, vehicleTitle, pricePerDay, vehicleBrand,
+
+                        car car = new car(vehicleImage, vehicleTitle, pricePerDay, id, vehicleBrand,
                                 vehicleOverview, poweredBy, fuelType, modelYear, seatingCapacity,
                                 driverStatus, vehicleImage2, vehicleImage3, vehicleImage4, vehicleImage5,
                                 airConditioner, powerDoorLocks, antiLockBrakingSystem, brakeAssist, powerSteering,

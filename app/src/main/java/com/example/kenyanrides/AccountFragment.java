@@ -75,6 +75,10 @@ public class AccountFragment extends Fragment {
         editTextSecondName.setText(user.getSecond_name());
         editTextMobileNumber.setText(user.getMobile_number());
         editTextEmail.setText(user.getEmail());
+        editTextDateOfBirth.setText(user.getDob());
+        editTextCity.setText(user.getCity());
+        editTextCountry.setText(user.getCountry());
+        editTextAddress.setText(user.getAddress());
         
         userId = String.valueOf(user.getId());
 
@@ -127,7 +131,7 @@ public class AccountFragment extends Fragment {
                                     alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
-                                            editTextDateOfBirth.setText("Date of Birth");
+                                            editTextDateOfBirth.setText(user.getDob());
                                         }
                                     });
                                     alertDialogBuilder.show();
