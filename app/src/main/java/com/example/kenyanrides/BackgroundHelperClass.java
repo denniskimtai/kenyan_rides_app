@@ -266,7 +266,9 @@ public class BackgroundHelperClass extends AsyncTask<String, Void, String> {
                 String returnLocation = params[8];
                 String vehicle_id = params[9];
                 String userEmail = params[10];
-                String price_per_day = params[10];
+                String price_per_day = params[11];
+                String vehicle_owner_email = params[12];
+                String vehicle_title = params[13];
 
                 URL url = new URL(confirm_payment_url);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
@@ -287,7 +289,9 @@ public class BackgroundHelperClass extends AsyncTask<String, Void, String> {
                         + URLEncoder.encode("returnLocation", "UTF-8") + "=" + URLEncoder.encode(returnLocation, "UTF-8") + "&"
                         + URLEncoder.encode("vehicle_id", "UTF-8") + "=" + URLEncoder.encode(vehicle_id, "UTF-8") + "&"
                         + URLEncoder.encode("userEmail", "UTF-8") + "=" + URLEncoder.encode(userEmail, "UTF-8") + "&"
-                        + URLEncoder.encode("price_per_day", "UTF-8") + "=" + URLEncoder.encode(price_per_day, "UTF-8");
+                        + URLEncoder.encode("price_per_day", "UTF-8") + "=" + URLEncoder.encode(price_per_day, "UTF-8") + "&"
+                        + URLEncoder.encode("vehicle_owner_email", "UTF-8") + "=" + URLEncoder.encode(vehicle_owner_email, "UTF-8") + "&"
+                        + URLEncoder.encode("vehicle_title", "UTF-8") + "=" + URLEncoder.encode(vehicle_title, "UTF-8");
 
                 bufferedWriter.write(postData);
                 bufferedWriter.flush();
@@ -410,8 +414,16 @@ public class BackgroundHelperClass extends AsyncTask<String, Void, String> {
                         break;
 
                     case "payment verified":
-                        alertDialogBuilder.setTitle("Verified!");
-                        alertDialogBuilder.setMessage("Payment is verified. Booking request has been sent to vehicle owner");
+
+                    alertDialogBuilder.setTitle("Verified!");
+                        alertDialogBuilder.setMessage("Payment is verified. Booking request has been sent to the vehicle owner");
+                        alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+
+                            }
+                        });
                         alertDialogBuilder.show();
 
                         break;
@@ -419,6 +431,12 @@ public class BackgroundHelperClass extends AsyncTask<String, Void, String> {
                     case "payment unverified":
                         alertDialogBuilder.setTitle("Failed!");
                         alertDialogBuilder.setMessage("We could not verify you payment. Please try again");
+                        alertDialogBuilder.show();
+
+                        break;
+
+                    case "Encountered an error while sending:":
+                        alertDialogBuilder.setMessage("sms error! Vehicle owner not notified");
                         alertDialogBuilder.show();
 
                         break;

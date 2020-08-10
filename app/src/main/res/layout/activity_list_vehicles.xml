@@ -23,14 +23,13 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/vehiclesListRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="0 results found"
-        android:textColor="@color/black"
-        android:gravity="center_horizontal"
-        android:layout_margin="20dp"
-        android:textStyle="bold"
-        android:textSize="20dp"/>
+        android:layout_height="wrap_content" />
+
+
+
 
 </LinearLayout>
+

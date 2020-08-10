@@ -340,7 +340,10 @@ public class BookNowActivity extends AppCompatActivity implements View.OnClickLi
                                 //get vehicle id and user email from intent
                                 int vehicleId = getIntent().getIntExtra("vehicle_id", 0);
                                 String userEmail = getIntent().getStringExtra("user_email");
+                                String vehicle_owner_email = getIntent().getStringExtra("vehicle_owner_email");
+                                String vehicle_title = getIntent().getStringExtra("vehicle_title");
                                 int price_per_day = (int) (getIntent().getIntExtra("price_per_day", 0)/1.1);
+
 
                                 //verify transaction
                                 String type = "payment";
@@ -348,7 +351,8 @@ public class BookNowActivity extends AppCompatActivity implements View.OnClickLi
                                 BackgroundHelperClass backgroundHelperClass = new BackgroundHelperClass(BookNowActivity.this);
 
                                 backgroundHelperClass.execute(type,pickUpDate, pickUpTime, vehicleTravelLocation, returnDate, returnTime,
-                                        Utils.sanitizePhoneNumber(phone_number), pickupLocation, returnLocation, String.valueOf(vehicleId), userEmail, String.valueOf(price_per_day));
+                                        Utils.sanitizePhoneNumber(phone_number), pickupLocation, returnLocation, String.valueOf(vehicleId), userEmail, String.valueOf(price_per_day),
+                                        vehicle_owner_email, vehicle_title);
 
 
                             }

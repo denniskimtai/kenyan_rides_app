@@ -8,9 +8,12 @@ import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -44,6 +47,8 @@ public class HomeFragment extends Fragment {
 
     private ProgressDialog progressDialog;
 
+    private EditText editTextSearch;
+
     private static final String vehicles_url = "https://kenyanrides.com/android/fetch_api.php";
 
 
@@ -51,6 +56,26 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View myView = inflater.inflate(R.layout.fragment_home, null);
+
+        editTextSearch = myView.findViewById(R.id.searchBar);
+
+        editTextSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                filter(editable.toString());
+
+            }
+        });
 
         recyclerView = myView.findViewById(R.id.cars_recycler_view);
 
@@ -83,6 +108,23 @@ public class HomeFragment extends Fragment {
 
         return myView;
 
+
+    }
+
+    private void filter(String searchText){
+
+        ArrayList<car> filteredList = new ArrayList<>();
+
+        for(car item : carList){
+
+            if (item.getCarName().toLowerCase().contains(searchText.toLowerCase())){
+
+                filteredList.add(item);
+
+            }
+
+        }
+        carsAdapter.filteredList(filteredList);
 
     }
 

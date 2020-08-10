@@ -280,7 +280,8 @@ public class CarDetailsActivity extends AppCompatActivity {
                 intent.putExtra("vehicle_id", vehicle_id);
                 intent.putExtra("user_email", user.getEmail());
                 intent.putExtra("price_per_day", price_per_day);
-
+                intent.putExtra("vehicle_owner_email", owner_id);
+                intent.putExtra("vehicle_title", vehicle_title);
                 startActivity(intent);
 
 

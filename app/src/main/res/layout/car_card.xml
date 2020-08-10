@@ -32,15 +32,7 @@
                 android:scaleType="fitXY"
                 android:src="@drawable/car" />
 
-                <ImageView
-                    android:id="@+id/imageview_favourite"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_margin="8dp"
-                    android:src="@drawable/icon_like"
-                    android:tint="@color/grey"
-                    android:layout_alignParentRight="true" />
+
 
             </RelativeLayout>
 

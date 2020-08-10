@@ -13,18 +13,14 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.material.textfield.TextInputLayout;
-
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 public class AccountFragment extends Fragment {
 
@@ -90,7 +86,7 @@ public class AccountFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(getActivity(), ProfileSettings.class);
+                Intent intent = new Intent(getActivity(), ListVehiclesActivity.class);
                 startActivity(intent);
 
             }
@@ -100,7 +96,7 @@ public class AccountFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(getActivity(), ProfileSettings.class);
+                Intent intent = new Intent(getActivity(), BookingsActivity.class);
                 startActivity(intent);
 
             }
