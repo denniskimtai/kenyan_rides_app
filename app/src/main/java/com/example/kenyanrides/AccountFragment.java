@@ -21,13 +21,14 @@ import androidx.fragment.app.Fragment;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class AccountFragment extends Fragment {
 
     CardView cardListVehicles, cardBookings;
     EditText editTextFirstName, editTextSecondName, editTextId, editTextMobileNumber, editTextEmail, editTextCity, editTextCountry, editTextAddress;
 
-    TextView txtSignOut, editTextDateOfBirth;
+    TextView txtSignOut, editTextDateOfBirth, txtViewTotalBookings ;
     
     Button btnSaveChanges;
 
@@ -36,6 +37,8 @@ public class AccountFragment extends Fragment {
     private int mYear, mMonth, mDay;
 
     private String dateOfBirth, userId;
+
+    private List<VehicleBookings> vehicleBookingsList;
 
 
     @Nullable
@@ -53,7 +56,7 @@ public class AccountFragment extends Fragment {
         editTextDateOfBirth = myview.findViewById(R.id.edtxt_date_of_birth);
         editTextCity =myview.findViewById(R.id.edtxt_city);
         editTextCountry =myview.findViewById(R.id.edtxt_country);
-        editTextAddress =myview.findViewById(R.id.edtxt_address);
+        editTextAddress = myview.findViewById(R.id.edtxt_address);
 
         txtSignOut = myview.findViewById(R.id.txt_sign_out);
         
@@ -75,7 +78,7 @@ public class AccountFragment extends Fragment {
         editTextCity.setText(user.getCity());
         editTextCountry.setText(user.getCountry());
         editTextAddress.setText(user.getAddress());
-        
+
         userId = String.valueOf(user.getId());
 
         cardListVehicles = myview.findViewById(R.id.card_list_vehicles);
@@ -97,6 +100,7 @@ public class AccountFragment extends Fragment {
             public void onClick(View view) {
 
                 Intent intent = new Intent(getActivity(), BookingsActivity.class);
+                intent.putExtra("user_email",user.getEmail());
                 startActivity(intent);
 
             }

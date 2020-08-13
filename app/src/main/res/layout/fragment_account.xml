@@ -52,15 +52,13 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <TextView
+                    <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="0"
-                        android:textSize="30dp"
-                        android:textStyle="bold"
-                        android:textColor="@color/black"
+                        android:src="@drawable/icon_list"
+                        android:tint="@color/dark_grey"
                         android:gravity="center_horizontal"
-                        android:layout_margin="15dp"/>
+                        android:layout_margin="20dp"/>
 
                     <TextView
                         android:layout_width="match_parent"
@@ -95,15 +93,13 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <TextView
+                    <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="0"
-                        android:textSize="30dp"
-                        android:textStyle="bold"
-                        android:textColor="@color/black"
+                        android:src="@drawable/reg_year_icon"
+                        android:tint="@color/dark_grey"
                         android:gravity="center_horizontal"
-                        android:layout_margin="15dp"/>
+                        android:layout_margin="20dp"/>
 
                     <TextView
                         android:layout_width="match_parent"

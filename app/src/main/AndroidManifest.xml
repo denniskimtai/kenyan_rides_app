@@ -15,9 +15,12 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Design.NoActionBar"
+        android:theme="@style/Theme.Design.Light.NoActionBar"
         tools:replace="android:icon">
-        <activity android:name=".BookingsActivity"></activity>
+        <activity android:name=".FullscreenViewpagerActivity"></activity>
+        <activity android:name=".ClientImageUploadActivity" />
+        <activity android:name=".EditVehicleActivity" />
+        <activity android:name=".BookingsActivity" />
         <activity android:name=".BookNowActivity" />
         <activity android:name=".CarDetailsActivity" />
         <activity android:name=".ForgotPasswordActivity" />

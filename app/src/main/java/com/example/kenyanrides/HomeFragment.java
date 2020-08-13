@@ -14,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -89,9 +88,6 @@ public class HomeFragment extends Fragment {
 
         alertDialogBuilder = new AlertDialog.Builder(getActivity());
 
-        progressDialog.setMessage("Loading...");
-        progressDialog.setCancelable(false);
-        progressDialog.show();
 
         prepareCars();
 
@@ -99,6 +95,7 @@ public class HomeFragment extends Fragment {
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                carList.clear();
                 prepareCars();
                 pullToRefresh.setRefreshing(false);
             }
@@ -137,6 +134,10 @@ public class HomeFragment extends Fragment {
     }
 
     private void prepareCars() {
+
+        progressDialog.setMessage("Loading...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
 
         //check if network is connected
         if (!isNetworkAvailable()){

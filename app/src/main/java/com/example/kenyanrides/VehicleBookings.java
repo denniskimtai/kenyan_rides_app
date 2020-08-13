@@ -6,17 +6,24 @@ public class VehicleBookings {
     private String fromDate;
     private String toDate;
     private String travelDestination;
+    private String vehicleStatus;
     private int priceDue;
-    private int vehicleImage;
+    private String vehicleImage;
+    private int numberOfBookedVehicles;
+    private int id;
 
 
-    public VehicleBookings(String vehicleName, String fromDate, String toDate, String travelDestination, int priceDue, int vehicleImage) {
+    public VehicleBookings(String vehicleName, String fromDate, String toDate, String travelDestination, int priceDue, String vehicleImage,
+                           String vehicleStatus, int numberOfBookedVehicles, int id) {
         this.vehicleName = vehicleName;
         this.fromDate = fromDate;
         this.toDate = toDate;
         this.travelDestination = travelDestination;
         this.vehicleImage = vehicleImage;
         this.priceDue = priceDue;
+        this.vehicleStatus = vehicleStatus;
+        this.numberOfBookedVehicles = numberOfBookedVehicles;
+        this.id = id;
     }
 
     public String getVehicleName() {
@@ -51,11 +58,11 @@ public class VehicleBookings {
         this.travelDestination = travelDestination;
     }
 
-    public int getVehicleImage() {
+    public String getVehicleImage() {
         return vehicleImage;
     }
 
-    public void setVehicleImage(int vehicleImage) {
+    public void setVehicleImage(String vehicleImage) {
         this.vehicleImage = vehicleImage;
     }
 
@@ -65,5 +72,29 @@ public class VehicleBookings {
 
     public void setPriceDue(int priceDue) {
         this.priceDue = priceDue;
+    }
+
+    public String getVehicleStatus() {
+        return vehicleStatus;
+    }
+
+    public void setVehicleStatus(String vehicleStatus) {
+        this.vehicleStatus = vehicleStatus;
+    }
+
+    public int getNumberOfBookedVehicles() {
+        return numberOfBookedVehicles;
+    }
+
+    public void setNumberOfBookedVehicles(int numberOfBookedVehicles) {
+        this.numberOfBookedVehicles = numberOfBookedVehicles;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

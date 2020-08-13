@@ -1,57 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:tag="cards main container">
 
     <androidx.cardview.widget.CardView
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-
-        android:id="@+id/card_view"
         xmlns:card_view="https://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view"
         android:layout_width="match_parent"
+
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
         card_view:cardBackgroundColor="@color/white"
         card_view:cardCornerRadius="10dp"
         card_view:cardElevation="5dp"
         card_view:cardUseCompatPadding="true">
 
         <LinearLayout
-            android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/white"
             android:orientation="vertical"
-            android:weightSum="2"
-            >
+            android:weightSum="2">
 
             <ImageView
                 android:id="@+id/bookingsImageView"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:src="@drawable/car"
-                android:scaleType="fitXY"/>
+                android:scaleType="fitXY"
+                android:src="@drawable/car" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="2"
-                android:paddingBottom="10dp"
                 android:orientation="vertical"
-                >
-
-                <TextView
-                    android:id="@+id/textViewCarName"
-                    android:layout_width="wrap_content"
-                    android:textColor="@color/black"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:text="Car Name"
-                    android:textAppearance="?android:attr/textAppearanceLarge"/>
+                android:paddingBottom="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -59,53 +46,96 @@
                     android:orientation="horizontal"
                     android:weightSum="2">
 
-                <TextView
-                    android:textStyle="bold"
-                    android:textColor="@color/dark_grey"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:text="From Date: "
-                    android:textAppearance="?android:attr/textAppearanceMedium"/>
+                    <TextView
+                        android:id="@+id/textViewCarName"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:text="Car Name"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                        android:textColor="@color/dark_grey"
+                        android:textStyle="bold" />
 
                     <TextView
+                        android:textSize="12dp"
+                        android:id="@+id/textViewStatus"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1"
+                        android:text="In progress"
+                        android:textAlignment="textStart"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/green" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:text="From Date: "
+                        android:textSize="12dp"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/dark_grey"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:text="To Date"
+                        android:textSize="12dp"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/dark_grey"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <TextView
+                        android:textSize="15dp"
                         android:id="@+id/textViewFromDate"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="10dp"
-                        android:text="9/8/2020"
-                        android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
+                        android:layout_weight="1"
+                        android:text="9/8/2020 "
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="#ACA8A7" />
 
                     <TextView
-                        android:textStyle="bold"
-                        android:textColor="@color/dark_grey"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="10dp"
-                        android:text="To Date: "
-                        android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-                    <TextView
-                        android:textColor="@color/dark_grey"
+                        android:textSize="15dp"
                         android:id="@+id/textViewToDate"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="10dp"
+                        android:layout_weight="1"
                         android:text="9/8/2020"
-                        android:textAppearance="?android:attr/textAppearanceMedium"/>
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="#ACA8A7" />
 
                 </LinearLayout>
 
@@ -116,24 +146,28 @@
                     android:weightSum="2">
 
                     <TextView
-                        android:textStyle="bold"
-                        android:textColor="@color/dark_grey"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="10dp"
+                        android:layout_weight="1"
                         android:text="Price Due: "
-                        android:textAppearance="?android:attr/textAppearanceMedium"/>
+                        android:textSize="12dp"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/dark_grey"
+                        android:textStyle="bold" />
 
                     <TextView
-                        android:textColor="@color/dark_grey"
+                        android:textSize="15dp"
                         android:id="@+id/textViewPriceDue"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="10dp"
+                        android:layout_weight="1"
                         android:text="1000/day"
-                        android:textAppearance="?android:attr/textAppearanceMedium"/>
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="#ACA8A7" />
 
                 </LinearLayout>
 
@@ -144,27 +178,38 @@
                     android:weightSum="2">
 
                     <TextView
-                        android:textStyle="bold"
-                        android:textColor="@color/dark_grey"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="10dp"
+                        android:textSize="12dp"
                         android:text="Travel Destination: "
-                        android:textAppearance="?android:attr/textAppearanceMedium"/>
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/dark_grey"
+                        android:textStyle="bold" />
 
                     <TextView
-                        android:textColor="@color/dark_grey"
+                        android:textSize="15dp"
                         android:id="@+id/textViewTravelDestination"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="10dp"
                         android:text="The vehicles travel destibation"
-                        android:textAppearance="?android:attr/textAppearanceMedium"/>
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="#ACA8A7" />
 
                 </LinearLayout>
 
+                <TextView
+                    android:id="@+id/textViewDelivered"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rectangle_outline"
+                    android:text="Mark as delivered"
+                    android:layout_margin="10dp"
+                    android:padding="5dp"
+                    android:textColor="@color/green"/>
 
 
             </LinearLayout>

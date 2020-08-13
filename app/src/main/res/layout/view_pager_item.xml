@@ -4,12 +4,12 @@
     android:layout_height="fill_parent"
     android:padding="1dip" >
 
-    <ImageView
-        android:id="@+id/image"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:layout_gravity="center"
-        android:src="@drawable/car"
-        android:scaleType="fitXY" />
+  <ImageView
+      android:id="@+id/image"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:adjustViewBounds="true"
+      android:layout_gravity="center"
+      android:src="@drawable/car"
+      android:scaleType="fitXY" />
 </FrameLayout>

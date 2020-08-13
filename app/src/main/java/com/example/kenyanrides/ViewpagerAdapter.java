@@ -1,12 +1,14 @@
 package com.example.kenyanrides;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -54,6 +56,22 @@ public class ViewpagerAdapter extends PagerAdapter {
         Glide.with(context).load(images.get(position)).into(imageView);
 
         container.addView(imageLayout, 0);
+
+        imageLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), FullscreenViewpagerActivity.class);
+
+                intent.putExtra("Image1", images.get(0));
+                intent.putExtra("Image2", images.get(1));
+                intent.putExtra("Image3", images.get(2));
+                intent.putExtra("Image4", images.get(3));
+                intent.putExtra("Image5", images.get(4));
+                intent.putExtra("clicked_position", position);
+
+                view.getContext().startActivity(intent);
+            }
+        });
 
         return imageLayout;
     }
