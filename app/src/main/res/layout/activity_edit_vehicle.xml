@@ -15,16 +15,51 @@
             android:id="@+id/toolbar2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
             android:background="@color/colorPrimaryDark">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="Edit Vehicle"
                 android:textColor="@color/white"
-                android:textSize="20dp" />
+                android:textSize="15dp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:weightSum="2"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/txtViewVehicleStatus"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="Online"
+                        android:textColor="@color/white"
+                        android:textSize="12dp"
+                        android:gravity="right"/>
+
+                <Switch
+                    android:id="@+id/switchVehicleStatus"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:layout_marginRight="10dp"
+                    android:checked="true"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
 
         </androidx.appcompat.widget.Toolbar>
 
@@ -292,50 +327,33 @@
             android:layout_marginBottom="10dp"
             android:background="@color/dark_grey" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="Car Images"
-            android:textColor="#6E6E6D"
-            android:textSize="12dp"
-            android:textStyle="bold" />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
-            android:background="@drawable/input_shape"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:weightSum="3">
+
+            <ImageView
+                android:id="@+id/image1_file_path"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_weight="2"
+                android:src="@drawable/mazda"/>
 
             <TextView
                 android:id="@+id/image1"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="10dp"
-                android:text="Choose file"
+                android:text="Change Image"
+                android:background="@drawable/input_shape"
                 android:textColor="@color/black"
                 android:textSize="12dp"
                 android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@color/dark_grey" />
-
-            <TextView
-                android:id="@+id/image1_file_path"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:padding="10dp"
-                android:text="No file choosen"
-                android:textColor="@color/dark_grey"
-                android:textSize="12dp" />
 
 
         </LinearLayout>
@@ -346,35 +364,27 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
-            android:background="@drawable/input_shape"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:weightSum="3">
+
+            <ImageView
+                android:id="@+id/image2_file_path"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_weight="2"
+                android:src="@drawable/mazda"/>
 
             <TextView
                 android:id="@+id/image2"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="10dp"
-                android:text="Choose file"
+                android:text="Change Image"
+                android:background="@drawable/input_shape"
                 android:textColor="@color/black"
                 android:textSize="12dp"
                 android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@color/dark_grey" />
-
-            <TextView
-                android:id="@+id/image2_file_path"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:padding="10dp"
-                android:text="No file choosen"
-                android:textColor="@color/dark_grey"
-                android:textSize="12dp" />
 
 
         </LinearLayout>
@@ -385,38 +395,61 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
-            android:background="@drawable/input_shape"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:weightSum="3">
+
+            <ImageView
+                android:id="@+id/image3_file_path"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_weight="2"
+                android:src="@drawable/mazda"/>
 
             <TextView
                 android:id="@+id/image3"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="10dp"
-                android:text="Choose file"
+                android:text="Change Image"
+                android:background="@drawable/input_shape"
                 android:textColor="@color/black"
                 android:textSize="12dp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@color/dark_grey" />
-
-            <TextView
-                android:id="@+id/image3_file_path"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:padding="10dp"
-                android:text="No file choosen"
-                android:textColor="@color/dark_grey"
-                android:textSize="12dp" />
-
 
         </LinearLayout>
+
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="vertical"
+        android:weightSum="3">
+
+        <ImageView
+            android:id="@+id/image4_file_path"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_weight="2"
+            android:src="@drawable/mazda"/>
+
+        <TextView
+            android:id="@+id/image4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:text="Change Image"
+            android:background="@drawable/input_shape"
+            android:textColor="@color/black"
+            android:textSize="12dp"
+            android:textStyle="bold" />
+
+
+    </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -424,75 +457,27 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
-            android:background="@drawable/input_shape"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:weightSum="3">
 
-            <TextView
-                android:id="@+id/image4"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:padding="10dp"
-                android:text="Choose file"
-                android:textColor="@color/black"
-                android:textSize="12dp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@color/dark_grey" />
-
-            <TextView
-                android:id="@+id/image4_file_path"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+            <ImageView
+                android:id="@+id/image5_file_path"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
                 android:layout_weight="2"
-                android:padding="10dp"
-                android:text="No file choosen"
-                android:textColor="@color/dark_grey"
-                android:textSize="12dp" />
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/input_shape"
-            android:orientation="horizontal"
-            android:weightSum="3">
+                android:src="@drawable/mazda"/>
 
             <TextView
                 android:id="@+id/image5"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="10dp"
-                android:text="Choose file"
+                android:text="Change Image"
+                android:background="@drawable/input_shape"
                 android:textColor="@color/black"
                 android:textSize="12dp"
                 android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@color/dark_grey" />
-
-            <TextView
-                android:id="@+id/image5_file_path"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:padding="10dp"
-                android:text="No file choosen"
-                android:textColor="@color/dark_grey"
-                android:textSize="12dp" />
 
 
         </LinearLayout>
@@ -622,6 +607,7 @@
             android:background="@drawable/buttom_background"
             android:padding="15dp"
             android:text="Edit Vehicle"
+            android:textColor="@color/white"
             android:textStyle="bold" />
 
     </LinearLayout>

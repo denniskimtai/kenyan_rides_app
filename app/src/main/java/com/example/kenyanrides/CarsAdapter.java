@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -57,7 +58,9 @@ public class CarsAdapter extends RecyclerView.Adapter<CarsAdapter.MyViewHolder> 
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
 
         final car car = carsList.get(position);
-        holder.carName.setText(car.getCarName());
+
+
+        holder.carName.setText(car.getVehicleBrand() + " " + car.getCarName());
         holder.carPrice.setText("Ksh: " + car.getCarPrice() + "/day");
 
         Glide.with(mContext).load(car.getImage()).into(holder.thumbnail);

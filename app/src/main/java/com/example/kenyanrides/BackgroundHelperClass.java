@@ -64,6 +64,10 @@ public class BackgroundHelperClass extends AsyncTask<String, Void, String> {
 
         String confirm_payment_url = "https://kenyanrides.com/android/verify_payment.php";
 
+        String update_vehicle_url = "https://kenyanrides.com/android/update_vehicle.php";
+
+        String delete_vehicle_url = "https://kenyanrides.com/android/delete_vehicle.php";
+
 
         //login
         if (type.equals("login")) {
@@ -324,7 +328,151 @@ public class BackgroundHelperClass extends AsyncTask<String, Void, String> {
                 e.printStackTrace();
             }
 
+        } else if (type.equals("update car details")){
+
+            try {
+
+                //variables
+                String vehicle_title = params[1];
+                String vehicle_brand = params[2];
+                String vehicle_overview = params[3];
+                String vehicle_price = params[4];
+                String fuel = params[5];
+                String vehicle_location = params[6];
+                String vehicle_model_year = params[7];
+                String vehicle_seats = params[8];
+                String vehicle_driver_status = params[9];
+                String airconditioner = params[10];
+                String powerdoorlocks = params[11];
+                String antilockbrakingsystem = params[12];
+                String brakeAssist = params[13];
+                String powerSteering = params[14];
+                String driverAirbag = params[15];
+                String passengerAirbag = params[16];
+                String powerWindows = params[17];
+                String cdPlayer = params[18];
+                String centralLocking = params[19];
+                String crashSensor = params[20];
+                String leatherSeats = params[21];
+                String vehicleId = params[22];
+                String booked = params[23];
+
+                URL url = new URL(update_vehicle_url);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+
+                String postData = URLEncoder.encode("vehicle_title", "UTF-8") + "=" + URLEncoder.encode(vehicle_title, "UTF-8") + "&" +
+                        URLEncoder.encode("vehicle_brand", "UTF-8") + "=" + URLEncoder.encode(vehicle_brand, "UTF-8") + "&" +
+                        URLEncoder.encode("vehicle_overview", "UTF-8") + "=" + URLEncoder.encode(vehicle_overview, "UTF-8") + "&" +
+                        URLEncoder.encode("vehicle_price", "UTF-8") + "=" + URLEncoder.encode(vehicle_price, "UTF-8") + "&" +
+                        URLEncoder.encode("fuel", "UTF-8") + "=" + URLEncoder.encode(fuel, "UTF-8") + "&" +
+                        URLEncoder.encode("vehicle_location", "UTF-8") + "=" + URLEncoder.encode(vehicle_location, "UTF-8") + "&" +
+                        URLEncoder.encode("vehicle_model_year", "UTF-8") + "=" + URLEncoder.encode(vehicle_model_year, "UTF-8")+ "&" +
+                        URLEncoder.encode("vehicle_seats", "UTF-8") + "=" + URLEncoder.encode(vehicle_seats, "UTF-8")+ "&" +
+                        URLEncoder.encode("vehicle_driver_status", "UTF-8") + "=" + URLEncoder.encode(vehicle_driver_status, "UTF-8") + "&" +
+                        URLEncoder.encode("airconditioner", "UTF-8") + "=" + URLEncoder.encode(airconditioner, "UTF-8") + "&" +
+                        URLEncoder.encode("powerdoorlocks", "UTF-8") + "=" + URLEncoder.encode(powerdoorlocks, "UTF-8") + "&" +
+                        URLEncoder.encode("antilockbrakingsystem", "UTF-8") + "=" + URLEncoder.encode(antilockbrakingsystem, "UTF-8") + "&" +
+                        URLEncoder.encode("brakeassist", "UTF-8") + "=" + URLEncoder.encode(brakeAssist, "UTF-8") + "&" +
+                        URLEncoder.encode("powersteering", "UTF-8") + "=" + URLEncoder.encode(powerSteering, "UTF-8") + "&" +
+                        URLEncoder.encode("driverairbag", "UTF-8") + "=" + URLEncoder.encode(driverAirbag, "UTF-8") + "&" +
+                        URLEncoder.encode("passengerairbag", "UTF-8") + "=" + URLEncoder.encode(passengerAirbag, "UTF-8") + "&" +
+                        URLEncoder.encode("powerwindows", "UTF-8") + "=" + URLEncoder.encode(powerWindows, "UTF-8") + "&" +
+                        URLEncoder.encode("cdplayer", "UTF-8") + "=" + URLEncoder.encode(cdPlayer, "UTF-8") + "&" +
+                        URLEncoder.encode("centrallocking", "UTF-8") + "=" + URLEncoder.encode(centralLocking, "UTF-8") + "&" +
+                        URLEncoder.encode("crashsensor", "UTF-8") + "=" + URLEncoder.encode(crashSensor, "UTF-8") + "&" +
+                        URLEncoder.encode("leatherseats", "UTF-8") + "=" + URLEncoder.encode(leatherSeats, "UTF-8") + "&" +
+                        URLEncoder.encode("vehicleId", "UTF-8") + "=" + URLEncoder.encode(vehicleId, "UTF-8") + "&" +
+                        URLEncoder.encode("booked", "UTF-8") + "=" + URLEncoder.encode(booked, "UTF-8");
+
+                bufferedWriter.write(postData);
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                outputStream.close();
+
+                //read post request
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+                String result = "";
+                String line = "";
+
+                while ((line = bufferedReader.readLine()) != null) {
+
+                    result += line;
+
+                }
+
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+
+                //return result
+                return result;
+
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        } else if (type.equals("delete vehicle")){
+
+            try {
+
+                //variables
+                String vehicleId = params[1];
+
+                URL url = new URL(delete_vehicle_url);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+
+                String postData = URLEncoder.encode("vehicleId", "UTF-8") + "=" + URLEncoder.encode(vehicleId, "UTF-8");
+
+                bufferedWriter.write(postData);
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                outputStream.close();
+
+                //read post request
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+                String result = "";
+                String line = "";
+
+                while ((line = bufferedReader.readLine()) != null) {
+
+                    result += line;
+
+                }
+
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+
+                //return result
+                return result;
+
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         }
+
+
 
 
 
@@ -415,12 +563,16 @@ public class BackgroundHelperClass extends AsyncTask<String, Void, String> {
 
                     case "payment verified":
 
-                    alertDialogBuilder.setTitle("Verified!");
-                        alertDialogBuilder.setMessage("Payment is verified. Booking request has been sent to the vehicle owner");
+                        alertDialogBuilder.setTitle("Verified!");
+                        alertDialogBuilder.setMessage("Payment is verified. Your booking request has been sent to the vehicle owner");
+                        alertDialogBuilder.setCancelable(false);
                         alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
 
+                                Intent intent = new Intent(context, MainActivity.class);
+                                context.startActivity(intent);
+                                ((Activity) context).finish();
 
                             }
                         });
@@ -430,13 +582,76 @@ public class BackgroundHelperClass extends AsyncTask<String, Void, String> {
 
                     case "payment unverified":
                         alertDialogBuilder.setTitle("Failed!");
-                        alertDialogBuilder.setMessage("We could not verify you payment. Please try again");
+                        alertDialogBuilder.setMessage("We could not verify you payment. Please try again\nYou need to pay a 10% service fee ");
+                        alertDialogBuilder.setCancelable(false);
+                        alertDialogBuilder.setPositiveButton("Try again", (dialogInterface, i) -> {
+
+
+                        });
                         alertDialogBuilder.show();
 
                         break;
 
                     case "Encountered an error while sending:":
-                        alertDialogBuilder.setMessage("sms error! Vehicle owner not notified");
+                        alertDialogBuilder.setMessage("sms error! Vehicle owner not notified, please contact them directly");
+                        alertDialogBuilder.show();
+
+                        break;
+
+                    case "Vehicle updated successfully":
+                        dialog.dismiss();
+
+                        alertDialogBuilder.setTitle("Success!");
+                        alertDialogBuilder.setMessage("Vehicle updated successfully");
+                        alertDialogBuilder.setCancelable(false);
+                        alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                                Intent intent = new Intent(context, MainActivity.class);
+                                context.startActivity(intent);
+                                ((Activity) context).finish();
+
+                            }
+                        });
+                        alertDialogBuilder.show();
+
+                        break;
+
+                    case "Vehicle failed to update":
+                        alertDialogBuilder.setTitle("Failed!");
+                        alertDialogBuilder.setMessage("Vehicle not updated! Please try again");
+                        alertDialogBuilder.setCancelable(false);
+                        alertDialogBuilder.setPositiveButton("Try again", (dialogInterface, i) -> {
+
+
+                        });
+                        alertDialogBuilder.show();
+
+                        break;
+
+                    case "Vehicle deleted successfully":
+                        alertDialogBuilder.setMessage("Vehicle deleted");
+                        alertDialogBuilder.setCancelable(false);
+                        alertDialogBuilder.setPositiveButton("Ok", (dialogInterface, i) -> {
+
+                            //go to main activity
+                            Intent intent = new Intent(context, MainActivity.class);
+                            context.startActivity(intent);
+                            ((Activity) context).finish();
+
+                        });
+                        alertDialogBuilder.show();
+
+                        break;
+
+                    case "Vehicle failed to delete":
+                        alertDialogBuilder.setTitle("Failed!");
+                        alertDialogBuilder.setMessage("Vehicle not deleted! Please try again");
+                        alertDialogBuilder.setCancelable(false);
+                        alertDialogBuilder.setPositiveButton("Try again", (dialogInterface, i) -> {
+
+                        });
                         alertDialogBuilder.show();
 
                         break;
@@ -491,7 +706,7 @@ public class BackgroundHelperClass extends AsyncTask<String, Void, String> {
                 }
             } catch (Exception ex) {
 
-                alertDialogBuilder.setMessage("System failed fetching vehciles! Please try again");
+                alertDialogBuilder.setMessage("System failed fetching details! Please try again");
                 alertDialogBuilder.show();
 
             }

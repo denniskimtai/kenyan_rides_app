@@ -80,11 +80,18 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        fabLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                login();
+            }
+        });
+
 
     }
 
     //called when button is clicked
-    public void login(View view) {
+    public void login() {
 
         //check if network is connected
         if (!isNetworkAvailable()){

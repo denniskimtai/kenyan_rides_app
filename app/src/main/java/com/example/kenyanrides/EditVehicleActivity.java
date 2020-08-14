@@ -5,12 +5,15 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -29,15 +32,21 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 
 import net.gotev.uploadservice.MultipartUploadRequest;
 import net.gotev.uploadservice.ServerResponse;
 import net.gotev.uploadservice.UploadInfo;
 import net.gotev.uploadservice.UploadNotificationConfig;
+import net.gotev.uploadservice.UploadService;
 import net.gotev.uploadservice.UploadStatusDelegate;
 
 import org.json.JSONArray;
@@ -94,11 +103,11 @@ public class EditVehicleActivity extends AppCompatActivity {
             , "Trans Nzoia County", "Turkana County", "Uasin Gishu County", "Vihiga County", "Wajir County", "West Pokot County"};
 
 
-    private TextView image1FilePath;
-    private TextView image2FilePath;
-    private TextView image3FilePath;
-    private TextView image4FilePath;
-    private TextView image5FilePath;
+    private ImageView image1FilePath;
+    private ImageView image2FilePath;
+    private ImageView image3FilePath;
+    private ImageView image4FilePath;
+    private ImageView image5FilePath;
 
     public static final int IMAGE1 = 1;
     public static final int IMAGE2 = 2;
@@ -106,9 +115,14 @@ public class EditVehicleActivity extends AppCompatActivity {
     public static final int IMAGE4 = 4;
     public static final int IMAGE5 = 5;
     public static final int STORAGE_PERMISSION_CODE = 123;
-    public static final String update_vehicle_url = "https://kenyanrides.com/android/update_vehicle.php";
+
+    public static final String update_image_url = "https://kenyanrides.com/android/update_vehicle_image.php";
 
     private EditText editTextVehicleOverview, editTextVehicleTitle, editTextPrice, editTextModelYear;
+
+    Switch vehicleStatusSwitch;
+
+    private TextView txtViewVehicleStatus;
 
     Uri imageUri;
     String imagePath;
@@ -152,13 +166,19 @@ public class EditVehicleActivity extends AppCompatActivity {
     CheckBox checkBoxLeatherSeats;
 
     int vehicle_id;
+    String vehicle_status;
 
-    Context context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_vehicle);
+
+        //request permission to access storage
+        requestStoragePermission();
+
+        //namespace for upload service
+        UploadService.NAMESPACE = BuildConfig.APPLICATION_ID;
 
         //get text from intent
         vehicle_id = getIntent().getIntExtra("vehicle_id", 0);
@@ -172,6 +192,7 @@ public class EditVehicleActivity extends AppCompatActivity {
         String intent_driver_status = getIntent().getStringExtra("driver_status");
         String intent_owner_id = getIntent().getStringExtra("owner_id");
         String reg_date = getIntent().getStringExtra("reg_date");
+        vehicle_status = getIntent().getStringExtra("vehicle_status");
 
         String vimage1 = getIntent().getStringExtra("image1");
         String vimage2 = getIntent().getStringExtra("image2");
@@ -198,6 +219,9 @@ public class EditVehicleActivity extends AppCompatActivity {
 
         Button btnPostVehicle = findViewById(R.id.btnPostVehicle);
 
+
+
+
         //initialize views
         editTextVehicleTitle = findViewById(R.id.edit_text_vehicle_title);
         editTextVehicleOverview = findViewById(R.id.edit_text_vehicle_overview);
@@ -209,6 +233,9 @@ public class EditVehicleActivity extends AppCompatActivity {
         editTextPrice.setText(String.valueOf(intent_price_per_day));
         editTextModelYear.setText(intent_model_year);
 
+        vehicleStatusSwitch = findViewById(R.id.switchVehicleStatus);
+        txtViewVehicleStatus = findViewById(R.id.txtViewVehicleStatus);
+
         //file chooser views
         TextView image1 = findViewById(R.id.image1);
         TextView image2 = findViewById(R.id.image2);
@@ -216,16 +243,34 @@ public class EditVehicleActivity extends AppCompatActivity {
         TextView image4 = findViewById(R.id.image4);
         TextView image5 = findViewById(R.id.image5);
 
+        //set images to imageviews
         image1FilePath = findViewById(R.id.image1_file_path);
-        image1FilePath.setText(vimage1.replace("https://kenyanrides.com/serviceprovider/img/vehicleimages/", " "));
+        Glide.with(this).load(vimage1).into(image1FilePath);
+
         image2FilePath = findViewById(R.id.image2_file_path);
-        image2FilePath.setText(vimage2.replace("https://kenyanrides.com/serviceprovider/img/vehicleimages/", ""));
+        Glide.with(this).load(vimage2).into(image2FilePath);
+
         image3FilePath = findViewById(R.id.image3_file_path);
-        image3FilePath.setText(vimage3.replace("https://kenyanrides.com/serviceprovider/img/vehicleimages/", ""));
+        Glide.with(this).load(vimage3).into(image3FilePath);
+
         image4FilePath = findViewById(R.id.image4_file_path);
-        image4FilePath.setText(vimage4.replace("https://kenyanrides.com/serviceprovider/img/vehicleimages/", ""));
+        Glide.with(this).load(vimage4).into(image4FilePath);
+
         image5FilePath = findViewById(R.id.image5_file_path);
-        image5FilePath.setText(vimage5.replace("https://kenyanrides.com/serviceprovider/img/vehicleimages/", ""));
+        Glide.with(this).load(vimage5).into(image5FilePath);
+
+        //set status of vehicle
+        if (vehicle_status.equals("1")){
+            vehicleStatusSwitch.setChecked(true);
+            txtViewVehicleStatus.setText("Online");
+
+        }else if(vehicle_status.equals("9")){
+
+            vehicleStatusSwitch.setChecked(false);
+            txtViewVehicleStatus.setText("Offline");
+            txtViewVehicleStatus.setTextColor(getResources().getColor(R.color.dark_grey));
+
+        }
 
         //file chooser click listener
         image1.setOnClickListener(new View.OnClickListener() {
@@ -285,6 +330,52 @@ public class EditVehicleActivity extends AppCompatActivity {
 
             }
         });
+
+
+
+        //switch selection
+       vehicleStatusSwitch.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               final Switch btn = (Switch) view;
+
+               final boolean switchChecked = btn.isChecked();
+
+               if (btn.isChecked()) {
+                   btn.setChecked(false);
+               } else {
+                   btn.setChecked(true);
+               }
+
+               String message = "Are you sure you want to make your car unavailable to customers?";
+               if (!btn.isChecked()) {
+                   message = "Make your car available to customers?";
+               }
+
+               alertDialogBuilder.setMessage(message)
+                       .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                           @Override
+                           public void onClick(DialogInterface dialog, int i) {
+                               // "Yes" button was clicked
+                               if (switchChecked) {
+                                   btn.setChecked(true);
+                                   txtViewVehicleStatus.setText("Online");
+                                   txtViewVehicleStatus.setTextColor(getResources().getColor(R.color.white));
+                                   vehicle_status = "1";
+
+                               } else {
+                                   btn.setChecked(false);
+                                   txtViewVehicleStatus.setText("Offline");
+                                   txtViewVehicleStatus.setTextColor(getResources().getColor(R.color.dark_grey));
+                                   vehicle_status = "9";
+                               }
+                           }
+                       })
+                       .setNegativeButton("Cancel", null)
+                       .show();
+
+           }
+       });
 
         //spinner initialization
         //Getting the instance of Spinner and applying OnItemSelectedListener on it
@@ -495,6 +586,7 @@ public class EditVehicleActivity extends AppCompatActivity {
 
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
+
             case IMAGE1:
                 imageUri = data.getData();
 
@@ -505,9 +597,9 @@ public class EditVehicleActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                image1FilePath.setText(getFileName(imageUri));
-
                 image1Path = getPath(imageUri);
+                //upload image to db
+                uploadSingleImage(image1Path, "1");
 
 
                 break;
@@ -523,9 +615,10 @@ public class EditVehicleActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                image2FilePath.setText(getFileName(imageUri));
-
                 image2Path = getPath(imageUri);
+
+                //upload image to db
+                uploadSingleImage(image2Path, "2");
 
 
                 break;
@@ -540,9 +633,9 @@ public class EditVehicleActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                image3FilePath.setText(getFileName(imageUri));
-
                 image3Path = getPath(imageUri);
+                //upload image to db
+                uploadSingleImage(image3Path, "3");
 
 
                 break;
@@ -557,9 +650,9 @@ public class EditVehicleActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                image4FilePath.setText(getFileName(imageUri));
-
                 image4Path = getPath(imageUri);
+                //upload image to db
+                uploadSingleImage(image4Path, "4");
 
                 break;
 
@@ -573,9 +666,9 @@ public class EditVehicleActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                image5FilePath.setText(getFileName(imageUri));
-
                 image5Path = getPath(imageUri);
+                //upload image to db
+                uploadSingleImage(image5Path, "5");
 
 
                 break;
@@ -643,33 +736,8 @@ public class EditVehicleActivity extends AppCompatActivity {
 
 
 
-    public String getFileName(Uri uri) {
-        String result = null;
-        if (uri.getScheme().equals("content")) {
-            Cursor cursor = getContentResolver().query(uri, null, null, null, null);
-            try {
-                if (cursor != null && cursor.moveToFirst()) {
-                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
-                }
-            } finally {
-                cursor.close();
-            }
-        }
-        if (result == null) {
-            result = uri.getPath();
-            int cut = result.lastIndexOf('/');
-            if (cut != -1) {
-                result = result.substring(cut + 1);
-            }
-        }
-        return result;
-    }
-
-
-
     //on click for button to post vehicles
     public void postVehicle(){
-
 
         //check if network is connected
         if (!isNetworkAvailable()){
@@ -808,131 +876,15 @@ public class EditVehicleActivity extends AppCompatActivity {
             leatherSeats = "NULL";
         }
 
-        //check that images are selected
-        if (image1FilePath.getText().toString().equals("No file choosen")){
-            Toast.makeText(this, "Please choose an image", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        //update car details
 
-        if (image2FilePath.getText().toString().equals("No file choosen")){
-            Toast.makeText(this, "Please choose an image", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        String type = "update car details";
 
-        if (image3FilePath.getText().toString().equals("No file choosen")){
-            Toast.makeText(this, "Please choose an image", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        BackgroundHelperClass backgroundHelperClass = new BackgroundHelperClass(this);
 
-        if (image4FilePath.getText().toString().equals("No file choosen")){
-            Toast.makeText(this, "Please choose an image", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (image5FilePath.getText().toString().equals("No file choosen")){
-            Toast.makeText(this, "Please choose an image", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-
-        try{
-
-            dialog.setMessage("Loading...");
-            dialog.setCancelable(false);
-            dialog.show();
-
-
-
-            String uploadId = UUID.randomUUID().toString();
-
-            new MultipartUploadRequest(this, uploadId, update_vehicle_url)
-                    .addFileToUpload(image1Path, "image1")
-                    .addFileToUpload(image2Path, "image2")
-                    .addFileToUpload(image2Path, "image3")
-                    .addFileToUpload(image4Path, "image4")
-                    .addFileToUpload(image5Path, "image5")
-                    .addParameter("vehicle_title", vehicleTitle)
-                    .addParameter("vehicle_brand", vehicleBrand)
-                    .addParameter("vehicle_overview", vehicleOverview)
-                    .addParameter("vehicle_price", vehiclePrice)
-                    .addParameter("fuel", vehicleFuel)
-                    .addParameter("vehicle_location", vehicleLocation)
-                    .addParameter("vehicle_model_year", vehicleModelYear)
-                    .addParameter("vehicle_seats", vehicleSeats)
-                    .addParameter("vehicle_driver_status", vehicleDriverStatus)
-                    .addParameter("airconditioner", airConditioner)
-                    .addParameter("powerdoorlocks", powerDoorLocks)
-                    .addParameter("antilockbrakingsystem", antiLockBrakingSystem)
-                    .addParameter("brakeassist", brakeAssist)
-                    .addParameter("powersteering", powerSteering)
-                    .addParameter("driverairbag", driverAirBag)
-                    .addParameter("passengerairbag", passengerAirBag)
-                    .addParameter("powerwindows", powerWindows)
-                    .addParameter("cdplayer", cdPlayer)
-                    .addParameter("centrallocking", centralLocking)
-                    .addParameter("crashsensor", crashSensor)
-                    .addParameter("leatherseats", leatherSeats)
-                    .addParameter("vehicleId", String.valueOf(vehicle_id))
-                    .addParameter("booked", "1")
-                    .setNotificationConfig(new UploadNotificationConfig())
-                    .setMaxRetries(2)
-                    .setDelegate(new UploadStatusDelegate() {
-                        @Override
-                        public void onProgress(Context context, UploadInfo uploadInfo) {
-                            dialog.setMessage("Loading...");
-                            dialog.show();
-
-                            Toast.makeText(context, String.valueOf(uploadInfo) , Toast.LENGTH_SHORT).show();
-
-                        }
-
-                        @Override
-                        public void onError(Context context, UploadInfo uploadInfo, ServerResponse serverResponse, Exception exception) {
-                            Toast.makeText(context, String.valueOf(exception) , Toast.LENGTH_SHORT).show();
-                            dialog.dismiss();
-
-                        }
-
-                        @Override
-                        public void onCompleted(Context context, UploadInfo uploadInfo, ServerResponse serverResponse) {
-
-                            dialog.dismiss();
-
-                            switch (String.valueOf(serverResponse)){
-                                case "File is valid, and was successfully uploaded":
-                                    alertDialogBuilder.setTitle("Success!");
-                                    alertDialogBuilder.setMessage("Vehicle was uploaded succesfully");
-                                    alertDialogBuilder.show();
-                                    break;
-
-                                case "Upload failed":
-                                    alertDialogBuilder.setTitle("Failed!");
-                                    alertDialogBuilder.setMessage("Vehicle was not uploaded! Please try uploading again");
-                                    alertDialogBuilder.show();
-                                    break;
-                            }
-
-                            Toast.makeText(context, String.valueOf(serverResponse) , Toast.LENGTH_SHORT).show();
-
-                        }
-
-                        @Override
-                        public void onCancelled(Context context, UploadInfo uploadInfo) {
-
-                            Toast.makeText(context, String.valueOf(uploadInfo) , Toast.LENGTH_SHORT).show();
-
-                            dialog.dismiss();
-
-                        }
-                    })
-                    .startUpload();
-
-
-
-        }catch (Exception e){
-
-        }
-
+        backgroundHelperClass.execute(type,vehicleTitle, vehicleBrand, vehicleOverview, vehiclePrice, vehicleFuel, vehicleLocation, vehicleModelYear,
+                vehicleSeats, vehicleDriverStatus, airConditioner, powerDoorLocks, antiLockBrakingSystem, brakeAssist, powerSteering, driverAirBag
+                , passengerAirBag, powerWindows, cdPlayer, centralLocking, crashSensor, leatherSeats, String.valueOf(vehicle_id), vehicle_status);
 
     }
 
@@ -944,9 +896,97 @@ public class EditVehicleActivity extends AppCompatActivity {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
+    public void uploadSingleImage(String imagepath, String image_number){
+
+        try{
+            String uploadId = UUID.randomUUID().toString();
+
+            new MultipartUploadRequest(this, uploadId, update_image_url)
+                    .addFileToUpload(imagepath, "image1")
+                    .addParameter("vehicleId", String.valueOf(vehicle_id))
+                    .addParameter("image_number", image_number)
+                    .setNotificationConfig(new UploadNotificationConfig())
+                    .setMaxRetries(2)
+                    .setDelegate(new UploadStatusDelegate() {
+                        @Override
+                        public void onProgress(Context context, UploadInfo uploadInfo) {
+                            dialog.setMessage("Uploading image.Please wait...");
+                            dialog.setCancelable(false);
+                            dialog.show();
+
+                        }
+
+                        @Override
+                        public void onError(Context context, UploadInfo uploadInfo, ServerResponse serverResponse, Exception exception) {
+                            dialog.dismiss();
+
+                            alertDialogBuilder.setTitle("Failed!");
+                            alertDialogBuilder.setMessage("Image was not uploaded! Please try uploading again");
+                            alertDialogBuilder.setCancelable(false);
+                            alertDialogBuilder.setPositiveButton("Try again", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+
+                                }
+                            });
+                            alertDialogBuilder.show();
+
+                        }
+
+                        @Override
+                        public void onCompleted(Context context, UploadInfo uploadInfo, ServerResponse serverResponse) {
+
+                            dialog.dismiss();
+
+                            alertDialogBuilder.setTitle("Success!");
+                            alertDialogBuilder.setMessage("Image was uploaded succesfully");
+                            alertDialogBuilder.setCancelable(false);
+                            alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+
+                                    Intent intent = new Intent(EditVehicleActivity.this, ListVehiclesActivity.class);
+                                    startActivity(intent);
+                                    finish();
+
+                                }
+                            });
+                            alertDialogBuilder.show();
+
+                        }
+
+                        @Override
+                        public void onCancelled(Context context, UploadInfo uploadInfo) {
+
+                            Toast.makeText(context, String.valueOf(uploadInfo) , Toast.LENGTH_SHORT).show();
+
+                            dialog.dismiss();
+
+                            alertDialogBuilder.setTitle("Failed!");
+                            alertDialogBuilder.setMessage("Vehicle was not uploaded! Please try uploading again");
+                            alertDialogBuilder.setCancelable(false);
+                            alertDialogBuilder.setPositiveButton("Try again", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+
+                                }
+                            });
+                            alertDialogBuilder.show();
+
+                        }
+                    })
+                    .startUpload();
+
+
+
+        }catch (Exception e){
+
+        }
+
+    }
+
 
     //fetch brands from db
-
 
     private class BackTask extends AsyncTask<Void, Void, String> {
         ProgressDialog dialog;

@@ -6,122 +6,121 @@
     android:fitsSystemWindows="true"
     android:background="@color/white">
 
-    <LinearLayout
-        android:layout_marginTop="20dp"
-        android:layout_gravity="center_vertical"
+  <LinearLayout
+      android:layout_marginTop="20dp"
+      android:layout_gravity="center_vertical"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:paddingTop="56dp"
+      android:paddingLeft="24dp"
+      android:paddingRight="24dp">
+
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingTop="56dp"
-        android:paddingLeft="24dp"
-        android:paddingRight="24dp">
+        android:gravity="center_horizontal"
+        android:text="Welcome Back"
+        android:typeface="serif"
+        android:textStyle="bold"
+        android:textSize="30dp"
+        android:textColor="@color/black"
+        android:layout_marginBottom="24dp"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="Welcome Back"
-            android:typeface="serif"
-            android:textStyle="bold"
-            android:textSize="30dp"
-            android:textColor="@color/black"
-            android:layout_marginBottom="24dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="Sign In to continue"
+        android:typeface="serif"
+        android:textStyle="bold"
+        android:textSize="15dp"
+        android:textColor="@color/grey"
+        android:layout_marginBottom="24dp"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="Sign In to continue"
-            android:typeface="serif"
-            android:textStyle="bold"
-            android:textSize="15dp"
-            android:textColor="@color/grey"
-            android:layout_marginBottom="24dp"/>
+    <com.google.android.material.textfield.TextInputLayout
 
-        <com.google.android.material.textfield.TextInputLayout
+        android:background="@drawable/input_shape"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColorHint="@color/dark_grey"
+        >
 
-            android:background="@drawable/input_shape"
-            android:layout_margin="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColorHint="@color/dark_grey"
-            >
-
-            <EditText
-                android:id="@+id/edit_text_email"
-                android:inputType="textEmailAddress"
-                android:layout_weight="1"
-                android:textColor="@color/dark_grey"
-                android:paddingLeft="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Email Address"
-                android:textSize="15dp"
-                />
+      <EditText
+          android:id="@+id/edit_text_email"
+          android:inputType="textEmailAddress"
+          android:layout_weight="1"
+          android:textColor="@color/dark_grey"
+          android:paddingLeft="10dp"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:hint="Email Address"
+          android:textSize="15dp"
+          />
 
 
-        </com.google.android.material.textfield.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
 
-            android:background="@drawable/input_shape"
-            android:layout_margin="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColorHint="@color/dark_grey"
-            >
+        android:background="@drawable/input_shape"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColorHint="@color/dark_grey"
+        >
 
-            <EditText
-                android:id="@+id/edit_text_password"
-                android:inputType="textPassword"
-                android:layout_weight="1"
-                android:textColor="@color/dark_grey"
-                android:paddingLeft="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Password"
-                android:textSize="15dp"
-                />
+      <EditText
+          android:id="@+id/edit_text_password"
+          android:inputType="textPassword"
+          android:layout_weight="1"
+          android:textColor="@color/dark_grey"
+          android:paddingLeft="10dp"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:hint="Password"
+          android:textSize="15dp"
+          />
 
 
-        </com.google.android.material.textfield.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            android:id="@+id/txt_forgot_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="end"
-            android:text="Forgot Password?"
-            android:typeface="serif"
-            android:textStyle="bold"
-            android:textSize="15dp"
-            android:textColor="@color/black"
-            android:layout_margin="10dp"/>
+    <TextView
+        android:id="@+id/txt_forgot_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:text="Forgot Password?"
+        android:typeface="serif"
+        android:textStyle="bold"
+        android:textSize="15dp"
+        android:textColor="@color/black"
+        android:layout_margin="10dp"/>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_login"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/arrow_forward"
-            android:layout_gravity="center_horizontal"
-            android:onClick="login"
-            android:layout_margin="20dp"
-            android:backgroundTint="@color/colorPrimary"
-            android:tint="@color/white"/>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/arrow_forward"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="20dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:tint="@color/white"/>
 
-        <TextView
-            android:id="@+id/txt_signup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="Don't have an account? Signup here"
-            android:typeface="serif"
-            android:textStyle="bold"
-            android:textSize="15dp"
-            android:textColor="@color/black"
-            android:layout_margin="10dp"/>
+    <TextView
+        android:id="@+id/txt_signup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="Don't have an account? Signup here"
+        android:typeface="serif"
+        android:textStyle="bold"
+        android:textSize="15dp"
+        android:textColor="@color/black"
+        android:layout_margin="10dp"/>
 
-    </LinearLayout>
+  </LinearLayout>
 
 
 </ScrollView>

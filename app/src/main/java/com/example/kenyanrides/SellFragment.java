@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -37,6 +38,8 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import net.gotev.uploadservice.MultipartUploadRequest;
 import net.gotev.uploadservice.ServerResponse;
@@ -755,7 +758,7 @@ public class SellFragment extends Fragment  {
 
         try{
 
-            dialog.setMessage("Loading...");
+            dialog.setMessage("Uploading vehicle...");
             dialog.setCancelable(false);
             dialog.show();
 
@@ -798,18 +801,27 @@ public class SellFragment extends Fragment  {
                     .setDelegate(new UploadStatusDelegate() {
                         @Override
                         public void onProgress(Context context, UploadInfo uploadInfo) {
-                            dialog.setMessage("Loading...");
+                            dialog.setMessage("Uploading vehicle...");
                             dialog.setCancelable(false);
                             dialog.show();
 
-                            Toast.makeText(context, String.valueOf(uploadInfo) , Toast.LENGTH_SHORT).show();
 
                         }
 
                         @Override
                         public void onError(Context context, UploadInfo uploadInfo, ServerResponse serverResponse, Exception exception) {
-                            Toast.makeText(context, String.valueOf(exception) , Toast.LENGTH_SHORT).show();
                             dialog.dismiss();
+
+                            alertDialogBuilder.setTitle("Failed!");
+                            alertDialogBuilder.setMessage("Vehicle was not uploaded! Please try uploading again");
+                            alertDialogBuilder.setCancelable(false);
+                            alertDialogBuilder.setPositiveButton("Try again", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+
+                                }
+                            });
+                            alertDialogBuilder.show();
 
                         }
 
@@ -818,21 +830,24 @@ public class SellFragment extends Fragment  {
 
                             dialog.dismiss();
 
-                            switch (String.valueOf(serverResponse)){
-                                case "File is valid, and was successfully uploaded":
-                                    alertDialogBuilder.setTitle("Success!");
-                                    alertDialogBuilder.setMessage("Vehicle was uploaded succesfully");
-                                    alertDialogBuilder.show();
-                                    break;
+                            alertDialogBuilder.setTitle("Success!");
+                            alertDialogBuilder.setMessage("Vehicle was uploaded succesfully");
+                            alertDialogBuilder.setCancelable(false);
+                            alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
 
-                                case "Upload failed":
-                                    alertDialogBuilder.setTitle("Failed!");
-                                    alertDialogBuilder.setMessage("Vehicle was not uploaded! Please try uploading again");
-                                    alertDialogBuilder.show();
-                                    break;
-                            }
+                                    //go to home fragment
+                                    FragmentManager fm = getFragmentManager();
+                                    FragmentTransaction ft = fm.beginTransaction();
+                                    HomeFragment llf = new HomeFragment();
+                                    ft.replace(R.id.nav_host_fragment, llf);
+                                    ft.commit();
 
-                            Toast.makeText(context, String.valueOf(serverResponse) , Toast.LENGTH_SHORT).show();
+
+                                }
+                            });
+                            alertDialogBuilder.show();
 
                         }
 
@@ -842,6 +857,17 @@ public class SellFragment extends Fragment  {
                             Toast.makeText(context, String.valueOf(uploadInfo) , Toast.LENGTH_SHORT).show();
 
                             dialog.dismiss();
+
+                            alertDialogBuilder.setTitle("Failed!");
+                            alertDialogBuilder.setMessage("Vehicle was not uploaded! Please try uploading again");
+                            alertDialogBuilder.setCancelable(false);
+                            alertDialogBuilder.setPositiveButton("Try again", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+
+                                }
+                            });
+                            alertDialogBuilder.show();
 
                         }
                     })
@@ -941,7 +967,6 @@ private class BackTask extends AsyncTask<Void, Void, String> {
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
         dialog.dismiss();
-        Log.e("Error3", "3");
 
         //Creating the ArrayAdapter instance having the bank name list
         ArrayAdapter brandAdapter = new ArrayAdapter(getActivity(),R.layout.spinner_item,brandsList);
