@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -40,6 +41,12 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 
 import net.gotev.uploadservice.MultipartUploadRequest;
@@ -60,12 +67,16 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class EditVehicleActivity extends AppCompatActivity {
 
-    String brands_url = "https://kenyanrides.com/android/fetch_brands.php";
+    private String brands_url = "https://kenyanrides.com/android/fetch_brands.php";
+
+    private String update_vehicle_url = "https://kenyanrides.com/android/update_vehicle.php";
 
     List<String> brandsList = new ArrayList<>();
     List<Integer> brandsId = new ArrayList<Integer>();
@@ -138,6 +149,7 @@ public class EditVehicleActivity extends AppCompatActivity {
     String vehicleSeats;
     String vehicleDriverStatus;
     String vehicleLocation;
+    String carPrice;
 
     String airConditioner;
     String powerDoorLocks;
@@ -776,7 +788,7 @@ public class EditVehicleActivity extends AppCompatActivity {
         } else{
             double price = 1.1 * Integer.parseInt(vehiclePrice);
 
-            vehiclePrice = String.valueOf(price);
+            carPrice = String.valueOf(price);
         }
 
         //get edit text strings
@@ -876,15 +888,96 @@ public class EditVehicleActivity extends AppCompatActivity {
             leatherSeats = "NULL";
         }
 
+        dialog.setMessage("Loading...");
+        dialog.setCancelable(false);
+        dialog.show();
+
         //update car details
 
-        String type = "update car details";
+        StringRequest stringRequest = new StringRequest(
+                Request.Method.POST,
+                update_vehicle_url,
+                response -> {
 
-        BackgroundHelperClass backgroundHelperClass = new BackgroundHelperClass(this);
+                    //fetch results from api
+                    switch (response) {
 
-        backgroundHelperClass.execute(type,vehicleTitle, vehicleBrand, vehicleOverview, vehiclePrice, vehicleFuel, vehicleLocation, vehicleModelYear,
-                vehicleSeats, vehicleDriverStatus, airConditioner, powerDoorLocks, antiLockBrakingSystem, brakeAssist, powerSteering, driverAirBag
-                , passengerAirBag, powerWindows, cdPlayer, centralLocking, crashSensor, leatherSeats, String.valueOf(vehicle_id), vehicle_status);
+                        case "Vehicle updated successfully":
+                            dialog.dismiss();
+
+                            alertDialogBuilder.setTitle("Success!");
+                            alertDialogBuilder.setMessage("Vehicle updated successfully");
+                            alertDialogBuilder.setCancelable(false);
+                            alertDialogBuilder.setPositiveButton("Ok", (dialogInterface, i) -> {
+
+                                Intent intent = new Intent(EditVehicleActivity.this, MainActivity.class);
+                                startActivity(intent);
+                                finish();
+
+                            });
+                            alertDialogBuilder.show();
+
+                            break;
+
+                        case "Vehicle failed to update":
+                            alertDialogBuilder.setTitle("Failed!");
+                            alertDialogBuilder.setMessage("Vehicle not updated! Please try again");
+                            alertDialogBuilder.setCancelable(false);
+                            alertDialogBuilder.setPositiveButton("Try again", (dialogInterface, i) -> {
+
+
+                            });
+                            alertDialogBuilder.show();
+
+                            break;
+
+                    }
+                    dialog.dismiss();
+
+
+                }, error -> {
+                    dialog.dismiss();
+
+                    Toast.makeText(EditVehicleActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+
+                }){
+            //send params needed to db
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+
+
+                params.put("vehicle_title", vehicleTitle);
+                params.put("vehicle_brand", vehicleBrand);
+                params.put("vehicle_overview", vehicleOverview);
+                params.put("vehicle_price", carPrice);
+                params.put("fuel", vehicleFuel);
+                params.put("vehicle_location", vehicleLocation);
+                params.put("vehicle_model_year", vehicleModelYear);
+                params.put("vehicle_seats", vehicleSeats);
+                params.put("vehicle_driver_status", vehicleDriverStatus);
+                params.put("airconditioner", airConditioner);
+                params.put("powerdoorlocks", powerDoorLocks);
+                params.put("antilockbrakingsystem", antiLockBrakingSystem);
+                params.put("brakeassist", brakeAssist);
+                params.put("powersteering", powerSteering);
+                params.put("driverairbag", driverAirBag);
+                params.put("passengerairbag", passengerAirBag);
+                params.put("powerwindows", powerWindows);
+                params.put("cdplayer", cdPlayer);
+                params.put("centrallocking", centralLocking);
+                params.put("crashsensor", crashSensor);
+                params.put("leatherseats", leatherSeats);
+                params.put("vehicleId", String.valueOf(vehicle_id));
+                params.put("booked", vehicle_status);
+
+                return params;
+
+            }
+        };
+
+        Volley.newRequestQueue(this).add(stringRequest);
+
 
     }
 

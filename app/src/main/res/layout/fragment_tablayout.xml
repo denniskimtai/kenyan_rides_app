@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:focusableInTouchMode="true">
+
+<androidx.appcompat.widget.Toolbar
+    android:id="@+id/toolbar2"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentStart="true"
+    android:layout_alignParentLeft="true"
+    android:background="@color/white">
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="15dp"
+        android:layout_marginRight="15dp">
+
+        <EditText
+            android:drawableLeft="@drawable/search_icon"
+            android:drawableTint="@color/colorPrimary"
+            android:drawablePadding="5dp"
+            android:id="@+id/searchBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Search"
+            android:background="@android:color/transparent"
+            android:padding="10dp"
+            android:textColorHint="@color/grey"
+            android:layout_marginRight="10dp"
+            android:textColor="@color/black"/>
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.appcompat.widget.Toolbar>
+
+<com.google.android.material.tabs.TabLayout
+    android:id="@+id/tab_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/toolbar2"
+    android:background="@color/white"
+    app:tabTextColor="@color/colorPrimary"
+    app:tabIndicatorColor="@color/colorPrimary"
+    android:minHeight="?attr/actionBarSize"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+<TextView
+android:layout_marginTop="10dp"
+android:layout_marginBottom="10dp"
+android:id="@+id/view"
+android:layout_width="match_parent"
+android:layout_height="1dp"
+android:layout_below="@id/tab_layout"
+android:background="@color/grey"/>
+
+<androidx.viewpager.widget.ViewPager
+android:id="@+id/pager"
+android:layout_width="match_parent"
+android:layout_height="fill_parent"
+android:layout_below="@id/tab_layout"/>
+
+</RelativeLayout>

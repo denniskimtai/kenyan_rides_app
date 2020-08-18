@@ -18,14 +18,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         setContentView(R.layout.activity_main);
 
         //loading the default fragment
-        loadFragment(new HomeFragment());
-
-        //if the user is not logged in
-        //starting the login activity
-        if (!SharedPrefManager.getInstance(this).isLoggedIn()) {
-            finish();
-            startActivity(new Intent(this, LoginActivity.class));
-        }
+        loadFragment(new TablayoutFragment());
 
         //getting bottom navigation view and attaching the listener
         BottomNavigationView navigation = findViewById(R.id.bottom_nav_view);
@@ -57,15 +50,36 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         switch (menuItem.getItemId()) {
             case R.id.navigation_explore:
-                fragment = new HomeFragment();
+                fragment = new TablayoutFragment();
                 break;
 
             case R.id.navigation_sell:
-                fragment = new SellFragment();
+
+                //if the user is not logged in
+                //starting the login activity
+                if (!SharedPrefManager.getInstance(this).isLoggedIn()) {
+
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(intent);
+
+                }else {
+                    fragment = new SellFragment();
+                }
+
                 break;
 
             case R.id.navigation_motors:
-                fragment = new AccountFragment();
+                //if the user is not logged in
+                //starting the login activity
+                if (!SharedPrefManager.getInstance(this).isLoggedIn()) {
+
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(intent);
+
+                }else {
+                    fragment = new AccountFragment();
+                }
+
                 break;
 
 

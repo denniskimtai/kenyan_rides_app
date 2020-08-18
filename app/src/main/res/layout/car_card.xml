@@ -11,12 +11,13 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:layout_margin="1.5dp"
-        android:background="@color/white">
+        android:elevation="10dp"
+        android:background="@color/colorPrimary">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white">
+            android:background="@color/green">
 
             <RelativeLayout
                 android:id="@+id/image_layout"
@@ -26,7 +27,7 @@
             <ImageView
                 android:id="@+id/thumbnail"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="wrap_content"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:scaleType="fitXY"
@@ -45,7 +46,7 @@
                 android:paddingTop="@dimen/album_title_padding"
                 android:paddingRight="@dimen/album_title_padding"
                 android:text="Mercedes Benz"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="20dp"
                 android:typeface="serif" />
 
@@ -58,7 +59,7 @@
                 android:paddingRight="@dimen/album_title_padding"
                 android:paddingBottom="@dimen/songs_count_padding_bottom"
                 android:text="Ksh: 2000/day"
-                android:textColor="#4A4A4A"
+                android:textColor="@color/white"
                 android:textSize="12dp" />
 
 

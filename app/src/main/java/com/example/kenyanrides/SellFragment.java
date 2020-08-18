@@ -87,13 +87,13 @@ public class SellFragment extends Fragment  {
     String image5Path;
 
 
-    String[] fuel={"Petrol","Diesel","Hybrid"};
+    String[] fuel={"SELECT", "Petrol","Diesel","Hybrid"};
 
-    String[] seats={"2 Seater", "4 Seater", "5 Seater", "7 Seater", "8 Seater",
+    String[] seats={"SELECT", "2 Seater", "4 Seater", "5 Seater", "7 Seater", "8 Seater",
             "9 Seater", "10 Seater", "11 Seater", "12 Seater", "13 Seater", "14 Seater",
             "18 Seater", "24 Seater", "32 Seater", "40 Seater", "56 Seater"};
 
-    String[] driver_status={"Self Driven","Driver Inclusive"};
+    String[] driver_status={"SELECT", "Self Driven","Driver Inclusive"};
     String[] location={"Baringo County", "Bomet County", "Bungoma County", "Busia County", "Elgeyo Marakwet County", "Embu County"
             , "Garissa County", "Homa Bay County", "Isiolo County", "Kajiado County", "Kakamega County", "Kericho County", "Kiambu County"
             , "Kilifi County", "Kirinyaga County", "Kisii County", "Kisumu County", "Kitui County", "Kwale County", "Laikipia County"
@@ -159,9 +159,6 @@ public class SellFragment extends Fragment  {
     CheckBox checkBoxCentralLocking;
     CheckBox checkBoxCrashSensor;
     CheckBox checkBoxLeatherSeats;
-
-
-
 
 
 
@@ -754,6 +751,23 @@ public class SellFragment extends Fragment  {
             Toast.makeText(getActivity(), "Please choose an image", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        //check that spinner items are slected
+        if (vehicleFuel.equals("SELECT")){
+            Toast.makeText(getActivity(), "Please select vehicle fuel type", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (vehicleSeats.equals("SELECT")){
+            Toast.makeText(getActivity(), "Please set number of seats in the vehicle", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (vehicleLocation.equals("SELECT")){
+            Toast.makeText(getActivity(), "Please select location of the vehicle", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
 
 
         try{

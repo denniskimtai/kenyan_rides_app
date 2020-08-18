@@ -1,5 +1,6 @@
 package com.example.kenyanrides;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -71,47 +72,58 @@ public class CarsAdapter extends RecyclerView.Adapter<CarsAdapter.MyViewHolder> 
             @Override
             public void onClick(View view) {
 
-                //open details activity
+                //if the user is not logged in
+                //starting the login activity
+                if (!SharedPrefManager.getInstance(mContext).isLoggedIn()) {
 
-                Intent intent = new Intent(view.getContext(), CarDetailsActivity.class);
+                    Intent intent = new Intent(view.getContext(), LoginActivity.class);
+                    view.getContext().startActivity(intent);
 
-                //send car details to cardetails activity
-
-                intent.putExtra("vehicle_id", car.getId());
-                intent.putExtra("vehicle_title", car.getCarName());
-                intent.putExtra("vehicle_brand", car.getVehicleBrand());
-                intent.putExtra("vehicle_overview", car.getVehicleOverview());
-                intent.putExtra("price_per_day", car.getCarPrice());
-                intent.putExtra("powered_by", car.getPoweredBy());
-                intent.putExtra("location", car.getLocation());
-                intent.putExtra("model_year", car.getModelYear());
-                intent.putExtra("seating_capacity", car.getSeatingCapacity());
-                intent.putExtra("driver_status", car.getDriverStatus());
-                intent.putExtra("image1", car.getImage());
-                intent.putExtra("image2", car.getImage2());
-                intent.putExtra("image3", car.getImage3());
-                intent.putExtra("image4", car.getImage4());
-                intent.putExtra("image5", car.getImage5());
-                intent.putExtra("owner_id", car.getOwnerId());
-                intent.putExtra("reg_date", car.getRegDate());
-
-                //vehicle accessories
-                intent.putExtra("airConditioner", car.getAirConditioner());
-                intent.putExtra("powerDoorLocks", car.getPowerDoorLocks());
-                intent.putExtra("antiLockBrakingSystem", car.getAntiLockBrakingSystem());
-                intent.putExtra("brakeAssist", car.getBrakeAssist());
-                intent.putExtra("powerSteering", car.getPowerSteering());
-                intent.putExtra("driverAirbag", car.getDriverAirbag());
-                intent.putExtra("passengerAirbag", car.getPassengerAirbag());
-                intent.putExtra("powerWindows", car.getPowerWindows());
-                intent.putExtra("cdPlayer", car.getCdPlayer());
-                intent.putExtra("centralLocking", car.getCentralLocking());
-                intent.putExtra("crashSensor", car.getCrashSensor());
-                intent.putExtra("leatherSeats", car.getLeatherSeats());
+                } else {
 
 
-                view.getContext().startActivity(intent);
+                    //open details activity
 
+                    Intent intent = new Intent(view.getContext(), CarDetailsActivity.class);
+
+                    //send car details to cardetails activity
+
+                    intent.putExtra("vehicle_id", car.getId());
+                    intent.putExtra("vehicle_title", car.getCarName());
+                    intent.putExtra("vehicle_brand", car.getVehicleBrand());
+                    intent.putExtra("vehicle_overview", car.getVehicleOverview());
+                    intent.putExtra("price_per_day", car.getCarPrice());
+                    intent.putExtra("powered_by", car.getPoweredBy());
+                    intent.putExtra("location", car.getLocation());
+                    intent.putExtra("model_year", car.getModelYear());
+                    intent.putExtra("seating_capacity", car.getSeatingCapacity());
+                    intent.putExtra("driver_status", car.getDriverStatus());
+                    intent.putExtra("image1", car.getImage());
+                    intent.putExtra("image2", car.getImage2());
+                    intent.putExtra("image3", car.getImage3());
+                    intent.putExtra("image4", car.getImage4());
+                    intent.putExtra("image5", car.getImage5());
+                    intent.putExtra("owner_id", car.getOwnerId());
+                    intent.putExtra("reg_date", car.getRegDate());
+
+                    //vehicle accessories
+                    intent.putExtra("airConditioner", car.getAirConditioner());
+                    intent.putExtra("powerDoorLocks", car.getPowerDoorLocks());
+                    intent.putExtra("antiLockBrakingSystem", car.getAntiLockBrakingSystem());
+                    intent.putExtra("brakeAssist", car.getBrakeAssist());
+                    intent.putExtra("powerSteering", car.getPowerSteering());
+                    intent.putExtra("driverAirbag", car.getDriverAirbag());
+                    intent.putExtra("passengerAirbag", car.getPassengerAirbag());
+                    intent.putExtra("powerWindows", car.getPowerWindows());
+                    intent.putExtra("cdPlayer", car.getCdPlayer());
+                    intent.putExtra("centralLocking", car.getCentralLocking());
+                    intent.putExtra("crashSensor", car.getCrashSensor());
+                    intent.putExtra("leatherSeats", car.getLeatherSeats());
+
+
+                    view.getContext().startActivity(intent);
+
+                }
             }
         });
 
@@ -119,47 +131,57 @@ public class CarsAdapter extends RecyclerView.Adapter<CarsAdapter.MyViewHolder> 
             @Override
             public void onClick(View view) {
 
-                //open details activity
+                //if the user is not logged in
+                //starting the login activity
+                if (!SharedPrefManager.getInstance(mContext).isLoggedIn()) {
 
-                Intent intent = new Intent(view.getContext(), CarDetailsActivity.class);
+                    Intent intent = new Intent(view.getContext(), LoginActivity.class);
+                    view.getContext().startActivity(intent);
 
-                //send car details to cardetails activity
+                } else {
 
-                intent.putExtra("vehicle_id", car.getId());
-                intent.putExtra("vehicle_title", car.getCarName());
-                intent.putExtra("vehicle_brand", car.getVehicleBrand());
-                intent.putExtra("vehicle_overview", car.getVehicleOverview());
-                intent.putExtra("price_per_day", car.getCarPrice());
-                intent.putExtra("powered_by", car.getPoweredBy());
-                intent.putExtra("location", car.getLocation());
-                intent.putExtra("model_year", car.getModelYear());
-                intent.putExtra("seating_capacity", car.getSeatingCapacity());
-                intent.putExtra("driver_status", car.getDriverStatus());
-                intent.putExtra("image1", car.getImage());
-                intent.putExtra("image2", car.getImage2());
-                intent.putExtra("image3", car.getImage3());
-                intent.putExtra("image4", car.getImage4());
-                intent.putExtra("image5", car.getImage5());
-                intent.putExtra("owner_id", car.getOwnerId());
-                intent.putExtra("reg_date", car.getRegDate());
+                    //open details activity
 
-                //vehicle accessories
-                intent.putExtra("airConditioner", car.getAirConditioner());
-                intent.putExtra("powerDoorLocks", car.getPowerDoorLocks());
-                intent.putExtra("antiLockBrakingSystem", car.getAntiLockBrakingSystem());
-                intent.putExtra("brakeAssist", car.getBrakeAssist());
-                intent.putExtra("powerSteering", car.getPowerSteering());
-                intent.putExtra("driverAirbag", car.getDriverAirbag());
-                intent.putExtra("passengerAirbag", car.getPassengerAirbag());
-                intent.putExtra("powerWindows", car.getPowerWindows());
-                intent.putExtra("cdPlayer", car.getCdPlayer());
-                intent.putExtra("centralLocking", car.getCentralLocking());
-                intent.putExtra("crashSensor", car.getCrashSensor());
-                intent.putExtra("leatherSeats", car.getLeatherSeats());
+                    Intent intent = new Intent(view.getContext(), CarDetailsActivity.class);
+
+                    //send car details to cardetails activity
+
+                    intent.putExtra("vehicle_id", car.getId());
+                    intent.putExtra("vehicle_title", car.getCarName());
+                    intent.putExtra("vehicle_brand", car.getVehicleBrand());
+                    intent.putExtra("vehicle_overview", car.getVehicleOverview());
+                    intent.putExtra("price_per_day", car.getCarPrice());
+                    intent.putExtra("powered_by", car.getPoweredBy());
+                    intent.putExtra("location", car.getLocation());
+                    intent.putExtra("model_year", car.getModelYear());
+                    intent.putExtra("seating_capacity", car.getSeatingCapacity());
+                    intent.putExtra("driver_status", car.getDriverStatus());
+                    intent.putExtra("image1", car.getImage());
+                    intent.putExtra("image2", car.getImage2());
+                    intent.putExtra("image3", car.getImage3());
+                    intent.putExtra("image4", car.getImage4());
+                    intent.putExtra("image5", car.getImage5());
+                    intent.putExtra("owner_id", car.getOwnerId());
+                    intent.putExtra("reg_date", car.getRegDate());
+
+                    //vehicle accessories
+                    intent.putExtra("airConditioner", car.getAirConditioner());
+                    intent.putExtra("powerDoorLocks", car.getPowerDoorLocks());
+                    intent.putExtra("antiLockBrakingSystem", car.getAntiLockBrakingSystem());
+                    intent.putExtra("brakeAssist", car.getBrakeAssist());
+                    intent.putExtra("powerSteering", car.getPowerSteering());
+                    intent.putExtra("driverAirbag", car.getDriverAirbag());
+                    intent.putExtra("passengerAirbag", car.getPassengerAirbag());
+                    intent.putExtra("powerWindows", car.getPowerWindows());
+                    intent.putExtra("cdPlayer", car.getCdPlayer());
+                    intent.putExtra("centralLocking", car.getCentralLocking());
+                    intent.putExtra("crashSensor", car.getCrashSensor());
+                    intent.putExtra("leatherSeats", car.getLeatherSeats());
 
 
-                view.getContext().startActivity(intent);
+                    view.getContext().startActivity(intent);
 
+                }
             }
         });
 

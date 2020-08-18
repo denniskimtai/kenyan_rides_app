@@ -1,7 +1,9 @@
 package com.example.kenyanrides;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,15 +15,32 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 
 public class AccountFragment extends Fragment {
 
@@ -33,12 +52,15 @@ public class AccountFragment extends Fragment {
     Button btnSaveChanges;
 
     private AlertDialog.Builder alertDialogBuilder;
+    private ProgressDialog progressDialog;
 
     private int mYear, mMonth, mDay;
 
     private String dateOfBirth, userId;
 
     private List<VehicleBookings> vehicleBookingsList;
+
+    String update_user_data = "https://kenyanrides.com/android/update_user_data.php";
 
 
     @Nullable
@@ -63,6 +85,7 @@ public class AccountFragment extends Fragment {
         btnSaveChanges =myview.findViewById(R.id.btnSaveChanges);
 
         alertDialogBuilder = new AlertDialog.Builder(getActivity());
+        progressDialog = new ProgressDialog(getActivity());
 
 
         //getting the current user
@@ -117,31 +140,28 @@ public class AccountFragment extends Fragment {
                 mDay = c.get(Calendar.DAY_OF_MONTH);
 
                 DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(),
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                        (datePicker, i, i1, i2) -> {
 
-                                Calendar selectedCal = Calendar.getInstance();
-                                selectedCal.set(i, i1, i2);
-                                Date selectedDate = selectedCal.getTime();
-                                Date currentDate = Calendar.getInstance().getTime();
-                                int diff1 = selectedDate.compareTo(currentDate);
-                                if(diff1>0){
-                                    alertDialogBuilder.setMessage("Please enter a valid date");
-                                    alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            editTextDateOfBirth.setText(user.getDob());
-                                        }
-                                    });
-                                    alertDialogBuilder.show();
-                                    return;
-                                }
-
-                                editTextDateOfBirth.setText(i2 + "/" + (i1 + 1) + "/" + i);
-                                dateOfBirth = i2 + "/" + (i1 + 1) + "/" + i;
-
+                            Calendar selectedCal = Calendar.getInstance();
+                            selectedCal.set(i, i1, i2);
+                            Date selectedDate = selectedCal.getTime();
+                            Date currentDate = Calendar.getInstance().getTime();
+                            int diff1 = selectedDate.compareTo(currentDate);
+                            if(diff1>0){
+                                alertDialogBuilder.setMessage("Please enter a valid date");
+                                alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        editTextDateOfBirth.setText(user.getDob());
+                                    }
+                                });
+                                alertDialogBuilder.show();
+                                return;
                             }
+
+                            editTextDateOfBirth.setText(i2 + "/" + (i1 + 1) + "/" + i);
+                            dateOfBirth = i2 + "/" + (i1 + 1) + "/" + i;
+
                         }, mYear, mMonth, mDay);
 
                 datePickerDialog.show();
@@ -149,26 +169,16 @@ public class AccountFragment extends Fragment {
             }
         });
         
-        btnSaveChanges.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                
-                updateUserData();
-                
-            }
-        });
+        btnSaveChanges.setOnClickListener(view -> updateUserData());
 
 
         //when the user presses signout text
         //calling the logout method
-        txtSignOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SharedPrefManager.getInstance(getActivity()).logout();
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                getActivity().finish();
-                startActivity(intent);
-            }
+        txtSignOut.setOnClickListener(view -> {
+            SharedPrefManager.getInstance(getActivity()).logout();
+            Intent intent = new Intent(getActivity(), LoginActivity.class);
+            getActivity().finish();
+            startActivity(intent);
         });
 
         return myview;
@@ -232,12 +242,78 @@ public class AccountFragment extends Fragment {
             return;
         }
 
-        String type = "update user details";
+        dateOfBirth = editTextDateOfBirth.getText().toString();
+        if(TextUtils.isEmpty(dateOfBirth)){
+            editTextDateOfBirth.setError("Please enter your date of birth");
+            return;
+        }
 
-        BackgroundHelperClass backgroundHelperClass = new BackgroundHelperClass(getActivity());
 
-        backgroundHelperClass.execute(type,firstName, secondName, id, phoneNumber, emailAddress, dateOfBirth, city, country, address, userId);
+        progressDialog.setMessage("Updating. Please wait...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
+        //Login and fetch result from database
+        StringRequest stringRequest = new StringRequest(
+                Request.Method.POST,
+                update_user_data,
+                response -> {
+
+                    //check response from api
+                    switch (response){
+                        case "Record updated successfully":
+                            alertDialogBuilder.setMessage("Record updated successfully");
+                            alertDialogBuilder.setCancelable(false);
+                            alertDialogBuilder.setPositiveButton("OK", (dialogInterface, i) -> {
+
+                                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                                startActivity(intent);
+                                getActivity().finish();
+
+                            });
+                            alertDialogBuilder.show();
+
+                            break;
+
+                        case "Error updating record":
+                            alertDialogBuilder.setMessage("Update not successful. Please try again");
+                            alertDialogBuilder.show();
+
+                            break;
+                    }
+
+
+                }, error -> {
+
+                    progressDialog.dismiss();
+
+                    Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+
+                }){
+            //send params needed to db
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+
+                params.put("first_name", firstName);
+                params.put("second_name", secondName);
+                params.put("national_id", id);
+                params.put("mobile_number", phoneNumber);
+                params.put("email_address", emailAddress);
+                params.put("dob", dateOfBirth);
+                params.put("city", city);
+                params.put("country", country);
+                params.put("address", address);
+                params.put("user_id", userId);
+
+                return params;
+
+            }
+        };
+
+        Volley.newRequestQueue(getActivity()).add(stringRequest);
 
 
     }
+
 }

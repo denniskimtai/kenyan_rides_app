@@ -12,6 +12,8 @@ import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -33,6 +35,7 @@ import java.util.Map;
 public class BookingsActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
+    private LinearLayout linearLayoutEmpty;
     private BookingsAdapter adapter;
     private List<VehicleBookings> vehicleBookingsList;
 
@@ -47,7 +50,8 @@ public class BookingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bookings);
 
-        recyclerView = (RecyclerView) findViewById(R.id.bookingsRecyclerView);
+        recyclerView = findViewById(R.id.bookingsRecyclerView);
+        linearLayoutEmpty = findViewById(R.id.linearEmpty);
 
         vehicleBookingsList = new ArrayList<>();
 
@@ -115,28 +119,38 @@ public class BookingsActivity extends AppCompatActivity {
                         try {
                             JSONArray bookingsJson = new JSONArray(response);
 
-                            for(int i = 0; i<bookingsJson.length(); i++) {
+                            if (bookingsJson.length() != 0) {
 
-                                //get json objects
-                                JSONObject bookingsObject = bookingsJson.getJSONObject(i);
+                                recyclerView.setVisibility(View.VISIBLE);
+                                linearLayoutEmpty.setVisibility(View.GONE);
 
-                                int vehicleId = bookingsObject.getInt("VehicleId");
-                                String vehicleTitle = bookingsObject.getString("VehiclesTitle");
+                                for (int i = 0; i < bookingsJson.length(); i++) {
 
-                                String Status = bookingsObject.getString("Status");
-                                String FromDate = bookingsObject.getString("FromDate");
-                                String ToDate = bookingsObject.getString("ToDate");
-                                int totalpricedue = bookingsObject.getInt("totalpricedue");
-                                String TravelDestination = bookingsObject.getString("TravelDestination");
-                                String Vimage1 = "https://kenyanrides.com/serviceprovider/img/vehicleimages/" + bookingsObject.getString("Vimage1");
+                                    //get json objects
+                                    JSONObject bookingsObject = bookingsJson.getJSONObject(i);
+
+                                    int vehicleId = bookingsObject.getInt("VehicleId");
+                                    String vehicleTitle = bookingsObject.getString("VehiclesTitle");
+
+                                    String Status = bookingsObject.getString("Status");
+                                    String FromDate = bookingsObject.getString("FromDate");
+                                    String ToDate = bookingsObject.getString("ToDate");
+                                    int totalpricedue = bookingsObject.getInt("totalpricedue");
+                                    String TravelDestination = bookingsObject.getString("TravelDestination");
+                                    String Vimage1 = "https://kenyanrides.com/serviceprovider/img/vehicleimages/" + bookingsObject.getString("Vimage1");
 
 
-                                VehicleBookings vehicleBookings = new VehicleBookings(vehicleTitle, FromDate, ToDate, TravelDestination,
-                                        totalpricedue,Vimage1, Status, bookingsJson.length(), vehicleId);
+                                    VehicleBookings vehicleBookings = new VehicleBookings(vehicleTitle, FromDate, ToDate, TravelDestination,
+                                            totalpricedue, Vimage1, Status, bookingsJson.length(), vehicleId);
 
-                                vehicleBookingsList.add(vehicleBookings);
+                                    vehicleBookingsList.add(vehicleBookings);
 
 
+                                }
+                            }else {
+
+                                recyclerView.setVisibility(View.GONE);
+                                linearLayoutEmpty.setVisibility(View.VISIBLE);
 
                             }
 

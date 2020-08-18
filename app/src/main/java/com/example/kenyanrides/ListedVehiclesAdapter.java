@@ -13,14 +13,21 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ListedVehiclesAdapter extends RecyclerView.Adapter<ListedVehiclesAdapter.MyViewHolder> {
 
@@ -30,6 +37,8 @@ public class ListedVehiclesAdapter extends RecyclerView.Adapter<ListedVehiclesAd
     private AlertDialog.Builder alertDialogBuilder;
 
     private ProgressDialog progressDialog;
+
+    String delete_vehicle_url = "https://kenyanrides.com/android/delete_vehicle.php";
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -139,13 +148,73 @@ public class ListedVehiclesAdapter extends RecyclerView.Adapter<ListedVehiclesAd
                     alertDialogBuilder.setMessage("You are about to delete your vehicle listing from the system!\n\nThis is process cannot be reversed are you sure you want to delete?");
                     alertDialogBuilder.setCancelable(false);
                     alertDialogBuilder.setPositiveButton("Yes", (dialogInterface, i) -> {
+
                         //delete vehicle
 
-                        String type = "delete vehicle";
+                        progressDialog.setMessage("Loading...");
+                        progressDialog.setCancelable(false);
+                        progressDialog.show();
 
-                        BackgroundHelperClass backgroundHelperClass = new BackgroundHelperClass(mContext);
+                        StringRequest stringRequest = new StringRequest(
+                                Request.Method.POST,
+                                delete_vehicle_url,
+                                response -> {
 
-                        backgroundHelperClass.execute(type,String.valueOf(listVehicle.getId()));
+                                    //fetch results from api
+                                    switch (response) {
+
+                                        case "Vehicle deleted successfully":
+                                            alertDialogBuilder.setMessage("Vehicle deleted");
+                                            alertDialogBuilder.setCancelable(false);
+                                            alertDialogBuilder.setPositiveButton("Ok", (dialogInterface1, i1) -> {
+
+                                                //go to main activity
+                                                Intent intent = new Intent(mContext, MainActivity.class);
+                                                mContext.startActivity(intent);
+                                                ((Activity) mContext).finish();
+
+                                            });
+                                            alertDialogBuilder.show();
+
+                                            break;
+
+                                        case "Vehicle failed to delete":
+                                            alertDialogBuilder.setTitle("Failed!");
+                                            alertDialogBuilder.setMessage("Vehicle not deleted! Please try again");
+                                            alertDialogBuilder.setCancelable(false);
+                                            alertDialogBuilder.setPositiveButton("Try again", (dialogInterface12, i12) -> {
+
+                                            });
+                                            alertDialogBuilder.show();
+
+                                            break;
+
+                                    }
+                                    progressDialog.dismiss();
+
+
+                                }, error -> {
+
+                            progressDialog.dismiss();
+
+                            Toast.makeText(mContext, error.getMessage(), Toast.LENGTH_SHORT).show();
+
+                        }){
+                            //send params needed to db
+                            @Override
+                            protected Map<String, String> getParams() throws AuthFailureError {
+                                Map<String, String> params = new HashMap<>();
+
+                                params.put("vehicleId", String.valueOf(listVehicle.getId()));
+
+
+                                return params;
+
+                            }
+                        };
+
+                        Volley.newRequestQueue(mContext).add(stringRequest);
+
 
                     });
 
@@ -264,26 +333,71 @@ public class ListedVehiclesAdapter extends RecyclerView.Adapter<ListedVehiclesAd
                 //delete vehicle from db
                 holder.textViewDelete.setOnClickListener(view -> {
 
-                    alertDialogBuilder.setTitle("Warning!");
-                    alertDialogBuilder.setMessage("You are about to delete your vehicle listing from the system!\nThis is process cannot be reversed are you sure you want to delete?");
-                    alertDialogBuilder.setCancelable(false);
-                    alertDialogBuilder.setPositiveButton("Yes", (dialogInterface, i) -> {
-                        //delete vehicle
+                    //delete vehicle
 
-                        String type = "delete vehicle";
+                    progressDialog.setMessage("Loading...");
+                    progressDialog.setCancelable(false);
+                    progressDialog.show();
 
-                        BackgroundHelperClass backgroundHelperClass = new BackgroundHelperClass(mContext);
+                    StringRequest stringRequest = new StringRequest(
+                            Request.Method.POST,
+                            delete_vehicle_url,
+                            response -> {
 
-                        backgroundHelperClass.execute(type,String.valueOf(listVehicle.getId()));
+                                //fetch results from api
+                                switch (response) {
 
-                    });
+                                    case "Vehicle deleted successfully":
+                                        alertDialogBuilder.setMessage("Vehicle deleted");
+                                        alertDialogBuilder.setCancelable(false);
+                                        alertDialogBuilder.setPositiveButton("Ok", (dialogInterface1, i1) -> {
 
-                    alertDialogBuilder.setNegativeButton("Cancel", (dialogInterface, i) -> {
-                        //cancel alert dialog
+                                            //go to main activity
+                                            Intent intent = new Intent(mContext, MainActivity.class);
+                                            mContext.startActivity(intent);
+                                            ((Activity) mContext).finish();
 
-                    });
+                                        });
+                                        alertDialogBuilder.show();
 
-                    alertDialogBuilder.show();
+                                        break;
+
+                                    case "Vehicle failed to delete":
+                                        alertDialogBuilder.setTitle("Failed!");
+                                        alertDialogBuilder.setMessage("Vehicle not deleted! Please try again");
+                                        alertDialogBuilder.setCancelable(false);
+                                        alertDialogBuilder.setPositiveButton("Try again", (dialogInterface12, i12) -> {
+
+                                        });
+                                        alertDialogBuilder.show();
+
+                                        break;
+
+                                }
+                                progressDialog.dismiss();
+
+
+                            }, error -> {
+
+                        progressDialog.dismiss();
+
+                        Toast.makeText(mContext, error.getMessage(), Toast.LENGTH_SHORT).show();
+
+                    }){
+                        //send params needed to db
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            Map<String, String> params = new HashMap<>();
+
+                            params.put("vehicleId", String.valueOf(listVehicle.getId()));
+
+
+                            return params;
+
+                        }
+                    };
+
+                    Volley.newRequestQueue(mContext).add(stringRequest);
 
 
                 });

@@ -8,6 +8,8 @@ import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -36,6 +38,7 @@ import java.util.Map;
 public class ListVehiclesActivity extends AppCompatActivity{
 
     private RecyclerView recyclerView;
+    private LinearLayout linearLayoutEmpty;
     private ListedVehiclesAdapter adapter;
     private List<ListVehicle> listedVehiclesList;
 
@@ -51,6 +54,7 @@ public class ListVehiclesActivity extends AppCompatActivity{
         setContentView(R.layout.activity_list_vehicles);
 
         recyclerView = (RecyclerView) findViewById(R.id.vehiclesListRecyclerView);
+        linearLayoutEmpty = findViewById(R.id.linearEmpty);
 
         listedVehiclesList = new ArrayList<>();
 
@@ -118,55 +122,66 @@ public class ListVehiclesActivity extends AppCompatActivity{
                         try {
                             JSONArray listedVehiclesJson = new JSONArray(response);
 
-                            for(int i = 0; i<listedVehiclesJson.length(); i++) {
+                            if (listedVehiclesJson.length() == 0){
 
-                                //get json objects
-                                JSONObject listedVehiclesObject = listedVehiclesJson.getJSONObject(i);
+                                recyclerView.setVisibility(View.GONE);
+                                linearLayoutEmpty.setVisibility(View.VISIBLE);
 
-                                String vehicleTitle = listedVehiclesObject.getString("VehiclesTitle");
+                            }else {
+                                recyclerView.setVisibility(View.VISIBLE);
+                                linearLayoutEmpty.setVisibility(View.GONE);
 
-                                int pricePerDay = listedVehiclesObject.getInt("PricePerDay");
+                                for (int i = 0; i < listedVehiclesJson.length(); i++) {
 
-                                String vehicleImage = "https://kenyanrides.com/serviceprovider/img/vehicleimages/" + listedVehiclesObject.getString("Vimage1");
+                                    //get json objects
+                                    JSONObject listedVehiclesObject = listedVehiclesJson.getJSONObject(i);
+
+                                    String vehicleTitle = listedVehiclesObject.getString("VehiclesTitle");
+
+                                    int pricePerDay = listedVehiclesObject.getInt("PricePerDay");
+
+                                    String vehicleImage = "https://kenyanrides.com/serviceprovider/img/vehicleimages/" + listedVehiclesObject.getString("Vimage1");
 
 
-                                //
-                                int id = listedVehiclesObject.getInt("id");
-                                String vehicleBrand = listedVehiclesObject.getString("VehiclesBrand");
-                                String vehicleOverview = listedVehiclesObject.getString("VehiclesOverview");
-                                String poweredBy = listedVehiclesObject.getString("poweredby");
-                                String fuelType = listedVehiclesObject.getString("FuelType");
-                                String modelYear = listedVehiclesObject.getString("ModelYear");
-                                String seatingCapacity = listedVehiclesObject.getString("SeatingCapacity");
-                                String driverStatus = listedVehiclesObject.getString("Dstatus");
-                                String vehicleImage2 = "https://kenyanrides.com/serviceprovider/img/vehicleimages/" + listedVehiclesObject.getString("Vimage2");
-                                String vehicleImage3 = "https://kenyanrides.com/serviceprovider/img/vehicleimages/" + listedVehiclesObject.getString("Vimage3");
-                                String vehicleImage4 = "https://kenyanrides.com/serviceprovider/img/vehicleimages/" + listedVehiclesObject.getString("Vimage4");
-                                String vehicleImage5 = "https://kenyanrides.com/serviceprovider/img/vehicleimages/" + listedVehiclesObject.getString("Vimage5");
-                                String airConditioner = listedVehiclesObject.getString("AirConditioner");
-                                String powerDoorLocks = listedVehiclesObject.getString("PowerDoorLocks");
-                                String antiLockBrakingSystem = listedVehiclesObject.getString("AntiLockBrakingSystem");
-                                String brakeAssist = listedVehiclesObject.getString("BrakeAssist");
-                                String powerSteering = listedVehiclesObject.getString("PowerSteering");
-                                String driverAirbag = listedVehiclesObject.getString("DriverAirbag");
-                                String passengerAirbag = listedVehiclesObject.getString("PassengerAirbag");
-                                String powerWindows = listedVehiclesObject.getString("PowerWindows");
-                                String cdPlayer = listedVehiclesObject.getString("CDPlayer");
-                                String centralLocking = listedVehiclesObject.getString("CentralLocking");
-                                String crashSensor = listedVehiclesObject.getString("CrashSensor");
-                                String leatherSeats = listedVehiclesObject.getString("LeatherSeats");
-                                String ownerId = listedVehiclesObject.getString("owner_id");
-                                String regDate = listedVehiclesObject.getString("RegDate");
-                                String booked = listedVehiclesObject.getString("booked");
+                                    //
+                                    int id = listedVehiclesObject.getInt("id");
+                                    String vehicleBrand = listedVehiclesObject.getString("VehiclesBrand");
+                                    String vehicleOverview = listedVehiclesObject.getString("VehiclesOverview");
+                                    String poweredBy = listedVehiclesObject.getString("poweredby");
+                                    String fuelType = listedVehiclesObject.getString("FuelType");
+                                    String modelYear = listedVehiclesObject.getString("ModelYear");
+                                    String seatingCapacity = listedVehiclesObject.getString("SeatingCapacity");
+                                    String driverStatus = listedVehiclesObject.getString("Dstatus");
+                                    String vehicleImage2 = "https://kenyanrides.com/serviceprovider/img/vehicleimages/" + listedVehiclesObject.getString("Vimage2");
+                                    String vehicleImage3 = "https://kenyanrides.com/serviceprovider/img/vehicleimages/" + listedVehiclesObject.getString("Vimage3");
+                                    String vehicleImage4 = "https://kenyanrides.com/serviceprovider/img/vehicleimages/" + listedVehiclesObject.getString("Vimage4");
+                                    String vehicleImage5 = "https://kenyanrides.com/serviceprovider/img/vehicleimages/" + listedVehiclesObject.getString("Vimage5");
+                                    String airConditioner = listedVehiclesObject.getString("AirConditioner");
+                                    String powerDoorLocks = listedVehiclesObject.getString("PowerDoorLocks");
+                                    String antiLockBrakingSystem = listedVehiclesObject.getString("AntiLockBrakingSystem");
+                                    String brakeAssist = listedVehiclesObject.getString("BrakeAssist");
+                                    String powerSteering = listedVehiclesObject.getString("PowerSteering");
+                                    String driverAirbag = listedVehiclesObject.getString("DriverAirbag");
+                                    String passengerAirbag = listedVehiclesObject.getString("PassengerAirbag");
+                                    String powerWindows = listedVehiclesObject.getString("PowerWindows");
+                                    String cdPlayer = listedVehiclesObject.getString("CDPlayer");
+                                    String centralLocking = listedVehiclesObject.getString("CentralLocking");
+                                    String crashSensor = listedVehiclesObject.getString("CrashSensor");
+                                    String leatherSeats = listedVehiclesObject.getString("LeatherSeats");
+                                    String ownerId = listedVehiclesObject.getString("owner_id");
+                                    String regDate = listedVehiclesObject.getString("RegDate");
+                                    String booked = listedVehiclesObject.getString("booked");
 
-                                ListVehicle listVehicle = new ListVehicle(vehicleImage, vehicleTitle, pricePerDay, id, vehicleBrand,
-                                        vehicleOverview, poweredBy, fuelType, modelYear, seatingCapacity,
-                                        driverStatus, vehicleImage2, vehicleImage3, vehicleImage4, vehicleImage5,
-                                        airConditioner, powerDoorLocks, antiLockBrakingSystem, brakeAssist, powerSteering,
-                                        driverAirbag, passengerAirbag, powerWindows, cdPlayer, centralLocking,
-                                        crashSensor, leatherSeats, ownerId, regDate, booked);
+                                    ListVehicle listVehicle = new ListVehicle(vehicleImage, vehicleTitle, pricePerDay, id, vehicleBrand,
+                                            vehicleOverview, poweredBy, fuelType, modelYear, seatingCapacity,
+                                            driverStatus, vehicleImage2, vehicleImage3, vehicleImage4, vehicleImage5,
+                                            airConditioner, powerDoorLocks, antiLockBrakingSystem, brakeAssist, powerSteering,
+                                            driverAirbag, passengerAirbag, powerWindows, cdPlayer, centralLocking,
+                                            crashSensor, leatherSeats, ownerId, regDate, booked);
 
-                                listedVehiclesList.add(listVehicle);
+                                    listedVehiclesList.add(listVehicle);
+
+                                }
 
                             }
 

@@ -3,10 +3,12 @@ package com.example.kenyanrides;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -17,6 +19,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,10 +32,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import Model.AccessToken;
 import Model.STKPush;
@@ -73,11 +82,13 @@ public class BookNowActivity extends AppCompatActivity implements View.OnClickLi
     String returnTime;
 
     private AlertDialog.Builder alertDialog;
+    private ProgressDialog progressDialog;
 
     private Button btnBookNow;
 
     private DarajaApiClient mApiClient;
-    private ProgressDialog mProgressDialog;
+
+    private String confirm_payment_url = "https://kenyanrides.com/android/verify_payment.php";
 
 
     @Override
@@ -109,7 +120,7 @@ public class BookNowActivity extends AppCompatActivity implements View.OnClickLi
 
         alertDialog = new AlertDialog.Builder(this);
 
-        mProgressDialog = new ProgressDialog(this);
+        progressDialog = new ProgressDialog(this);
         mApiClient = new DarajaApiClient();
         mApiClient.setIsDebug(true); //Set True to enable logging, false to disable.
 
@@ -299,11 +310,11 @@ public class BookNowActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     public void performSTKPush(String phone_number,String amount) {
-        mProgressDialog.setMessage("Processing your request");
-        mProgressDialog.setTitle("Please Wait...");
-        mProgressDialog.setCancelable(false);
-        mProgressDialog.setIndeterminate(true);
-        mProgressDialog.show();
+        progressDialog.setMessage("Processing your request");
+        progressDialog.setTitle("Please Wait...");
+        progressDialog.setCancelable(false);
+        progressDialog.setIndeterminate(true);
+        progressDialog.show();
         String timestamp = Utils.getTimestamp();
         STKPush stkPush = new STKPush(
                 BUSINESS_SHORT_CODE,
@@ -325,10 +336,9 @@ public class BookNowActivity extends AppCompatActivity implements View.OnClickLi
         mApiClient.mpesaService().sendPush(stkPush).enqueue(new Callback<STKPush>() {
             @Override
             public void onResponse(@NonNull Call<STKPush> call, @NonNull Response<STKPush> response) {
-                mProgressDialog.dismiss();
+                progressDialog.dismiss();
                 try {
                     if (response.isSuccessful()) {
-                        Toast.makeText(BookNowActivity.this, "post submitted to API. %s" + response.body(), Toast.LENGTH_SHORT).show();
                         //show alert dialog
                         alertDialog.setMessage("Please check your phone for a service fee payment of 10%");
                         alertDialog.setCancelable(false);
@@ -345,14 +355,82 @@ public class BookNowActivity extends AppCompatActivity implements View.OnClickLi
                                 int price_per_day = (int) (getIntent().getIntExtra("price_per_day", 0)/1.1);
 
 
-                                //verify transaction
-                                String type = "payment";
 
-                                BackgroundHelperClass backgroundHelperClass = new BackgroundHelperClass(BookNowActivity.this);
+                                //volley to verify transaction
+                                progressDialog.setMessage("verifying payment....");
+                                progressDialog.setCancelable(false);
+                                progressDialog.show();
 
-                                backgroundHelperClass.execute(type,pickUpDate, pickUpTime, vehicleTravelLocation, returnDate, returnTime,
-                                        Utils.sanitizePhoneNumber(phone_number), pickupLocation, returnLocation, String.valueOf(vehicleId), userEmail, String.valueOf(price_per_day),
-                                        vehicle_owner_email, vehicle_title);
+                                //fetch respose from api
+                                StringRequest stringRequest = new StringRequest(
+                                        Request.Method.POST,
+                                        confirm_payment_url,
+                                        response -> {
+                                            //check response returned
+
+                                            switch (response){
+
+                                                case "payment verified":
+
+                                                    alertDialog.setTitle("Verified!");
+                                                    alertDialog.setMessage("Payment is verified. Your booking request has been sent to the vehicle owner");
+                                                    alertDialog.setCancelable(false);
+                                                    alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                                                            Intent intent = new Intent(BookNowActivity.this, MainActivity.class);
+                                                            startActivity(intent);
+                                                            finish();
+
+                                                        }
+                                                    });
+                                                    alertDialog.show();
+
+                                                    break;
+
+                                                case "payment unverified":
+                                                    alertDialog.setTitle("Failed!");
+                                                    alertDialog.setMessage("We could not verify you payment. Please try again\nYou need to pay a 10% service fee ");
+                                                    alertDialog.setCancelable(false);
+                                                    alertDialog.setPositiveButton("Try again", (dialogInterface1, i1) -> {
+
+                                                    });
+                                                    alertDialog.show();
+
+                                                    break;
+
+                                            }
+
+
+                                        }, error -> Toast.makeText(BookNowActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show()
+
+                                ){
+                                    //send params needed to db
+                                    @Override
+                                    protected Map<String, String> getParams() throws AuthFailureError {
+                                        Map<String, String> params = new HashMap<>();
+
+                                        params.put("pickupDate", pickUpDate);
+                                        params.put("pickupTime", pickUpTime);
+                                        params.put("vehicleTravelDestination", vehicleTravelLocation);
+                                        params.put("returnDate", returnDate);
+                                        params.put("returnTime", returnTime);
+                                        params.put("phoneNumber", Utils.sanitizePhoneNumber(phone_number));
+                                        params.put("pickupLocation", pickupLocation);
+                                        params.put("returnLocation", returnLocation);
+                                        params.put("vehicle_id", String.valueOf(vehicleId));
+                                        params.put("userEmail", userEmail);
+                                        params.put("price_per_day", String.valueOf(price_per_day));
+                                        params.put("vehicle_owner_email", vehicle_owner_email);
+                                        params.put("vehicle_title", vehicle_title);
+
+                                        return params;
+
+                                    }
+                                };
+
+                                Volley.newRequestQueue(BookNowActivity.this).add(stringRequest);
 
 
                             }
@@ -370,7 +448,7 @@ public class BookNowActivity extends AppCompatActivity implements View.OnClickLi
                         //if stk push was not successful
                         Toast.makeText(BookNowActivity.this, "Response %s" + response.errorBody().string(), Toast.LENGTH_SHORT).show();
                         alertDialog.setTitle("Error");
-                        alertDialog.setMessage("There seems to be an issue getting your payment. Please try again");
+                        alertDialog.setMessage("There seems to be an issue getting your payment. Please ensure your phone number is correct");
 
                     }
                     alertDialog.show();
@@ -382,8 +460,8 @@ public class BookNowActivity extends AppCompatActivity implements View.OnClickLi
 
             @Override
             public void onFailure(@NonNull Call<STKPush> call, @NonNull Throwable t) {
-                mProgressDialog.dismiss();
-                Toast.makeText(BookNowActivity.this, "hapa "+t.getMessage(), Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+                Toast.makeText(BookNowActivity.this, "Mpesa failed to get you to pay! "+t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
