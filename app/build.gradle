@@ -86,6 +86,9 @@ dependencies {
 
     implementation 'androidx.multidex:multidex:2.0.1'
 
+    //places autocomplete
+    implementation 'com.google.android.libraries.places:places:2.1.0'
+
 
 
 }

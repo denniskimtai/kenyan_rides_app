@@ -29,7 +29,7 @@ public class CarDetailsActivity extends AppCompatActivity {
 
     private ArrayList<String> ImagesArray = new ArrayList<String>();
 
-    private TextView txt_vehicle_title, txt_vehicle_overview, txt_price_per_day, txt_powered_by, txt_location, txt_model_year, txt_seating_capacity, txt_driver_status, txt_owner_id, txt_owner_reg_date;
+    private TextView txt_vehicle_title, txt_vehicle_overview, txt_price_per_day, txt_powered_by, txt_location, txt_model_year, txt_seating_capacity, txt_driver_status, txt_owner_reg_date;
 
     private ImageView imgAirConditioner, imgAntilockBrakingSystem, imgPowerSteering, imgPowerWindows, imgCdPlayer, imgLeatherSeats, imgCentralLocking,
     imgPowerDoorLocks, imgBrakeAssist, imgDriverAirbag, imgPassengerAirbag, imgCrashSensor;
@@ -51,7 +51,6 @@ public class CarDetailsActivity extends AppCompatActivity {
         txt_model_year = findViewById(R.id.txt_vehicle_model_year);
         txt_seating_capacity = findViewById(R.id.txt_vehicle_seats);
         txt_driver_status = findViewById(R.id.txt_vehicle_driver_status);
-        txt_owner_id = findViewById(R.id.txt_vehicle_owner_id);
         txt_owner_reg_date = findViewById(R.id.txt_owner_reg_date);
 
         //initializing image views
@@ -104,7 +103,6 @@ public class CarDetailsActivity extends AppCompatActivity {
         txt_model_year.setText(model_year);
         txt_seating_capacity.setText(seating_capacity);
         txt_driver_status.setText(driver_status);
-        txt_owner_id.setText(owner_id);
         txt_owner_reg_date.setText(reg_date);
 
         //setimage resource

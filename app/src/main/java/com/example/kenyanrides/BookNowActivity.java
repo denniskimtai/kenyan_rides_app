@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,6 +38,13 @@ import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.common.api.Status;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.TypeFilter;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -95,6 +103,7 @@ public class BookNowActivity extends AppCompatActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_now);
+
 
         //initializing views
         TxtPickupDate = findViewById(R.id.pickupDate);
@@ -379,7 +388,7 @@ public class BookNowActivity extends AppCompatActivity implements View.OnClickLi
                                                         @Override
                                                         public void onClick(DialogInterface dialogInterface, int i) {
 
-                                                            Intent intent = new Intent(BookNowActivity.this, MainActivity.class);
+                                                            Intent intent = new Intent(BookNowActivity.this, BookingsActivity.class);
                                                             startActivity(intent);
                                                             finish();
 

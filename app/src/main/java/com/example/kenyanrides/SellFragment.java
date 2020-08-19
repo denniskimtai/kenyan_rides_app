@@ -21,6 +21,7 @@ import android.provider.OpenableColumns;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,14 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.gms.common.api.Status;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.TypeFilter;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+
 import net.gotev.uploadservice.MultipartUploadRequest;
 import net.gotev.uploadservice.ServerResponse;
 import net.gotev.uploadservice.UploadInfo;
@@ -60,6 +69,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -267,7 +277,6 @@ public class SellFragment extends Fragment  {
 
         final Spinner driverSpinner = myView.findViewById(R.id.driver_status_spinner);
 
-        final Spinner locationSpinner = myView.findViewById(R.id.location_spinner);
 
         brandSpinner = myView.findViewById(R.id.brand_spinner);
 
@@ -336,29 +345,45 @@ public class SellFragment extends Fragment  {
         //Setting the ArrayAdapter data on the Spinner
         seatsSpinner.setAdapter(seatsAdapter);
 
-        locationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        //places autocomplete
+        String apiKey = getString(R.string.api_key);
+        if (!Places.isInitialized()) {
+            Places.initialize(getActivity().getApplicationContext(), apiKey);
+        }
+
+        // Create a new Places client instance.
+        PlacesClient placesClient = Places.createClient(getActivity());
+
+        // Initialize the AutocompleteSupportFragment.
+        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
+                getChildFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+        autocompleteFragment.setTypeFilter(TypeFilter.CITIES);
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.PHOTO_METADATAS));
+        autocompleteFragment.setHint("SELECT");
+        autocompleteFragment.getView().findViewById(R.id.places_autocomplete_search_button).setVisibility(View.GONE);
+
+        //customise autocomplete edittext
+        EditText etPlace = autocompleteFragment.getView().findViewById(R.id.places_autocomplete_search_input);
+        etPlace.setTextSize(12.0f);
+        etPlace.setHintTextColor(getActivity().getResources().getColor(R.color.black));
+        etPlace.setGravity(Gravity.CENTER_VERTICAL);
+        etPlace.setBackground(getActivity().getResources().getDrawable(R.drawable.input_shape));
+        etPlace.setBackgroundColor(getActivity().getResources().getColor(R.color.grey));
+        etPlace.setPadding(15,25,15,60);
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-                Object item = adapterView.getItemAtPosition(i);
-                if (item != null) {
-
-                    vehicleLocation = item.toString();
-                }
-
+            public void onPlaceSelected(@NonNull Place place) {
+                // TODO: Get info about the selected place.
+                Toast.makeText(getActivity().getApplicationContext(), place.getName(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
+            public void onError(@NonNull Status status) {
+                // TODO: Handle the error.
+                Toast.makeText(getActivity().getApplicationContext(), status.toString(), Toast.LENGTH_SHORT).show();
             }
         });
-
-        //Creating the ArrayAdapter instance having the bank name list
-        ArrayAdapter locationAdapter = new ArrayAdapter(getActivity(),R.layout.spinner_item,location);
-        locationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //Setting the ArrayAdapter data on the Spinner
-        locationSpinner.setAdapter(locationAdapter);
 
         driverSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

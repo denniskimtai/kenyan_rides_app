@@ -222,18 +222,14 @@
                     android:layout_marginLeft="10dp"
                     android:text="Location"
                     android:textColor="@color/black"
-                    android:textSize="12dp" />
+                    android:textSize="12dp"/>
 
-                <Spinner
-                    android:id="@+id/location_spinner"
+                <fragment
+                    android:background="@drawable/input_shape"
+                    android:id="@+id/place_autocomplete_fragment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/input_shape"
-                    android:backgroundTint="@color/grey"
-                    android:padding="8dp"
-                    android:textColor="@color/black"
-                    android:textSize="12dp" />
+                    android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment" />
 
             </LinearLayout>
 

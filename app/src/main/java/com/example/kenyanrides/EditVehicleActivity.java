@@ -28,6 +28,7 @@ import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -48,6 +49,13 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.google.android.gms.common.api.Status;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.TypeFilter;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 
 import net.gotev.uploadservice.MultipartUploadRequest;
 import net.gotev.uploadservice.ServerResponse;
@@ -67,6 +75,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -397,8 +406,6 @@ public class EditVehicleActivity extends AppCompatActivity {
 
         final Spinner driverSpinner = findViewById(R.id.driver_status_spinner);
 
-        Spinner locationSpinner = findViewById(R.id.location_spinner);
-
         brandSpinner = findViewById(R.id.brand_spinner);
 
         //initialize check boxes
@@ -520,35 +527,42 @@ public class EditVehicleActivity extends AppCompatActivity {
         int seatsposition = seatsAdapter.getPosition(intent_seating_capacity);
         seatsSpinner.setSelection(seatsposition);
 
-        locationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        // Create a new Places client instance.
+        PlacesClient placesClient = Places.createClient(this);
+
+        // Initialize the AutocompleteSupportFragment.
+        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
+                getSupportFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+        autocompleteFragment.setTypeFilter(TypeFilter.CITIES);
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.PHOTO_METADATAS));
+        autocompleteFragment.setHint("SELECT");
+        autocompleteFragment.getView().findViewById(R.id.places_autocomplete_search_button).setVisibility(View.GONE);
+
+        //customise autocomplete edittext
+        EditText etPlace = autocompleteFragment.getView().findViewById(R.id.places_autocomplete_search_input);
+        etPlace.setTextSize(12.0f);
+        etPlace.setHintTextColor(this.getResources().getColor(R.color.black));
+        etPlace.setGravity(Gravity.CENTER_VERTICAL);
+        etPlace.setBackground(this.getResources().getDrawable(R.drawable.input_shape));
+        etPlace.setBackgroundColor(this.getResources().getColor(R.color.grey));
+        etPlace.setPadding(15,25,15,60);
+        etPlace.setText(intent_location);
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-                Object item = adapterView.getItemAtPosition(i);
-                if (item != null) {
-
-                    vehicleLocation =item.toString();
-
-                }
-
+            public void onPlaceSelected(@NonNull Place place) {
+                // TODO: Get info about the selected place.
+                Toast.makeText(getApplicationContext(), place.getName(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
+            public void onError(@NonNull Status status) {
+                // TODO: Handle the error.
+                Toast.makeText(getApplicationContext(), status.toString(), Toast.LENGTH_SHORT).show();
             }
         });
 
 
-        //Creating the ArrayAdapter instance having the bank name list
-        ArrayAdapter locationAdapter = new ArrayAdapter(this,R.layout.spinner_item,location_array);
-        locationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //Setting the ArrayAdapter data on the Spinner
-        locationSpinner.setAdapter(locationAdapter);
-
-        //set default item
-        int locationposition = locationAdapter.getPosition(intent_location);
-        locationSpinner.setSelection(locationposition);
 
         driverSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

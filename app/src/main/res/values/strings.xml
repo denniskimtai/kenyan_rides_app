@@ -5,6 +5,7 @@
     <string name="app_name">Kenyan Rides</string>
     <string name="title_home">Home</string>
     <string name="title_sell">sell</string>
+    <string name="api_key">AIzaSyAwybkSFwTdyazfXJDY6GOZIlQi434X8i4</string>
 
 
 </resources>
