@@ -176,7 +176,7 @@ public class AccountFragment extends Fragment {
         //calling the logout method
         txtSignOut.setOnClickListener(view -> {
             SharedPrefManager.getInstance(getActivity()).logout();
-            Intent intent = new Intent(getActivity(), LoginActivity.class);
+            Intent intent = new Intent(getActivity(), MainActivity.class);
             getActivity().finish();
             startActivity(intent);
         });

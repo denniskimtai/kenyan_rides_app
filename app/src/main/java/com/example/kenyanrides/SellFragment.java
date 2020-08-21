@@ -3,6 +3,7 @@ package com.example.kenyanrides;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -41,6 +42,9 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.common.api.Status;
 import com.google.android.libraries.places.api.Places;
@@ -72,6 +76,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
 
 public class SellFragment extends Fragment  {
 
@@ -170,6 +177,12 @@ public class SellFragment extends Fragment  {
     CheckBox checkBoxCrashSensor;
     CheckBox checkBoxLeatherSeats;
 
+    private RecyclerView recyclerView;
+    private HorizontalCarImagesAdapter horizontalCarImagesAdapter;
+    private ArrayList<Uri> uri = new ArrayList<>();
+
+    private int selectedImages = 0;
+
 
 
     @Nullable
@@ -179,11 +192,13 @@ public class SellFragment extends Fragment  {
        View myView = inflater.inflate(R.layout.fragment_sell, null);
 
        requestStoragePermission();
+       requestCameraPermission();
 
        alertDialogBuilder = new AlertDialog.Builder(getActivity());
 
        dialog = new ProgressDialog(getActivity());
 
+       //multipart upload namespace
         UploadService.NAMESPACE = BuildConfig.APPLICATION_ID;
 
        Button btnPostVehicle = myView.findViewById(R.id.btnPostVehicle);
@@ -193,6 +208,12 @@ public class SellFragment extends Fragment  {
         editTextVehicleOverview =myView.findViewById(R.id.edit_text_vehicle_overview);
         editTextPrice =myView.findViewById(R.id.edit_text_price);
         editTextModelYear =myView.findViewById(R.id.edit_text_model_year);
+
+        //horizontal recycler view initialization
+        recyclerView = myView.findViewById(R.id.carImagesRecyclerview);
+        horizontalCarImagesAdapter = new HorizontalCarImagesAdapter(getActivity(),uri);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerView.setAdapter(horizontalCarImagesAdapter);
 
        //file chooser views
         TextView image1 = myView.findViewById(R.id.image1);
@@ -212,10 +233,17 @@ public class SellFragment extends Fragment  {
         image1.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
-               Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
-               chooseFile.setType("image/*");
-               chooseFile = Intent.createChooser(chooseFile, "Choose a file");
-               startActivityForResult(chooseFile, IMAGE1);
+
+               //check if user has already selected 5 images
+               if (selectedImages == 5){
+                   alertDialogBuilder.setMessage("You can only select 5 vehicle images");
+                   alertDialogBuilder.show();
+               }else {
+
+                   selectImage(getActivity());
+               }
+
+
            }
        });
 
@@ -357,10 +385,11 @@ public class SellFragment extends Fragment  {
         // Initialize the AutocompleteSupportFragment.
         AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
                 getChildFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
-        autocompleteFragment.setTypeFilter(TypeFilter.CITIES);
+        autocompleteFragment.setCountry("KE");
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.PHOTO_METADATAS));
         autocompleteFragment.setHint("SELECT");
         autocompleteFragment.getView().findViewById(R.id.places_autocomplete_search_button).setVisibility(View.GONE);
+        autocompleteFragment.getView().findViewById(R.id.places_autocomplete_clear_button).setVisibility(View.GONE);
 
         //customise autocomplete edittext
         EditText etPlace = autocompleteFragment.getView().findViewById(R.id.places_autocomplete_search_input);
@@ -374,13 +403,12 @@ public class SellFragment extends Fragment  {
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(@NonNull Place place) {
-                // TODO: Get info about the selected place.
-                Toast.makeText(getActivity().getApplicationContext(), place.getName(), Toast.LENGTH_SHORT).show();
+
+                vehicleLocation = place.getName();
             }
 
             @Override
             public void onError(@NonNull Status status) {
-                // TODO: Handle the error.
                 Toast.makeText(getActivity().getApplicationContext(), status.toString(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -433,65 +461,103 @@ public class SellFragment extends Fragment  {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
+        if(resultCode != RESULT_CANCELED) {
 
         switch (requestCode) {
-            case IMAGE1:
-                imageUri = data.getData();
+//            case IMAGE1:
+//
+//                if (resultCode == Activity.RESULT_OK) {
+//                    if (data.getClipData() != null) {
+//                        int count = data.getClipData().getItemCount(); //evaluate the count before the for loop --- otherwise, the count is evaluated every loop.
+//                        Toast.makeText(getActivity(), String.valueOf(count), Toast.LENGTH_SHORT).show();
+//                        for (int i = 0; i < count; i++)
+//                            imageUri = data.getClipData().getItemAt(i).getUri();
+//
+//                    }
+//                } else if (data.getData() != null) {
+//                    image1Path = data.getData().getPath();
+//                    Toast.makeText(getActivity(), image1Path, Toast.LENGTH_SHORT).show();
+//
+//                }
+//
+//                break;
 
-                try {
-                    bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
+            case 103:
 
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if (resultCode == RESULT_OK && data != null) {
+
+                    selectedImages ++;
+                    Toast.makeText(getActivity(), String.valueOf(selectedImages), Toast.LENGTH_SHORT).show();
+                    Bitmap selectedImage = (Bitmap) data.getExtras().get("data");
+                    uri.add(getImageUri(getActivity(), selectedImage));
+                    recyclerView.setVisibility(View.VISIBLE);
+                    horizontalCarImagesAdapter.notifyDataSetChanged();
+
                 }
-
-                image1FilePath.setText(getFileName(imageUri));
-
-                image1Path = getPath(imageUri);
 
 
 
                 break;
 
-            case IMAGE2:
+            case IMAGE1:
 
-                imageUri = data.getData();
+                if (resultCode == RESULT_OK && data != null) {
 
-                try {
-                    bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
+                    if(data.getClipData() == null){
 
-                } catch (IOException e) {
-                    e.printStackTrace();
+                        selectedImages++;
+                        Toast.makeText(getActivity(), String.valueOf(selectedImages), Toast.LENGTH_SHORT).show();
+                        //only one image is selected
+                        imageUri = data.getData();
+                        uri.add(imageUri);
+                        recyclerView.setVisibility(View.VISIBLE);
+                        horizontalCarImagesAdapter.notifyDataSetChanged();
+
+                    } else{
+                        //several images are selected
+
+                        int count = data.getClipData().getItemCount(); //evaluate the count before the for loop --- otherwise, the count is evaluated every loop.
+
+                        //check number of images selected
+                        if (count > 5 || selectedImages + count > 5){
+
+                            alertDialogBuilder.setMessage("You can only select a maximum of 5 images");
+                            alertDialogBuilder.show();
+                            return;
+
+                        }else {
+
+                            //selected images are 5 or lesss
+
+                            for (int i = 0; i < count; i++){
+                                selectedImages++;
+                                imageUri = data.getClipData().getItemAt(i).getUri();
+                                uri.add(imageUri);
+                                recyclerView.setVisibility(View.VISIBLE);
+                                horizontalCarImagesAdapter.notifyDataSetChanged();
+                            }
+                            Toast.makeText(getActivity(), String.valueOf(selectedImages), Toast.LENGTH_SHORT).show();
+                        }
+
+
+                    }
+
+
+
                 }
 
-                image2FilePath.setText(getFileName(imageUri));
-
-                image2Path = getPath(imageUri);
-
-
-
-                    break;
-
-            case IMAGE3:
-
-                imageUri = data.getData();
-                try {
-                    bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                image3FilePath.setText(getFileName(imageUri));
-
-                image3Path = getPath(imageUri);
+//                }else if (data.getData() != null) {
+//                    image1Path = data.getData().getPath();
+//                    Toast.makeText(getActivity(), image1Path, Toast.LENGTH_SHORT).show();
+//
+//                }
 
 
                 break;
 
             case IMAGE4:
 
-               imageUri = data.getData();
+                imageUri = data.getData();
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
 
@@ -524,12 +590,13 @@ public class SellFragment extends Fragment  {
 
 
         }
+        }else {
+            Toast.makeText(getActivity(), "No images selected", Toast.LENGTH_SHORT).show();
+        }
 
 
 
     }
-
-
 
     //Requesting permission
     private void requestStoragePermission() {
@@ -545,19 +612,43 @@ public class SellFragment extends Fragment  {
         ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
     }
 
+    private void requestCameraPermission() {
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED)
+            return;
+
+        if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.CAMERA)) {
+            //If the user has denied the permission previously your code will come to this block
+            //Here you can explain why you need this permission
+            //Explain here why you need this permission
+        }
+        //And finally ask for the permission
+        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, 101);
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
         if(requestCode == STORAGE_PERMISSION_CODE){
             if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                Toast.makeText(getActivity(), "Permission not Granted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Permission Granted", Toast.LENGTH_SHORT).show();
 
             }else {
                 Toast.makeText(getActivity(), "Permission not Granted", Toast.LENGTH_SHORT).show();
             }
         }
 
+        if(requestCode == 101){
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                Toast.makeText(getActivity(), "Camera permission Granted", Toast.LENGTH_SHORT).show();
+
+            }else {
+                Toast.makeText(getActivity(), "Camera permission not Granted", Toast.LENGTH_SHORT).show();
+            }
+        }
+
     }
+
+
 
     private String getPath(Uri uri){
         String path = null;
@@ -606,6 +697,41 @@ public class SellFragment extends Fragment  {
             }
         }
         return result;
+    }
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+
+    //select image dialog method
+    private void selectImage(Context context) {
+        final CharSequence[] options = { "Take Photo", "Choose from Gallery","Cancel" };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Select Vehicle Images");
+
+        builder.setItems(options, (dialog, item) -> {
+
+            if (options[item].equals("Take Photo")) {
+                Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(takePicture, 103);
+
+            } else if (options[item].equals("Choose from Gallery")) {
+                Intent chooseFile = new Intent();
+                chooseFile.setType("image/*");
+                chooseFile.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                chooseFile.setAction(Intent.ACTION_GET_CONTENT);
+                chooseFile = Intent.createChooser(chooseFile, "Choose a file");
+                startActivityForResult(chooseFile, IMAGE1);
+
+            } else if (options[item].equals("Cancel")) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
     }
 
 
@@ -662,6 +788,7 @@ public class SellFragment extends Fragment  {
             editTextModelYear.setError("Vehicle Model Year cannot be empty");
             return;
         }
+
 
 
         //checkbox initialization and saving value of checked
@@ -788,8 +915,13 @@ public class SellFragment extends Fragment  {
             return;
         }
 
-        if (vehicleLocation.equals("SELECT")){
+        if (vehicleLocation.isEmpty()){
             Toast.makeText(getActivity(), "Please select location of the vehicle", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (vehicleBrand.equals("SELECT")){
+            Toast.makeText(getActivity(), "Please select the brand of the vehicle", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -844,12 +976,13 @@ public class SellFragment extends Fragment  {
                             dialog.setCancelable(false);
                             dialog.show();
 
-
                         }
 
                         @Override
                         public void onError(Context context, UploadInfo uploadInfo, ServerResponse serverResponse, Exception exception) {
-                            dialog.dismiss();
+                            if(dialog.isShowing()){
+                                dialog.dismiss();
+                            }
 
                             alertDialogBuilder.setTitle("Failed!");
                             alertDialogBuilder.setMessage("Vehicle was not uploaded! Please try uploading again");
@@ -867,7 +1000,10 @@ public class SellFragment extends Fragment  {
                         @Override
                         public void onCompleted(Context context, UploadInfo uploadInfo, ServerResponse serverResponse) {
 
-                            dialog.dismiss();
+                            if(dialog.isShowing()){
+                                dialog.dismiss();
+                            }
+                            Toast.makeText(context, "completed", Toast.LENGTH_SHORT).show();
 
                             alertDialogBuilder.setTitle("Success!");
                             alertDialogBuilder.setMessage("Vehicle was uploaded succesfully");
@@ -895,7 +1031,9 @@ public class SellFragment extends Fragment  {
 
                             Toast.makeText(context, String.valueOf(uploadInfo) , Toast.LENGTH_SHORT).show();
 
-                            dialog.dismiss();
+                            if(dialog.isShowing()){
+                                dialog.dismiss();
+                            }
 
                             alertDialogBuilder.setTitle("Failed!");
                             alertDialogBuilder.setMessage("Vehicle was not uploaded! Please try uploading again");
@@ -1007,6 +1145,7 @@ private class BackTask extends AsyncTask<Void, Void, String> {
         super.onPostExecute(s);
         dialog.dismiss();
 
+
         //Creating the ArrayAdapter instance having the bank name list
         ArrayAdapter brandAdapter = new ArrayAdapter(getActivity(),R.layout.spinner_item,brandsList);
         brandAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -1030,8 +1169,11 @@ private class BackTask extends AsyncTask<Void, Void, String> {
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
+                vehicleBrand = "SELECT";
+
             }
         });
+
 
 
     }

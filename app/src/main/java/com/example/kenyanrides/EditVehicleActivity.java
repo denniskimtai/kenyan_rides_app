@@ -106,6 +106,8 @@ public class EditVehicleActivity extends AppCompatActivity {
     String image5String;
     String image5Path;
 
+    PlacesClient placesClient;
+
 
     String[] fuel = {"Petrol", "Diesel", "Hybrid"};
 
@@ -188,6 +190,7 @@ public class EditVehicleActivity extends AppCompatActivity {
 
     int vehicle_id;
     String vehicle_status;
+    String intent_vehicle_brand;
 
 
     @Override
@@ -209,6 +212,7 @@ public class EditVehicleActivity extends AppCompatActivity {
         String intent_powered_by = getIntent().getStringExtra("powered_by");
         String intent_location = getIntent().getStringExtra("location");
         String intent_model_year = getIntent().getStringExtra("model_year");
+        intent_vehicle_brand = getIntent().getStringExtra("vehicle_brand");
         String intent_seating_capacity = getIntent().getStringExtra("seating_capacity");
         String intent_driver_status = getIntent().getStringExtra("driver_status");
         String intent_owner_id = getIntent().getStringExtra("owner_id");
@@ -495,8 +499,12 @@ public class EditVehicleActivity extends AppCompatActivity {
         //Setting the ArrayAdapter data on the Spinner
         fuelSpinner.setAdapter(aa);
 
-        int spinnerPosition = aa.getPosition(intent_powered_by);
-        fuelSpinner.setSelection(spinnerPosition);
+        String compareValueFuel = intent_powered_by;
+
+        if (compareValueFuel != null) {
+            int Position = aa.getPosition(compareValueFuel);
+            fuelSpinner.setSelection(Position);
+        }
 
         seatsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -524,16 +532,28 @@ public class EditVehicleActivity extends AppCompatActivity {
         //Setting the ArrayAdapter data on the Spinner
         seatsSpinner.setAdapter(seatsAdapter);
 
-        int seatsposition = seatsAdapter.getPosition(intent_seating_capacity);
-        seatsSpinner.setSelection(seatsposition);
+        String compareValueSeats = intent_seating_capacity + " Seater";
+
+        if (compareValueSeats != null) {
+            int Position = seatsAdapter.getPosition(compareValueSeats);
+            seatsSpinner.setSelection(Position);
+        }
+
+        vehicleLocation = intent_location;
+
+        //places autocomplete
+        String apiKey = getString(R.string.api_key);
+        if (!Places.isInitialized()) {
+            Places.initialize(this.getApplicationContext(), apiKey);
+        }
 
         // Create a new Places client instance.
-        PlacesClient placesClient = Places.createClient(this);
+        placesClient = Places.createClient(this);
 
         // Initialize the AutocompleteSupportFragment.
         AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
                 getSupportFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
-        autocompleteFragment.setTypeFilter(TypeFilter.CITIES);
+        autocompleteFragment.setCountry("KE");
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.PHOTO_METADATAS));
         autocompleteFragment.setHint("SELECT");
         autocompleteFragment.getView().findViewById(R.id.places_autocomplete_search_button).setVisibility(View.GONE);
@@ -551,13 +571,11 @@ public class EditVehicleActivity extends AppCompatActivity {
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(@NonNull Place place) {
-                // TODO: Get info about the selected place.
-                Toast.makeText(getApplicationContext(), place.getName(), Toast.LENGTH_SHORT).show();
+                vehicleLocation = place.getName();
             }
 
             @Override
             public void onError(@NonNull Status status) {
-                // TODO: Handle the error.
                 Toast.makeText(getApplicationContext(), status.toString(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -587,9 +605,12 @@ public class EditVehicleActivity extends AppCompatActivity {
         //Setting the ArrayAdapter data on the Spinner
         driverSpinner.setAdapter(driverAdapter);
 
-        //set default item
-        int driverposition = driverAdapter.getPosition(intent_driver_status);
-        driverSpinner.setSelection(driverposition);
+        String compareValueDriver = intent_driver_status;
+
+        if (compareValueDriver != null) {
+            int Position = driverAdapter.getPosition(compareValueDriver);
+            driverSpinner.setSelection(Position);
+        }
 
         EditVehicleActivity.BackTask backTask =new EditVehicleActivity.BackTask();
         backTask.execute();
@@ -814,6 +835,11 @@ public class EditVehicleActivity extends AppCompatActivity {
             return;
         }
 
+        if (vehicleLocation.isEmpty()){
+            Toast.makeText(this, "Please select location of the vehicle", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
 
         //checkbox initialization and saving value of checked
 
@@ -1025,7 +1051,9 @@ public class EditVehicleActivity extends AppCompatActivity {
 
                         @Override
                         public void onError(Context context, UploadInfo uploadInfo, ServerResponse serverResponse, Exception exception) {
-                            dialog.dismiss();
+                            if(dialog.isShowing()){
+                                dialog.dismiss();
+                            }
 
                             alertDialogBuilder.setTitle("Failed!");
                             alertDialogBuilder.setMessage("Image was not uploaded! Please try uploading again");
@@ -1043,7 +1071,9 @@ public class EditVehicleActivity extends AppCompatActivity {
                         @Override
                         public void onCompleted(Context context, UploadInfo uploadInfo, ServerResponse serverResponse) {
 
-                            dialog.dismiss();
+                            if(dialog.isShowing()){
+                                dialog.dismiss();
+                            }
 
                             alertDialogBuilder.setTitle("Success!");
                             alertDialogBuilder.setMessage("Image was uploaded succesfully");
@@ -1067,7 +1097,9 @@ public class EditVehicleActivity extends AppCompatActivity {
 
                             Toast.makeText(context, String.valueOf(uploadInfo) , Toast.LENGTH_SHORT).show();
 
-                            dialog.dismiss();
+                            if(dialog.isShowing()){
+                                dialog.dismiss();
+                            }
 
                             alertDialogBuilder.setTitle("Failed!");
                             alertDialogBuilder.setMessage("Vehicle was not uploaded! Please try uploading again");
@@ -1195,6 +1227,13 @@ public class EditVehicleActivity extends AppCompatActivity {
 
                 }
             });
+
+            String compareValueBrand = intent_vehicle_brand;
+
+            if (compareValueBrand != null) {
+                int Position = brandAdapter.getPosition(compareValueBrand);
+                brandSpinner.setSelection(Position);
+            }
 
 
         }

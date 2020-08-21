@@ -82,7 +82,7 @@ public class ListedVehiclesAdapter extends RecyclerView.Adapter<ListedVehiclesAd
     public void onBindViewHolder(@NonNull ListedVehiclesAdapter.MyViewHolder holder, int position) {
 
         ListVehicle listVehicle = ListedVehiclesList.get(position);
-        holder.listedVehicleTitle.setText(listVehicle.getCarName());
+        holder.listedVehicleTitle.setText(listVehicle.getVehicleBrand() + " " + listVehicle.getCarName());
         holder.listedVehiclePrice.setText("Ksh " + listVehicle.getCarPrice() + "/day" );
 
 

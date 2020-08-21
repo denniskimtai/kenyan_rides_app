@@ -55,8 +55,6 @@ public class HomeFragment extends Fragment {
 
     private static final String vehicles_url = "https://kenyanrides.com/android/fetch_api.php";
 
-    private static final String brands_url = "https://kenyanrides.com/android/fetch_brands.php";
-
 
     @Nullable
     @Override
@@ -200,7 +198,7 @@ public class HomeFragment extends Fragment {
 
                             //
                             int id = carsObject.getInt("id");
-                            String vehicleBrand = carsObject.getString("VehiclesBrand");
+                            String vehicleBrand = carsObject.getString("brandName");
                             String vehicleOverview = carsObject.getString("VehiclesOverview");
                             String poweredBy = carsObject.getString("poweredby");
                             String fuelType = carsObject.getString("FuelType");

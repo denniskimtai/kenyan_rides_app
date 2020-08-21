@@ -27,7 +27,7 @@
             <ImageView
                 android:id="@+id/thumbnail"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:scaleType="fitXY"
@@ -47,7 +47,7 @@
                 android:paddingRight="@dimen/album_title_padding"
                 android:text="Mercedes Benz"
                 android:textColor="@color/white"
-                android:textSize="20dp"
+                android:textSize="18dp"
                 android:typeface="serif" />
 
             <TextView

@@ -145,7 +145,7 @@ public class ListVehiclesActivity extends AppCompatActivity{
 
                                     //
                                     int id = listedVehiclesObject.getInt("id");
-                                    String vehicleBrand = listedVehiclesObject.getString("VehiclesBrand");
+                                    String vehicleBrand = listedVehiclesObject.getString("brandName");
                                     String vehicleOverview = listedVehiclesObject.getString("VehiclesOverview");
                                     String poweredBy = listedVehiclesObject.getString("poweredby");
                                     String fuelType = listedVehiclesObject.getString("FuelType");
