@@ -31,6 +31,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -126,11 +127,8 @@ public class SellFragment extends Fragment  {
     private TextView image4FilePath;
     private TextView image5FilePath;
 
-    public static final int IMAGE1 = 1;
-    public static final int IMAGE2 = 2;
-    public static final int IMAGE3 = 3;
-    public static final int IMAGE4 = 4;
-    public static final int IMAGE5 = 5;
+    public static final int IMAGE = 1;
+    public static final int CAMERA = 2;
     public static final int STORAGE_PERMISSION_CODE = 123;
     public static final String add_vehicle_url = "https://kenyanrides.com/android/write_vehicle.php";
 
@@ -183,6 +181,8 @@ public class SellFragment extends Fragment  {
 
     private int selectedImages = 0;
 
+    private TextView text_view_remaining_images;
+
 
 
     @Nullable
@@ -209,6 +209,8 @@ public class SellFragment extends Fragment  {
         editTextPrice =myView.findViewById(R.id.edit_text_price);
         editTextModelYear =myView.findViewById(R.id.edit_text_model_year);
 
+        text_view_remaining_images = myView.findViewById(R.id.text_view_remaining_images);
+
         //horizontal recycler view initialization
         recyclerView = myView.findViewById(R.id.carImagesRecyclerview);
         horizontalCarImagesAdapter = new HorizontalCarImagesAdapter(getActivity(),uri);
@@ -216,11 +218,7 @@ public class SellFragment extends Fragment  {
         recyclerView.setAdapter(horizontalCarImagesAdapter);
 
        //file chooser views
-        TextView image1 = myView.findViewById(R.id.image1);
-        TextView image2 = myView.findViewById(R.id.image2);
-        TextView image3 = myView.findViewById(R.id.image3);
-        TextView image4 = myView.findViewById(R.id.image4);
-        TextView image5 = myView.findViewById(R.id.image5);
+        ImageView imageChooser = myView.findViewById(R.id.image1);
 
        image1FilePath = myView.findViewById(R.id.image1_file_path);
        image2FilePath = myView.findViewById(R.id.image2_file_path);
@@ -230,7 +228,7 @@ public class SellFragment extends Fragment  {
 
 
        //file chooser click listener
-        image1.setOnClickListener(new View.OnClickListener() {
+        imageChooser.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
 
@@ -246,55 +244,6 @@ public class SellFragment extends Fragment  {
 
            }
        });
-
-       image2.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
-
-               Intent image2Intent = new Intent(Intent.ACTION_GET_CONTENT);
-               image2Intent.setType("image/*");
-               image2Intent = Intent.createChooser(image2Intent, "Choose a file");
-               startActivityForResult(image2Intent, IMAGE2);
-
-           }
-       });
-
-        image3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent image3Intent = new Intent(Intent.ACTION_GET_CONTENT);
-                image3Intent.setType("image/*");
-                image3Intent = Intent.createChooser(image3Intent, "Choose a file");
-                startActivityForResult(image3Intent, IMAGE3);
-
-            }
-        });
-
-        image4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent image2Intent = new Intent(Intent.ACTION_GET_CONTENT);
-                image2Intent.setType("image/*");
-                image2Intent = Intent.createChooser(image2Intent, "Choose a file");
-                startActivityForResult(image2Intent, IMAGE4);
-
-            }
-        });
-
-        image5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent image2Intent = new Intent(Intent.ACTION_GET_CONTENT);
-                image2Intent.setType("image/*");
-                image2Intent = Intent.createChooser(image2Intent, "Choose a file");
-                startActivityForResult(image2Intent, IMAGE5);
-
-            }
-        });
-
 
 
         //spinner initialization
@@ -464,49 +413,31 @@ public class SellFragment extends Fragment  {
         if(resultCode != RESULT_CANCELED) {
 
         switch (requestCode) {
-//            case IMAGE1:
-//
-//                if (resultCode == Activity.RESULT_OK) {
-//                    if (data.getClipData() != null) {
-//                        int count = data.getClipData().getItemCount(); //evaluate the count before the for loop --- otherwise, the count is evaluated every loop.
-//                        Toast.makeText(getActivity(), String.valueOf(count), Toast.LENGTH_SHORT).show();
-//                        for (int i = 0; i < count; i++)
-//                            imageUri = data.getClipData().getItemAt(i).getUri();
-//
-//                    }
-//                } else if (data.getData() != null) {
-//                    image1Path = data.getData().getPath();
-//                    Toast.makeText(getActivity(), image1Path, Toast.LENGTH_SHORT).show();
-//
-//                }
-//
-//                break;
 
-            case 103:
+            case CAMERA:
 
                 if (resultCode == RESULT_OK && data != null) {
 
                     selectedImages ++;
-                    Toast.makeText(getActivity(), String.valueOf(selectedImages), Toast.LENGTH_SHORT).show();
+                    int remaining_images = 5 - selectedImages;
+                    text_view_remaining_images.setText("You can add " + remaining_images + "more images");
                     Bitmap selectedImage = (Bitmap) data.getExtras().get("data");
                     uri.add(getImageUri(getActivity(), selectedImage));
                     recyclerView.setVisibility(View.VISIBLE);
                     horizontalCarImagesAdapter.notifyDataSetChanged();
 
                 }
-
-
-
                 break;
 
-            case IMAGE1:
+            case IMAGE:
 
                 if (resultCode == RESULT_OK && data != null) {
 
                     if(data.getClipData() == null){
 
                         selectedImages++;
-                        Toast.makeText(getActivity(), String.valueOf(selectedImages), Toast.LENGTH_SHORT).show();
+                        int remaining_images = 5 - selectedImages;
+                        text_view_remaining_images.setText("You can add " + remaining_images + "more images");
                         //only one image is selected
                         imageUri = data.getData();
                         uri.add(imageUri);
@@ -527,7 +458,7 @@ public class SellFragment extends Fragment  {
 
                         }else {
 
-                            //selected images are 5 or lesss
+                            //selected images are 5 or less
 
                             for (int i = 0; i < count; i++){
                                 selectedImages++;
@@ -536,57 +467,16 @@ public class SellFragment extends Fragment  {
                                 recyclerView.setVisibility(View.VISIBLE);
                                 horizontalCarImagesAdapter.notifyDataSetChanged();
                             }
-                            Toast.makeText(getActivity(), String.valueOf(selectedImages), Toast.LENGTH_SHORT).show();
+                            int remaining_images = 5 - selectedImages;
+                            text_view_remaining_images.setText("You can add " + remaining_images + " more images");
                         }
-
-
                     }
-
-
-
                 }
-
-//                }else if (data.getData() != null) {
-//                    image1Path = data.getData().getPath();
-//                    Toast.makeText(getActivity(), image1Path, Toast.LENGTH_SHORT).show();
-//
-//                }
-
-
                 break;
 
-            case IMAGE4:
-
-                imageUri = data.getData();
-                try {
-                    bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                image4FilePath.setText(getFileName(imageUri));
-
-                image4Path = getPath(imageUri);
-
-                break;
-
-            case IMAGE5:
-
-                imageUri = data.getData();
-                try {
-                    bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                image5FilePath.setText(getFileName(imageUri));
-
-                image5Path = getPath(imageUri);
 
 
-                break;
+
 
 
         }
@@ -717,7 +607,7 @@ public class SellFragment extends Fragment  {
 
             if (options[item].equals("Take Photo")) {
                 Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(takePicture, 103);
+                startActivityForResult(takePicture, CAMERA);
 
             } else if (options[item].equals("Choose from Gallery")) {
                 Intent chooseFile = new Intent();
@@ -725,7 +615,7 @@ public class SellFragment extends Fragment  {
                 chooseFile.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                 chooseFile.setAction(Intent.ACTION_GET_CONTENT);
                 chooseFile = Intent.createChooser(chooseFile, "Choose a file");
-                startActivityForResult(chooseFile, IMAGE1);
+                startActivityForResult(chooseFile, IMAGE);
 
             } else if (options[item].equals("Cancel")) {
                 dialog.dismiss();
@@ -878,29 +768,10 @@ public class SellFragment extends Fragment  {
             leatherSeats = "NULL";
         }
 
-        //check that images are selected
-        if (image1FilePath.getText().toString().equals("No file choosen")){
-            Toast.makeText(getActivity(), "Please choose an image", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        //check if user has selected 5 images
 
-        if (image2FilePath.getText().toString().equals("No file choosen")){
-            Toast.makeText(getActivity(), "Please choose an image", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (image3FilePath.getText().toString().equals("No file choosen")){
-            Toast.makeText(getActivity(), "Please choose an image", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (image4FilePath.getText().toString().equals("No file choosen")){
-            Toast.makeText(getActivity(), "Please choose an image", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (image5FilePath.getText().toString().equals("No file choosen")){
-            Toast.makeText(getActivity(), "Please choose an image", Toast.LENGTH_SHORT).show();
+        if (selectedImages != 5){
+            Toast.makeText(getActivity(), "Please select 5 vehicle images to continue", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -925,6 +796,13 @@ public class SellFragment extends Fragment  {
             return;
         }
 
+        //get path of images
+        image1Path = getPath(uri.get(0));
+        image2Path = getPath(uri.get(1));
+        image3Path = getPath(uri.get(2));
+        image4Path = getPath(uri.get(3));
+        image5Path = getPath(uri.get(4));
+
 
 
         try{
@@ -941,7 +819,7 @@ public class SellFragment extends Fragment  {
             new MultipartUploadRequest(getActivity(), uploadId, add_vehicle_url)
                     .addFileToUpload(image1Path, "image1")
                     .addFileToUpload(image2Path, "image2")
-                    .addFileToUpload(image2Path, "image3")
+                    .addFileToUpload(image3Path, "image3")
                     .addFileToUpload(image4Path, "image4")
                     .addFileToUpload(image5Path, "image5")
                     .addParameter("vehicle_title", vehicleTitle)

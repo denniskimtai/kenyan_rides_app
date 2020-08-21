@@ -20,6 +20,7 @@ import android.widget.TimePicker;
 
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -88,6 +89,9 @@ public class BookNowActivity extends AppCompatActivity implements View.OnClickLi
     String pickUpTime;
     String returnDate;
     String returnTime;
+
+    Date selectedPickupDate;
+    Date selectedReturnDate;
 
     private AlertDialog.Builder alertDialog;
     private ProgressDialog progressDialog;
@@ -169,14 +173,25 @@ public class BookNowActivity extends AppCompatActivity implements View.OnClickLi
             mDay = c.get(Calendar.DAY_OF_MONTH);
 
             DatePickerDialog datePickerDialog = new DatePickerDialog(this,
-                    new DatePickerDialog.OnDateSetListener() {
-                        @Override
-                        public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                    (datePicker, i, i1, i2) -> {
 
-                            TxtPickupDate.setText(i2 + "/" + (i1 + 1) + "/" + i);
-
-
+                        Calendar selectedCal = Calendar.getInstance();
+                        selectedCal.set(i, i1, i2);
+                        selectedPickupDate = selectedCal.getTime();
+                        Date currentDate = Calendar.getInstance().getTime();
+                        int diff1 = currentDate.compareTo(selectedPickupDate);
+                        if(diff1 > 0){
+                            alertDialog.setMessage("Please enter a valid date");
+                            alertDialog.setCancelable(false);
+                            alertDialog.setPositiveButton("OK", (dialogInterface, i3) -> TxtPickupDate.setText("Pickup Date"));
+                            alertDialog.setNegativeButton("Cancel", (dialogInterface, i32) -> TxtPickupDate.setText("Pickup Date"));
+                            alertDialog.show();
+                            return;
                         }
+
+                        TxtPickupDate.setText(i2 + "/" + (i1 + 1) + "/" + i);
+
+
                     }, mYear, mMonth, mDay);
 
             datePickerDialog.show();
@@ -209,23 +224,46 @@ public class BookNowActivity extends AppCompatActivity implements View.OnClickLi
 
         if (view == TxtReturnDate) {
 
-            // Get Current Date
-            final Calendar c = Calendar.getInstance();
-            mYear = c.get(Calendar.YEAR);
-            mMonth = c.get(Calendar.MONTH);
-            mDay = c.get(Calendar.DAY_OF_MONTH);
+            //check if user has already entered pickup date
+            if (selectedPickupDate != null) {
 
-            DatePickerDialog datePickerDialog = new DatePickerDialog(this,
-                    new DatePickerDialog.OnDateSetListener() {
-                        @Override
-                        public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                // Get Current Date
+                final Calendar c = Calendar.getInstance();
+                mYear = c.get(Calendar.YEAR);
+                mMonth = c.get(Calendar.MONTH);
+                mDay = c.get(Calendar.DAY_OF_MONTH);
 
-                            TxtReturnDate.setText(i2 + "/" + (i1 + 1) + "/" + i);
+                DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
 
-                        }
-                    }, mYear, mMonth, mDay);
+                                Calendar selectedCal = Calendar.getInstance();
+                                selectedCal.set(i, i1, i2);
+                                selectedReturnDate = selectedCal.getTime();
 
-            datePickerDialog.show();
+
+                                int diff1 = selectedPickupDate.compareTo(selectedReturnDate);
+                                if (diff1 > 0) {
+                                    alertDialog.setMessage("Please enter a date that is greater than the date you've set for pick up");
+                                    alertDialog.setCancelable(false);
+                                    alertDialog.setPositiveButton("OK", (dialogInterface, i3) -> TxtReturnDate.setText("Return Date"));
+                                    alertDialog.setNegativeButton("Cancel", (dialogInterface, i32) -> TxtReturnDate.setText("Return Date"));
+                                    alertDialog.show();
+                                    return;
+                                }
+
+                                TxtReturnDate.setText(i2 + "/" + (i1 + 1) + "/" + i);
+
+
+                            }
+                        }, mYear, mMonth, mDay);
+
+                datePickerDialog.show();
+
+            }else {
+                Toast.makeText(BookNowActivity.this, "Please enter the date you will pick up the car first ", Toast.LENGTH_LONG).show();
+            }
 
         }
 
