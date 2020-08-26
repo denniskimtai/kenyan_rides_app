@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,9 +31,9 @@ public class CarsAdapter extends RecyclerView.Adapter<CarsAdapter.MyViewHolder> 
 
         public MyViewHolder(View view) {
             super(view);
-            carName = (TextView) view.findViewById(R.id.carName);
-            carPrice = (TextView) view.findViewById(R.id.carPrice);
-            thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
+            carName = view.findViewById(R.id.carName);
+            carPrice =  view.findViewById(R.id.carPrice);
+            thumbnail =  view.findViewById(R.id.thumbnail);
 
         }
 
@@ -62,7 +63,24 @@ public class CarsAdapter extends RecyclerView.Adapter<CarsAdapter.MyViewHolder> 
 
 
         holder.carName.setText(car.getVehicleBrand() + " " + car.getCarName());
-        holder.carPrice.setText("Ksh: " + car.getCarPrice() + "/day");
+
+
+        //format car price
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        String formatted = formatter.format(car.getCarPrice());
+
+        //remove per tag if car is for sale
+        if (car.getBooked().equals("10")){
+
+            holder.carPrice.setText("Ksh " + formatted);
+
+        }else {
+
+            holder.carPrice.setText("Ksh " + formatted + "/day");
+
+        }
+
+
 
         Glide.with(mContext).load(car.getImage()).into(holder.thumbnail);
 
@@ -105,6 +123,8 @@ public class CarsAdapter extends RecyclerView.Adapter<CarsAdapter.MyViewHolder> 
                     intent.putExtra("image5", car.getImage5());
                     intent.putExtra("owner_id", car.getOwnerId());
                     intent.putExtra("reg_date", car.getRegDate());
+                    intent.putExtra("booked", car.getBooked());
+                    intent.putExtra("owner_phone_number", car.getOwner_phone_number());
 
                     //vehicle accessories
                     intent.putExtra("airConditioner", car.getAirConditioner());

@@ -111,6 +111,7 @@
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/text_view_day"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="5dp"
@@ -148,13 +149,13 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="10dp"
                             android:layout_weight="1"
-                            android:background="@color/white"
                             android:elevation="5dp">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:background="@color/white"
+                                android:background="@drawable/rectangle"
+                                android:padding="10dp"
                                 android:orientation="vertical">
 
                                 <ImageView
@@ -192,13 +193,13 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="10dp"
                             android:layout_weight="1"
-                            android:background="@color/white"
                             android:elevation="5dp">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:background="@color/white"
+                                android:background="@drawable/rectangle"
+                                android:padding="10dp"
                                 android:orientation="vertical">
 
                                 <ImageView
@@ -242,17 +243,18 @@
                         android:weightSum="2">
 
                         <androidx.cardview.widget.CardView
+                            android:id="@+id/card_driver"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="10dp"
                             android:layout_weight="1"
-                            android:background="@color/white"
                             android:elevation="5dp">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:background="@color/white"
+                                android:background="@drawable/rectangle"
+                                android:padding="10dp"
                                 android:orientation="vertical">
 
                                 <ImageView
@@ -290,13 +292,13 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="10dp"
                             android:layout_weight="1"
-                            android:background="@color/white"
                             android:elevation="5dp">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:background="@color/white"
+                                android:background="@drawable/rectangle"
+                                android:padding="10dp"
                                 android:orientation="vertical">
 
                                 <ImageView
@@ -335,7 +337,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_margin="10dp"
+                        android:layout_marginBottom="10dp"
                         android:background="@color/grey" />
 
                     <Button
@@ -345,7 +347,77 @@
                         android:layout_weight="1"
                         android:background="@drawable/wave"
                         android:text="Book Now"
+                        android:visibility="gone"
+                        android:textColor="@color/white"
                         android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:id="@+id/linear_layout_contact"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <LinearLayout
+                            android:background="@drawable/rectangle"
+                            android:padding="10dp"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="18dp"
+                                android:layout_gravity="center_vertical"
+                                android:layout_margin="5dp"
+                                android:src="@drawable/icon_call"
+                                android:tint="@color/black" />
+
+                            <TextView
+                                android:id="@+id/call"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:text="Call"
+                                android:textColor="@color/green"
+                                android:textSize="15dp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:background="@drawable/rectangle"
+                            android:padding="10dp"
+                            android:gravity="center_horizontal"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_gravity="center_vertical"
+                                android:layout_margin="5dp"
+                                android:src="@drawable/icon_message"
+                                android:tint="@color/black" />
+
+                            <TextView
+                                android:id="@+id/text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Text"
+                                android:textStyle="bold"
+                                android:layout_marginTop="4dp"
+                                android:textColor="@color/green"
+                                android:textSize="15dp"/>
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
 
                 </LinearLayout>
 

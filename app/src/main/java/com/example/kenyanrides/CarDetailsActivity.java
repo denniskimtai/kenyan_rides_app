@@ -1,21 +1,29 @@
 package com.example.kenyanrides;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.viewpager.widget.ViewPager;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -29,12 +37,17 @@ public class CarDetailsActivity extends AppCompatActivity {
 
     private ArrayList<String> ImagesArray = new ArrayList<String>();
 
-    private TextView txt_vehicle_title, txt_vehicle_overview, txt_price_per_day, txt_powered_by, txt_location, txt_model_year, txt_seating_capacity, txt_driver_status, txt_owner_reg_date;
+    private TextView txt_vehicle_title, txt_vehicle_overview, txt_price_per_day, txt_powered_by,
+            txt_location, txt_model_year, txt_seating_capacity, txt_driver_status, txt_owner_reg_date, txt_day, text, call;
 
     private ImageView imgAirConditioner, imgAntilockBrakingSystem, imgPowerSteering, imgPowerWindows, imgCdPlayer, imgLeatherSeats, imgCentralLocking,
     imgPowerDoorLocks, imgBrakeAssist, imgDriverAirbag, imgPassengerAirbag, imgCrashSensor;
 
     private Button btnBookNow;
+
+    private CardView cardViewDriver;
+
+    private LinearLayout linearLayoutContact;
 
 
     @Override
@@ -52,6 +65,15 @@ public class CarDetailsActivity extends AppCompatActivity {
         txt_seating_capacity = findViewById(R.id.txt_vehicle_seats);
         txt_driver_status = findViewById(R.id.txt_vehicle_driver_status);
         txt_owner_reg_date = findViewById(R.id.txt_owner_reg_date);
+        txt_day = findViewById(R.id.text_view_day);
+
+        btnBookNow = findViewById(R.id.btnBookNow);
+
+        cardViewDriver = findViewById(R.id.card_driver);
+
+        linearLayoutContact = findViewById(R.id.linear_layout_contact);
+        text = findViewById(R.id.text);
+        call = findViewById(R.id.call);
 
         //initializing image views
         imgAirConditioner = findViewById(R.id.img_air_conditioner);
@@ -79,6 +101,9 @@ public class CarDetailsActivity extends AppCompatActivity {
         String driver_status = getIntent().getStringExtra("driver_status");
         String owner_id = getIntent().getStringExtra("owner_id");
         String reg_date = getIntent().getStringExtra("reg_date");
+        String vehicle_brand = getIntent().getStringExtra("vehicle_brand");
+        String booked = getIntent().getStringExtra("booked");
+        String owner_phone_number = getIntent().getStringExtra("owner_phone_number");
 
         String airConditioner = getIntent().getStringExtra("airConditioner");
         String powerDoorLocks = getIntent().getStringExtra("powerDoorLocks");
@@ -95,14 +120,81 @@ public class CarDetailsActivity extends AppCompatActivity {
 
 
         //set text to their fields
-        txt_vehicle_title.setText(vehicle_title);
+        txt_vehicle_title.setText(vehicle_brand + " " + vehicle_title);
         txt_vehicle_overview.setText(vehicle_overview);
-        txt_price_per_day.setText("Ksh " + price_per_day);
+
+        //check if car is for sale
+        if (booked.equals("10")){
+
+            //format car price
+            DecimalFormat formatter = new DecimalFormat("#,###");
+            String formatted = formatter.format(price_per_day);
+
+            txt_price_per_day.setText("Ksh " + formatted);
+            txt_day.setVisibility(View.GONE);
+            cardViewDriver.setVisibility(View.GONE);
+            btnBookNow.setVisibility(View.GONE);
+            linearLayoutContact.setVisibility(View.VISIBLE);
+
+            //onclick listener phone call or text
+            text.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    //request permission
+                    requestSmsPermission();
+
+                    //open sms
+                    String number = owner_phone_number;  // The number on which you want to send SMS
+
+                    Uri uri = Uri.parse("smsto:" + number);
+                    Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
+                    startActivity(intent);
+
+
+                }
+            });
+
+            call.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    //check if permission is granted
+                    int permissionCheck = ContextCompat.checkSelfPermission(CarDetailsActivity.this, Manifest.permission.CALL_PHONE);
+
+                        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+                            ActivityCompat.requestPermissions(
+                                    CarDetailsActivity.this,
+                                    new String[]{Manifest.permission.CALL_PHONE},
+                                    101);
+                        } else {
+
+                        //open dial pad
+                        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + owner_phone_number));
+                        startActivity(intent);
+
+                        }
+
+
+
+
+
+                }
+            });
+
+
+
+        }else {
+
+            txt_price_per_day.setText("Ksh " + price_per_day);
+            txt_driver_status.setText(driver_status);
+
+        }
+
         txt_powered_by.setText(powered_by);
         txt_location.setText(location);
         txt_model_year.setText(model_year);
         txt_seating_capacity.setText(seating_capacity);
-        txt_driver_status.setText(driver_status);
         txt_owner_reg_date.setText(reg_date);
 
         //setimage resource
@@ -227,8 +319,8 @@ public class CarDetailsActivity extends AppCompatActivity {
         }
 
         if (passengerAirbag.equals("1")) {
-            imgDriverAirbag.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.icon_checked_box));
-            imgDriverAirbag.setColorFilter(ContextCompat.getColor(this,
+            imgPassengerAirbag.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.icon_checked_box));
+            imgPassengerAirbag.setColorFilter(ContextCompat.getColor(this,
                     R.color.colorPrimary));
 
 
@@ -264,8 +356,6 @@ public class CarDetailsActivity extends AppCompatActivity {
 
 
         init();
-
-        btnBookNow = findViewById(R.id.btnBookNow);
 
         btnBookNow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -330,7 +420,43 @@ public class CarDetailsActivity extends AppCompatActivity {
 
 
     }
-//
+
+    private void requestSmsPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_DENIED)
+            return;
+
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.SEND_SMS)) {
+            //If the user has denied the permission previously your code will come to this block
+            //Here you can explain why you need this permission
+            //Explain here why you need this permission
+        }
+        //And finally ask for the permission
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS}, 102);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        if(requestCode == 101){
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                Toast.makeText(this, "Call permission Granted", Toast.LENGTH_SHORT).show();
+
+            }else {
+                Toast.makeText(this, "Call permission not Granted", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        if(requestCode == 102){
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                Toast.makeText(this, "Sms permission Granted", Toast.LENGTH_SHORT).show();
+
+            }else {
+                Toast.makeText(this, "Sms permission not Granted", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+    }
+
 
 }
 

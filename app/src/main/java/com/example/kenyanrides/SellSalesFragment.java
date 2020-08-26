@@ -1,9 +1,7 @@
-
 package com.example.kenyanrides;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -20,8 +18,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.text.TextUtils;
-import android.util.Base64;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,9 +28,11 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -43,14 +41,12 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.common.api.Status;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.api.model.TypeFilter;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
@@ -81,7 +77,7 @@ import java.util.UUID;
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
-public class SellFragment extends Fragment  {
+public class SellSalesFragment extends Fragment {
 
     String brands_url = "https://kenyanrides.com/android/fetch_brands.php";
 
@@ -111,16 +107,6 @@ public class SellFragment extends Fragment  {
             "9 Seater", "10 Seater", "11 Seater", "12 Seater", "13 Seater", "14 Seater",
             "18 Seater", "24 Seater", "32 Seater", "40 Seater", "56 Seater"};
 
-    String[] driver_status={"SELECT", "Self Driven","Driver Inclusive"};
-    String[] location={"Baringo County", "Bomet County", "Bungoma County", "Busia County", "Elgeyo Marakwet County", "Embu County"
-            , "Garissa County", "Homa Bay County", "Isiolo County", "Kajiado County", "Kakamega County", "Kericho County", "Kiambu County"
-            , "Kilifi County", "Kirinyaga County", "Kisii County", "Kisumu County", "Kitui County", "Kwale County", "Laikipia County"
-            , "Lamu County", "Machakos County", "Makueni County", "Mandera County", "Meru County", "Migori County", "Marsabit County"
-            , "Mombasa County", "Muranga County", "Nairobi County", "Nakuru County", "Nandi County", "Narok County", "Nyamira County"
-            , "Nyandarua County", "Nyeri County", "Samburu County", "Siaya County", "Taita Taveta County", "Tana River County", "Tharaka Nithi County"
-            , "Trans Nzoia County", "Turkana County", "Uasin Gishu County", "Vihiga County", "Wajir County", "West Pokot County"};
-
-
     private TextView image1FilePath;
     private TextView image2FilePath;
     private TextView image3FilePath;
@@ -129,12 +115,14 @@ public class SellFragment extends Fragment  {
 
     public static final int IMAGE = 1;
     public static final int CAMERA = 2;
+    public static final int VIDEO = 3;
     public static final int STORAGE_PERMISSION_CODE = 123;
-    public static final String add_vehicle_url = "https://kenyanrides.com/android/write_vehicle.php";
+    public static final String vehicle_on_sale_url = "https://kenyanrides.com/android/write_vehicle_on_sale.php";
 
     private EditText editTextVehicleOverview, editTextVehicleTitle, editTextPrice, editTextModelYear;
 
     Uri imageUri;
+    Uri videoUri;
     String imagePath;
     Spinner brandSpinner;
 
@@ -183,27 +171,29 @@ public class SellFragment extends Fragment  {
 
     private TextView text_view_remaining_images;
 
+    private ImageView addVideo;
+    private VideoView videoView;
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-       View myView = inflater.inflate(R.layout.fragment_sell, null);
+        View myView = inflater.inflate(R.layout.fragment_sell_sales, null);
 
-       requestStoragePermission();
-       requestCameraPermission();
+        requestStoragePermission();
+        requestCameraPermission();
 
-       alertDialogBuilder = new AlertDialog.Builder(getActivity());
+        alertDialogBuilder = new AlertDialog.Builder(getActivity());
 
-       dialog = new ProgressDialog(getActivity());
+        dialog = new ProgressDialog(getActivity());
 
-       //multipart upload namespace
+        //multipart upload namespace
         UploadService.NAMESPACE = BuildConfig.APPLICATION_ID;
 
-       Button btnPostVehicle = myView.findViewById(R.id.btnPostVehicle);
+        Button btnPostVehicle = myView.findViewById(R.id.btnPostVehicle);
 
-       //edittext initialization
+        //edittext initialization
         editTextVehicleTitle =myView.findViewById(R.id.edit_text_vehicle_title);
         editTextVehicleOverview =myView.findViewById(R.id.edit_text_vehicle_overview);
         editTextPrice =myView.findViewById(R.id.edit_text_price);
@@ -211,39 +201,53 @@ public class SellFragment extends Fragment  {
 
         text_view_remaining_images = myView.findViewById(R.id.text_view_remaining_images);
 
+
         //horizontal recycler view initialization
         recyclerView = myView.findViewById(R.id.carImagesRecyclerview);
         horizontalCarImagesAdapter = new HorizontalCarImagesAdapter(getActivity(),uri);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         recyclerView.setAdapter(horizontalCarImagesAdapter);
 
-       //file chooser views
+        //file chooser views
         ImageView imageChooser = myView.findViewById(R.id.image1);
+        addVideo = myView.findViewById(R.id.add_video);
 
-       image1FilePath = myView.findViewById(R.id.image1_file_path);
-       image2FilePath = myView.findViewById(R.id.image2_file_path);
-       image3FilePath = myView.findViewById(R.id.image3_file_path);
-       image4FilePath = myView.findViewById(R.id.image4_file_path);
-       image5FilePath = myView.findViewById(R.id.image5_file_path);
+        videoView = myView.findViewById(R.id.video_view);
+
+        image1FilePath = myView.findViewById(R.id.image1_file_path);
+        image2FilePath = myView.findViewById(R.id.image2_file_path);
+        image3FilePath = myView.findViewById(R.id.image3_file_path);
+        image4FilePath = myView.findViewById(R.id.image4_file_path);
+        image5FilePath = myView.findViewById(R.id.image5_file_path);
 
 
-       //file chooser click listener
+        //file chooser click listener
         imageChooser.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
+            @Override
+            public void onClick(View view) {
 
-               //check if user has already selected 5 images
-               if (selectedImages == 5){
-                   alertDialogBuilder.setMessage("You can only select 5 vehicle images");
-                   alertDialogBuilder.show();
-               }else {
+                //check if user has already selected 5 images
+                if (selectedImages == 5){
+                    alertDialogBuilder.setMessage("You can only select 5 vehicle images");
+                    alertDialogBuilder.show();
+                }else {
 
-                   selectImage(getActivity());
-               }
+                    selectImage(getActivity());
+                }
 
 
-           }
-       });
+            }
+        });
+
+        //add video click listener
+        addVideo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                selectVideo(getActivity());
+
+            }
+        });
 
 
         //spinner initialization
@@ -251,9 +255,6 @@ public class SellFragment extends Fragment  {
         final Spinner fuelSpinner = myView.findViewById(R.id.fuel_spinner);
 
         final Spinner seatsSpinner = myView.findViewById(R.id.seats_spinner);
-
-        final Spinner driverSpinner = myView.findViewById(R.id.driver_status_spinner);
-
 
         brandSpinner = myView.findViewById(R.id.brand_spinner);
 
@@ -362,32 +363,6 @@ public class SellFragment extends Fragment  {
             }
         });
 
-        driverSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-                Object item = adapterView.getItemAtPosition(i);
-                if (item != null) {
-                    vehicleDriverStatus = item.toString();
-                }
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
-        //Creating the ArrayAdapter instance having the bank name list
-        ArrayAdapter driverAdapter = new ArrayAdapter(getActivity(),R.layout.spinner_item,driver_status);
-        driverAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //Setting the ArrayAdapter data on the Spinner
-        driverSpinner.setAdapter(driverAdapter);
-
-
-
-
         BackTask backTask =new BackTask();
         backTask.execute();
 
@@ -399,10 +374,8 @@ public class SellFragment extends Fragment  {
             }
         });
 
-
-
-
         return myView;
+
 
     }
 
@@ -412,74 +385,86 @@ public class SellFragment extends Fragment  {
 
         if(resultCode != RESULT_CANCELED) {
 
-        switch (requestCode) {
+            switch (requestCode) {
 
-            case CAMERA:
+                case CAMERA:
 
-                if (resultCode == RESULT_OK && data != null) {
+                    if (resultCode == RESULT_OK && data != null) {
 
-                    selectedImages ++;
-                    int remaining_images = 5 - selectedImages;
-                    text_view_remaining_images.setText("You can add " + remaining_images + "more images");
-                    Bitmap selectedImage = (Bitmap) data.getExtras().get("data");
-                    uri.add(getImageUri(getActivity(), selectedImage));
-                    recyclerView.setVisibility(View.VISIBLE);
-                    horizontalCarImagesAdapter.notifyDataSetChanged();
-
-                }
-                break;
-
-            case IMAGE:
-
-                if (resultCode == RESULT_OK && data != null) {
-
-                    if(data.getClipData() == null){
-
-                        selectedImages++;
+                        selectedImages ++;
                         int remaining_images = 5 - selectedImages;
                         text_view_remaining_images.setText("You can add " + remaining_images + "more images");
-                        //only one image is selected
-                        imageUri = data.getData();
-                        uri.add(imageUri);
+                        Bitmap selectedImage = (Bitmap) data.getExtras().get("data");
+                        uri.add(getImageUri(getActivity(), selectedImage));
                         recyclerView.setVisibility(View.VISIBLE);
                         horizontalCarImagesAdapter.notifyDataSetChanged();
 
-                    } else{
-                        //several images are selected
+                    }
+                    break;
 
-                        int count = data.getClipData().getItemCount(); //evaluate the count before the for loop --- otherwise, the count is evaluated every loop.
+                case IMAGE:
 
-                        //check number of images selected
-                        if (count > 5 || selectedImages + count > 5){
+                    if (resultCode == RESULT_OK && data != null) {
 
-                            alertDialogBuilder.setMessage("You can only select a maximum of 5 images");
-                            alertDialogBuilder.show();
-                            return;
+                        if(data.getClipData() == null){
 
-                        }else {
-
-                            //selected images are 5 or less
-
-                            for (int i = 0; i < count; i++){
-                                selectedImages++;
-                                imageUri = data.getClipData().getItemAt(i).getUri();
-                                uri.add(imageUri);
-                                recyclerView.setVisibility(View.VISIBLE);
-                                horizontalCarImagesAdapter.notifyDataSetChanged();
-                            }
+                            selectedImages++;
                             int remaining_images = 5 - selectedImages;
-                            text_view_remaining_images.setText("You can add " + remaining_images + " more images");
+                            text_view_remaining_images.setText("You can add " + remaining_images + "more images");
+                            //only one image is selected
+                            imageUri = data.getData();
+                            uri.add(imageUri);
+                            recyclerView.setVisibility(View.VISIBLE);
+                            horizontalCarImagesAdapter.notifyDataSetChanged();
+
+                        } else{
+                            //several images are selected
+
+                            int count = data.getClipData().getItemCount(); //evaluate the count before the for loop --- otherwise, the count is evaluated every loop.
+
+                            //check number of images selected
+                            if (count > 5 || selectedImages + count > 5){
+
+                                alertDialogBuilder.setMessage("You can only select a maximum of 5 images");
+                                alertDialogBuilder.show();
+                                return;
+
+                            }else {
+
+                                //selected images are 5 or less
+
+                                for (int i = 0; i < count; i++){
+                                    selectedImages++;
+                                    imageUri = data.getClipData().getItemAt(i).getUri();
+                                    uri.add(imageUri);
+                                    recyclerView.setVisibility(View.VISIBLE);
+                                    horizontalCarImagesAdapter.notifyDataSetChanged();
+                                }
+                                int remaining_images = 5 - selectedImages;
+                                text_view_remaining_images.setText("You can add " + remaining_images + " more images");
+                            }
                         }
                     }
-                }
-                break;
+                    break;
+
+                case VIDEO:
+
+                    if (resultCode == RESULT_OK && data != null) {
+
+                        videoUri = data.getData();
+
+                        addVideo.setVisibility(View.GONE);
+                        videoView.setVisibility(View.VISIBLE);
+                        videoView.setVideoURI(videoUri);
+                        videoView.start();
+
+
+                    }
+                    break;
 
 
 
-
-
-
-        }
+            }
         }else {
             Toast.makeText(getActivity(), "No images selected", Toast.LENGTH_SHORT).show();
         }
@@ -601,7 +586,35 @@ public class SellFragment extends Fragment  {
         builder.show();
     }
 
+    //select video dialog method
+    private void selectVideo(Context context) {
+        final CharSequence[] options = { "Use Camera", "Choose from Gallery", "Cancel" };
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Select Car Video");
+
+        builder.setItems(options, (dialog, item) -> {
+
+            if (options[item].equals("Use Camera")) {
+                Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+                if (takeVideoIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+                    startActivityForResult(takeVideoIntent, VIDEO);
+                }
+
+            } else if (options[item].equals("Choose from Gallery")) {
+                Intent chooseFile = new Intent();
+                chooseFile.setType("video/*");
+                chooseFile.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false);
+                chooseFile.setAction(Intent.ACTION_GET_CONTENT);
+                chooseFile = Intent.createChooser(chooseFile, "Choose a file");
+                startActivityForResult(chooseFile, VIDEO);
+
+            } else if (options[item].equals("Cancel")) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
+    }
 
     //on click for button to post vehicles
     public void postVehicle(){
@@ -641,10 +654,6 @@ public class SellFragment extends Fragment  {
         if(TextUtils.isEmpty(vehiclePrice) ){
             editTextPrice.setError("Vehicle price cannot be empty");
             return;
-        } else{
-            double price = 1.1 * Integer.parseInt(vehiclePrice);
-
-            vehiclePrice = String.valueOf(price);
         }
 
         //get edit text strings
@@ -775,6 +784,7 @@ public class SellFragment extends Fragment  {
 
         //get path of images
         image1Path = getPath(uri.get(0));
+        Toast.makeText(getActivity(), image1Path, Toast.LENGTH_SHORT).show();
         image2Path = getPath(uri.get(1));
         image3Path = getPath(uri.get(2));
         image4Path = getPath(uri.get(3));
@@ -786,10 +796,11 @@ public class SellFragment extends Fragment  {
 
             user user = SharedPrefManager.getInstance(getActivity()).getUser();
 
+            Toast.makeText(getActivity(), user.getEmail() , Toast.LENGTH_SHORT).show();
 
             String uploadId = UUID.randomUUID().toString();
 
-            new MultipartUploadRequest(getActivity(), uploadId, add_vehicle_url)
+            new MultipartUploadRequest(getActivity(), uploadId, vehicle_on_sale_url)
                     .addFileToUpload(image1Path, "image1")
                     .addFileToUpload(image2Path, "image2")
                     .addFileToUpload(image3Path, "image3")
@@ -817,13 +828,13 @@ public class SellFragment extends Fragment  {
                     .addParameter("crashsensor", crashSensor)
                     .addParameter("leatherseats", leatherSeats)
                     .addParameter("ownerid", user.getEmail())
-                    .addParameter("booked", "1")
+                    .addParameter("booked", "10")
                     .setNotificationConfig(new UploadNotificationConfig())
                     .setMaxRetries(2)
                     .setDelegate(new UploadStatusDelegate() {
                         @Override
                         public void onProgress(Context context, UploadInfo uploadInfo) {
-                            dialog.setMessage("Uploading vehicle.\nPlease wait..");
+                            dialog.setMessage("Uploading vehicle.\nPlease wait...");
                             dialog.setCancelable(false);
                             dialog.show();
 
@@ -852,6 +863,7 @@ public class SellFragment extends Fragment  {
 
                             dialog.dismiss();
 
+                            Toast.makeText(context, "completed", Toast.LENGTH_SHORT).show();
 
                             alertDialogBuilder.setTitle("Success!");
                             alertDialogBuilder.setMessage("Vehicle was uploaded succesfully");
@@ -860,10 +872,11 @@ public class SellFragment extends Fragment  {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
 
-                                    //go to main activity
+                                   //go to main activity
                                     Intent intent = new Intent(getActivity(), MainActivity.class);
                                     getActivity().finish();
                                     startActivity(intent);
+
 
                                 }
                             });
@@ -876,9 +889,7 @@ public class SellFragment extends Fragment  {
 
                             Toast.makeText(context, String.valueOf(uploadInfo) , Toast.LENGTH_SHORT).show();
 
-                            if(dialog.isShowing()){
-                                dialog.dismiss();
-                            }
+                            dialog.dismiss();
 
                             alertDialogBuilder.setTitle("Failed!");
                             alertDialogBuilder.setMessage("Vehicle was not uploaded! Please try uploading again");
@@ -916,112 +927,113 @@ public class SellFragment extends Fragment  {
     //fetch brands from db
 
 
-private class BackTask extends AsyncTask<Void, Void, String> {
-    ProgressDialog dialog;
-    String result;
+    private class BackTask extends AsyncTask<Void, Void, String> {
+        ProgressDialog dialog;
+        String result;
 
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-        dialog = new ProgressDialog(getActivity());
-        dialog.setMessage("Loading...");
-        dialog.setCancelable(false);
-        dialog.show();
-    }
-
-    @Override
-    protected String doInBackground(Void... voids) {
-
-
-        try {
-            URL url = new URL(brands_url);
-            HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-            InputStreamReader inputStream = new InputStreamReader( httpURLConnection.getInputStream());
-            BufferedReader bufferedReader = new BufferedReader(inputStream);
-
-            StringBuilder builder = new StringBuilder();
-
-            String line;
-
-            while((line = bufferedReader.readLine()) != null ){
-
-                builder.append(line);
-
-            }
-
-            //assign json data collected
-            result = builder.toString();
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog = new ProgressDialog(getActivity());
+            dialog.setMessage("Loading...");
+            dialog.setCancelable(false);
+            dialog.show();
         }
 
-        try {
-            //get json array from result passed
-            JSONArray array = new JSONArray(result);
-
-            //loop through all json objects in json array
-            for(int i = 0; i<array.length();i++){
-
-                //each object
-                JSONObject object = array.getJSONObject(i);
-                int id = object.getInt("id");
-
-                String brandName = object.getString("Brand");
+        @Override
+        protected String doInBackground(Void... voids) {
 
 
-                brandsList.add(brandName);
-                brandsId.add(id);
+            try {
+                URL url = new URL(brands_url);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                InputStreamReader inputStream = new InputStreamReader( httpURLConnection.getInputStream());
+                BufferedReader bufferedReader = new BufferedReader(inputStream);
 
-            }
+                StringBuilder builder = new StringBuilder();
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+                String line;
 
+                while((line = bufferedReader.readLine()) != null ){
 
-        return null;
-    }
-
-    @Override
-    protected void onPostExecute(String s) {
-        super.onPostExecute(s);
-        dialog.dismiss();
-
-
-        //Creating the ArrayAdapter instance having the bank name list
-        ArrayAdapter brandAdapter = new ArrayAdapter(getActivity(),R.layout.spinner_item,brandsList);
-        brandAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //Setting the ArrayAdapter data on the Spinner
-        brandSpinner.setAdapter(brandAdapter);
-
-        brandSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-                Object item = adapterView.getItemAtPosition(i);
-                if (item != null) {
-
-                    vehicleBrand = brandsId.get(i).toString();
-
+                    builder.append(line);
 
                 }
 
+                //assign json data collected
+                result = builder.toString();
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
+            try {
+                //get json array from result passed
+                JSONArray array = new JSONArray(result);
 
-                vehicleBrand = "SELECT";
+                //loop through all json objects in json array
+                for(int i = 0; i<array.length();i++){
 
+                    //each object
+                    JSONObject object = array.getJSONObject(i);
+                    int id = object.getInt("id");
+
+                    String brandName = object.getString("Brand");
+
+
+                    brandsList.add(brandName);
+                    brandsId.add(id);
+
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        });
+
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            dialog.dismiss();
+
+
+            //Creating the ArrayAdapter instance having the bank name list
+            ArrayAdapter brandAdapter = new ArrayAdapter(getActivity(),R.layout.spinner_item,brandsList);
+            brandAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            //Setting the ArrayAdapter data on the Spinner
+            brandSpinner.setAdapter(brandAdapter);
+
+            brandSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                    Object item = adapterView.getItemAtPosition(i);
+                    if (item != null) {
+
+                        vehicleBrand = brandsId.get(i).toString();
+
+
+                    }
+
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    vehicleBrand = "SELECT";
+
+                }
+            });
 
 
 
+        }
     }
-}
+
 
 }

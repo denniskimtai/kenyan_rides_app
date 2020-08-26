@@ -81,8 +81,6 @@ public class HomeFragment extends Fragment {
             }
         });
 
-
-
         recyclerView = myView.findViewById(R.id.cars_recycler_view);
 
         linearLayoutEmpty = myView.findViewById(R.id.linearEmpty);
@@ -171,91 +169,104 @@ public class HomeFragment extends Fragment {
         }
 
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, vehicles_url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, vehicles_url, response -> {
 
-                try {
-                    JSONArray carsJson = new JSONArray(response);
+            try {
+                JSONArray carsJson = new JSONArray(response);
 
-                    //check if no cars are available
-                    if(carsJson.length() != 0){
+                //check if no cars are available
+                if(carsJson.length() != 0){
 
-                        recyclerView.setVisibility(View.VISIBLE);
-                        linearLayoutEmpty.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
+                    linearLayoutEmpty.setVisibility(View.GONE);
 
-                        for(int i = 0; i<carsJson.length(); i++) {
+                    for(int i = 0; i<carsJson.length(); i++) {
 
-                            //get json objects
-                            JSONObject carsObject = carsJson.getJSONObject(i);
+                        //get json objects
+                        JSONObject carsObject = carsJson.getJSONObject(i);
 
-                            String vehicleTitle = carsObject.getString("VehiclesTitle");
+                        String vehicleTitle = carsObject.getString("VehiclesTitle");
 
-                            int pricePerDay = carsObject.getInt("PricePerDay");
+                        int pricePerDay = carsObject.getInt("PricePerDay");
 
-                            String vehicleImage = "https://kenyanrides.com/serviceprovider/img/vehicleimages/" + carsObject.getString("Vimage1");
+                        String vehicleImage = "https://kenyanrides.com/serviceprovider/img/vehicleimages/" + carsObject.getString("Vimage1");
 
-
-                            //
-                            int id = carsObject.getInt("id");
-                            String vehicleBrand = carsObject.getString("brandName");
-                            String vehicleOverview = carsObject.getString("VehiclesOverview");
-                            String poweredBy = carsObject.getString("poweredby");
-                            String fuelType = carsObject.getString("FuelType");
-                            String modelYear = carsObject.getString("ModelYear");
-                            String seatingCapacity = carsObject.getString("SeatingCapacity");
-                            String driverStatus = carsObject.getString("Dstatus");
-                            String vehicleImage2 = "https://kenyanrides.com/serviceprovider/img/vehicleimages/" + carsObject.getString("Vimage2");
-                            String vehicleImage3 = "https://kenyanrides.com/serviceprovider/img/vehicleimages/" + carsObject.getString("Vimage3");
-                            String vehicleImage4 = "https://kenyanrides.com/serviceprovider/img/vehicleimages/" + carsObject.getString("Vimage4");
-                            String vehicleImage5 = "https://kenyanrides.com/serviceprovider/img/vehicleimages/" + carsObject.getString("Vimage5");
-                            String airConditioner = carsObject.getString("AirConditioner");
-                            String powerDoorLocks = carsObject.getString("PowerDoorLocks");
-                            String antiLockBrakingSystem = carsObject.getString("AntiLockBrakingSystem");
-                            String brakeAssist = carsObject.getString("BrakeAssist");
-                            String powerSteering = carsObject.getString("PowerSteering");
-                            String driverAirbag = carsObject.getString("DriverAirbag");
-                            String passengerAirbag = carsObject.getString("PassengerAirbag");
-                            String powerWindows = carsObject.getString("PowerWindows");
-                            String cdPlayer = carsObject.getString("CDPlayer");
-                            String centralLocking = carsObject.getString("CentralLocking");
-                            String crashSensor = carsObject.getString("CrashSensor");
-                            String leatherSeats = carsObject.getString("LeatherSeats");
-                            String ownerId = carsObject.getString("owner_id");
-                            String regDate = carsObject.getString("RegDate");
-                            String booked = carsObject.getString("booked");
+                        int id = carsObject.getInt("id");
+                        String vehicleBrand = carsObject.getString("brandName");
+                        String vehicleOverview = carsObject.getString("VehiclesOverview");
+                        String poweredBy = carsObject.getString("poweredby");
+                        String fuelType = carsObject.getString("FuelType");
+                        String modelYear = carsObject.getString("ModelYear");
+                        String seatingCapacity = carsObject.getString("SeatingCapacity");
+                        String driverStatus = carsObject.getString("Dstatus");
+                        String vehicleImage2 = "https://kenyanrides.com/serviceprovider/img/vehicleimages/" + carsObject.getString("Vimage2");
+                        String vehicleImage3 = "https://kenyanrides.com/serviceprovider/img/vehicleimages/" + carsObject.getString("Vimage3");
+                        String vehicleImage4 = "https://kenyanrides.com/serviceprovider/img/vehicleimages/" + carsObject.getString("Vimage4");
+                        String vehicleImage5 = "https://kenyanrides.com/serviceprovider/img/vehicleimages/" + carsObject.getString("Vimage5");
+                        String airConditioner = carsObject.getString("AirConditioner");
+                        String powerDoorLocks = carsObject.getString("PowerDoorLocks");
+                        String antiLockBrakingSystem = carsObject.getString("AntiLockBrakingSystem");
+                        String brakeAssist = carsObject.getString("BrakeAssist");
+                        String powerSteering = carsObject.getString("PowerSteering");
+                        String driverAirbag = carsObject.getString("DriverAirbag");
+                        String passengerAirbag = carsObject.getString("PassengerAirbag");
+                        String powerWindows = carsObject.getString("PowerWindows");
+                        String cdPlayer = carsObject.getString("CDPlayer");
+                        String centralLocking = carsObject.getString("CentralLocking");
+                        String crashSensor = carsObject.getString("CrashSensor");
+                        String leatherSeats = carsObject.getString("LeatherSeats");
+                        String ownerId = carsObject.getString("owner_id");
+                        String regDate = carsObject.getString("RegDate");
+                        String booked = carsObject.getString("booked");
+                        String owner_phone_number = carsObject.getString("owner_phonenumber");
 
 
-                            car car = new car(vehicleImage, vehicleTitle, pricePerDay, id, vehicleBrand,
-                                    vehicleOverview, poweredBy, fuelType, modelYear, seatingCapacity,
-                                    driverStatus, vehicleImage2, vehicleImage3, vehicleImage4, vehicleImage5,
-                                    airConditioner, powerDoorLocks, antiLockBrakingSystem, brakeAssist, powerSteering,
-                                    driverAirbag, passengerAirbag, powerWindows, cdPlayer, centralLocking,
-                                    crashSensor, leatherSeats, ownerId, regDate, booked);
+                        car car = new car(vehicleImage, vehicleTitle, pricePerDay, id, vehicleBrand,
+                                vehicleOverview, poweredBy, fuelType, modelYear, seatingCapacity,
+                                driverStatus, vehicleImage2, vehicleImage3, vehicleImage4, vehicleImage5,
+                                airConditioner, powerDoorLocks, antiLockBrakingSystem, brakeAssist, powerSteering,
+                                driverAirbag, passengerAirbag, powerWindows, cdPlayer, centralLocking,
+                                crashSensor, leatherSeats, ownerId, regDate, booked, owner_phone_number);
 
-                            carList.add(car);
+                        carList.add(car);
 
 
 
-                        }
-
-                    }else {
-                        recyclerView.setVisibility(View.GONE);
-                        linearLayoutEmpty.setVisibility(View.VISIBLE);
                     }
 
-
-                    progressDialog.dismiss();
-
-                    carsAdapter = new CarsAdapter(getActivity(), carList);
-                    recyclerView.setAdapter(carsAdapter);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                }else {
+                    recyclerView.setVisibility(View.GONE);
+                    linearLayoutEmpty.setVisibility(View.VISIBLE);
                 }
 
+
+                progressDialog.dismiss();
+
+                carsAdapter = new CarsAdapter(getActivity(), carList);
+                recyclerView.setAdapter(carsAdapter);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        }, error -> Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show());
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progressDialog.dismiss();
+                alertDialogBuilder.setTitle("Error occurred");
+                alertDialogBuilder.setMessage("Please ensure you have stable internet connection!\n error: " + error.getMessage());
+                alertDialogBuilder.setCancelable(false);
+                alertDialogBuilder.setPositiveButton("Try again", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        prepareCars();
+                    }
+                });
+
+                alertDialogBuilder.show();
+
+            }
+        });
 
         Volley.newRequestQueue(getActivity()).add(stringRequest);
 
