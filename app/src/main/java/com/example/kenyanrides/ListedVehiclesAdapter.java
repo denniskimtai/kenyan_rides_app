@@ -25,6 +25,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +43,7 @@ public class ListedVehiclesAdapter extends RecyclerView.Adapter<ListedVehiclesAd
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView listedVehicleTitle, listedVehiclePrice, listedVehicleStatus, textViewComplete, textViewDelete;
+        public TextView listedVehicleTitle, listedVehiclePrice, listedVehicleStatus, textViewComplete, textViewDelete, textViewLocation;
         public ImageView listedVehicleImage;
 
 
@@ -55,6 +56,7 @@ public class ListedVehiclesAdapter extends RecyclerView.Adapter<ListedVehiclesAd
             listedVehicleStatus = view.findViewById(R.id.textViewStatus);
             textViewComplete = view.findViewById(R.id.textViewComplete);
             textViewDelete = view.findViewById(R.id.btnListedVehicleDelete);
+            textViewLocation = view.findViewById(R.id.textViewLocation);
 
             alertDialogBuilder = new AlertDialog.Builder(mContext);
             progressDialog = new ProgressDialog(mContext);
@@ -83,7 +85,21 @@ public class ListedVehiclesAdapter extends RecyclerView.Adapter<ListedVehiclesAd
 
         ListVehicle listVehicle = ListedVehiclesList.get(position);
         holder.listedVehicleTitle.setText(listVehicle.getVehicleBrand() + " " + listVehicle.getCarName());
-        holder.listedVehiclePrice.setText("Ksh " + listVehicle.getCarPrice() + "/day" );
+
+        //format car price
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        String formatted = formatter.format(listVehicle.getCarPrice());
+
+        //check if car is for sale and remove /day
+        if (listVehicle.getBooked().equals("10")){
+
+            holder.listedVehiclePrice.setText("Ksh " + formatted);
+
+        }else {
+            holder.listedVehiclePrice.setText("Ksh " + formatted + "/day");
+        }
+
+        holder.textViewLocation.setText(listVehicle.getLocation());
 
 
         switch (listVehicle.getBooked()){
@@ -372,8 +388,8 @@ public class ListedVehiclesAdapter extends RecyclerView.Adapter<ListedVehiclesAd
                                         alertDialogBuilder.show();
 
                                         break;
-
                                 }
+
                                 progressDialog.dismiss();
 
 
@@ -401,6 +417,62 @@ public class ListedVehiclesAdapter extends RecyclerView.Adapter<ListedVehiclesAd
 
 
                 });
+                break;
+
+            case "10":
+
+                holder.listedVehicleStatus.setText("For Sale");
+
+                //if car listed is for sale
+                holder.textViewComplete.setText("Edit Vehicle");
+                //go to edit vehicle
+                holder.textViewComplete.setOnClickListener(view -> {
+
+                    //go to edit activity
+                    Intent intent = new Intent(view.getContext(), EditVehicleActivity.class);
+
+                    //send car details to EditVehicleActivity
+
+                    intent.putExtra("vehicle_id", listVehicle.getId());
+                    intent.putExtra("vehicle_title", listVehicle.getCarName());
+                    intent.putExtra("vehicle_brand", listVehicle.getVehicleBrand());
+                    intent.putExtra("vehicle_overview", listVehicle.getVehicleOverview());
+                    intent.putExtra("price_per_day", listVehicle.getCarPrice());
+                    intent.putExtra("powered_by", listVehicle.getPoweredBy());
+                    intent.putExtra("location", listVehicle.getLocation());
+                    intent.putExtra("model_year", listVehicle.getModelYear());
+                    intent.putExtra("seating_capacity", listVehicle.getSeatingCapacity());
+                    intent.putExtra("driver_status", listVehicle.getDriverStatus());
+                    intent.putExtra("image1", listVehicle.getImage());
+                    intent.putExtra("image2", listVehicle.getImage2());
+                    intent.putExtra("image3", listVehicle.getImage3());
+                    intent.putExtra("image4", listVehicle.getImage4());
+                    intent.putExtra("image5", listVehicle.getImage5());
+                    intent.putExtra("owner_id", listVehicle.getOwnerId());
+                    intent.putExtra("reg_date", listVehicle.getRegDate());
+                    intent.putExtra("vehicle_status", listVehicle.getBooked());
+
+                    //vehicle accessories
+                    intent.putExtra("airConditioner", listVehicle.getAirConditioner());
+                    intent.putExtra("powerDoorLocks", listVehicle.getPowerDoorLocks());
+                    intent.putExtra("antiLockBrakingSystem", listVehicle.getAntiLockBrakingSystem());
+                    intent.putExtra("brakeAssist", listVehicle.getBrakeAssist());
+                    intent.putExtra("powerSteering", listVehicle.getPowerSteering());
+                    intent.putExtra("driverAirbag", listVehicle.getDriverAirbag());
+                    intent.putExtra("passengerAirbag", listVehicle.getPassengerAirbag());
+                    intent.putExtra("powerWindows", listVehicle.getPowerWindows());
+                    intent.putExtra("cdPlayer", listVehicle.getCdPlayer());
+                    intent.putExtra("centralLocking", listVehicle.getCentralLocking());
+                    intent.putExtra("crashSensor", listVehicle.getCrashSensor());
+                    intent.putExtra("leatherSeats", listVehicle.getLeatherSeats());
+
+                    ((Activity)mContext).finish();
+                    view.getContext().startActivity(intent);
+
+
+                });
+
+
                 break;
 
 

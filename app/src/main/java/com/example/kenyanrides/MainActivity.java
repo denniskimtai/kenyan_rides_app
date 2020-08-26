@@ -102,7 +102,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(false);
         dialog.setContentView(R.layout.sale_rental_dialog_layout);
         dialog.show();
 

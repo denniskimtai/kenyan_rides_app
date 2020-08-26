@@ -37,6 +37,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -146,6 +147,8 @@ public class EditVehicleActivity extends AppCompatActivity {
 
     private TextView txtViewVehicleStatus;
 
+    private LinearLayout driverStatusLayout;
+
     Uri imageUri;
     String imagePath;
     Spinner brandSpinner;
@@ -252,6 +255,8 @@ public class EditVehicleActivity extends AppCompatActivity {
         editTextVehicleOverview = findViewById(R.id.edit_text_vehicle_overview);
         editTextPrice = findViewById(R.id.edit_text_price);
         editTextModelYear = findViewById(R.id.edit_text_model_year);
+
+        driverStatusLayout = findViewById(R.id.driver_status_layout);
 
         editTextVehicleTitle.setText(intent_vehicle_title);
         editTextVehicleOverview.setText(intent_vehicle_overview);
@@ -385,7 +390,7 @@ public class EditVehicleActivity extends AppCompatActivity {
                                if (switchChecked) {
                                    btn.setChecked(true);
                                    txtViewVehicleStatus.setText("Online");
-                                   txtViewVehicleStatus.setTextColor(getResources().getColor(R.color.white));
+                                   txtViewVehicleStatus.setTextColor(getResources().getColor(R.color.green));
                                    vehicle_status = "1";
 
                                } else {
@@ -581,36 +586,44 @@ public class EditVehicleActivity extends AppCompatActivity {
         });
 
 
+        //check if car is for sale
+        if (vehicle_status.equals("10")){
+            driverStatusLayout.setVisibility(View.GONE);
+        }else {
 
-        driverSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            driverSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
-                Object item = adapterView.getItemAtPosition(i);
-                if (item != null) {
-                    vehicleDriverStatus = item.toString();
+                    Object item = adapterView.getItemAtPosition(i);
+                    if (item != null) {
+                        vehicleDriverStatus = item.toString();
+                    }
+
                 }
 
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
+
+            //Creating the ArrayAdapter instance having the bank name list
+            ArrayAdapter driverAdapter = new ArrayAdapter(this,R.layout.spinner_item,driver_status_array);
+            driverAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            //Setting the ArrayAdapter data on the Spinner
+            driverSpinner.setAdapter(driverAdapter);
+
+            String compareValueDriver = intent_driver_status;
+
+            if (compareValueDriver != null) {
+                int Position = driverAdapter.getPosition(compareValueDriver);
+                driverSpinner.setSelection(Position);
             }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
-        //Creating the ArrayAdapter instance having the bank name list
-        ArrayAdapter driverAdapter = new ArrayAdapter(this,R.layout.spinner_item,driver_status_array);
-        driverAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //Setting the ArrayAdapter data on the Spinner
-        driverSpinner.setAdapter(driverAdapter);
-
-        String compareValueDriver = intent_driver_status;
-
-        if (compareValueDriver != null) {
-            int Position = driverAdapter.getPosition(compareValueDriver);
-            driverSpinner.setSelection(Position);
         }
+
+
 
         EditVehicleActivity.BackTask backTask =new EditVehicleActivity.BackTask();
         backTask.execute();

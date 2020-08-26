@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -73,11 +74,9 @@ import static com.example.kenyanrides.Constants.TRANSACTION_TYPE;
 
 public class BookNowActivity extends AppCompatActivity implements View.OnClickListener {
 
-    public static DrawerLayout drawer;
-
     private TextView TxtPickupDate, TxtPickupTime, TxtReturnDate, TxtReturnTime;
 
-    private EditText editTextVehicleTravelLocation, editTextMpesaNumber, editTextPickupLocation, editTextReturnLocation;
+    private EditText editTextVehicleTravelLocation, editTextMpesaNumber;
 
     private int mYear, mMonth, mDay, mHour, mMinute;
 
@@ -117,8 +116,6 @@ public class BookNowActivity extends AppCompatActivity implements View.OnClickLi
 
         editTextVehicleTravelLocation = findViewById(R.id.edit_text_vehicle_travel_destination);
         editTextMpesaNumber = findViewById(R.id.edit_text_mpesa_number);
-        editTextPickupLocation = findViewById(R.id.edit_text_pickup_location);
-        editTextReturnLocation = findViewById(R.id.edit_text_return_location);
 
         btnBookNow = findViewById(R.id.btnBookNow);
 
@@ -129,6 +126,65 @@ public class BookNowActivity extends AppCompatActivity implements View.OnClickLi
 
         btnBookNow.setOnClickListener(this);
 
+        // Initialize the pickup location.
+        AutocompleteSupportFragment pickup_location_fragment = (AutocompleteSupportFragment)
+                getSupportFragmentManager().findFragmentById(R.id.pickup_location);
+        pickup_location_fragment.setCountry("KE");
+        pickup_location_fragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.PHOTO_METADATAS));
+        pickup_location_fragment.setHint("SELECT");
+        pickup_location_fragment.getView().findViewById(R.id.places_autocomplete_search_button).setVisibility(View.GONE);
+        pickup_location_fragment.getView().findViewById(R.id.places_autocomplete_clear_button).setVisibility(View.GONE);
+
+        //customise autocomplete edittext
+        EditText etPlace = pickup_location_fragment.getView().findViewById(R.id.places_autocomplete_search_input);
+        etPlace.setTextSize(12.0f);
+        etPlace.setHintTextColor(getResources().getColor(R.color.black));
+        etPlace.setGravity(Gravity.CENTER_VERTICAL);
+        etPlace.setBackground(getResources().getDrawable(R.drawable.input_shape));
+        etPlace.setPadding(15,25,15,60);
+
+        pickup_location_fragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(@NonNull Place place) {
+
+                pickupLocation = place.getName();
+            }
+
+            @Override
+            public void onError(@NonNull Status status) {
+                Toast.makeText(BookNowActivity.this, status.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Initialize the return location fragment.
+        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
+                getSupportFragmentManager().findFragmentById(R.id.return_location);
+        autocompleteFragment.setCountry("KE");
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.PHOTO_METADATAS));
+        autocompleteFragment.setHint("SELECT");
+        autocompleteFragment.getView().findViewById(R.id.places_autocomplete_search_button).setVisibility(View.GONE);
+        autocompleteFragment.getView().findViewById(R.id.places_autocomplete_clear_button).setVisibility(View.GONE);
+
+        //customise autocomplete edittext
+        EditText editTextPlace = autocompleteFragment.getView().findViewById(R.id.places_autocomplete_search_input);
+        editTextPlace.setTextSize(12.0f);
+        editTextPlace.setHintTextColor(getResources().getColor(R.color.black));
+        editTextPlace.setGravity(Gravity.CENTER_VERTICAL);
+        editTextPlace.setBackground(getResources().getDrawable(R.drawable.input_shape));
+        editTextPlace.setPadding(15,25,15,60);
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(@NonNull Place place) {
+
+                returnLocation = place.getName();
+            }
+
+            @Override
+            public void onError(@NonNull Status status) {
+                Toast.makeText(BookNowActivity.this, status.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
         alertDialog = new AlertDialog.Builder(this);
@@ -311,15 +367,13 @@ public class BookNowActivity extends AppCompatActivity implements View.OnClickLi
             return;
         }
 
-        pickupLocation = editTextPickupLocation.getText().toString();
-        if(TextUtils.isEmpty(pickupLocation)){
-            editTextPickupLocation.setError("Please enter a pickup location");
+        if (pickupLocation.isEmpty()){
+            Toast.makeText(this, "Please select location of the vehicle", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        returnLocation = editTextReturnLocation.getText().toString();
-        if(TextUtils.isEmpty(returnLocation)){
-            editTextReturnLocation.setError("Please enter a return location");
+        if (returnLocation.isEmpty()){
+            Toast.makeText(this, "Please select location of the vehicle", Toast.LENGTH_SHORT).show();
             return;
         }
 

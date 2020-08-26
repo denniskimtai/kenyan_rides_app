@@ -163,48 +163,54 @@
             android:orientation="horizontal"
             android:weightSum="2">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:background="@drawable/input_shape"
+            <LinearLayout
+                android:layout_margin="10dp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:textColorHint="@color/dark_grey">
+                android:orientation="vertical">
 
-                <EditText
-                    android:id="@+id/edit_text_pickup_location"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:text="Pickup Location"
+                    android:textColor="@color/black"
+                    android:textSize="12dp"/>
+
+                <fragment
+                    android:background="@drawable/input_shape"
+                    android:id="@+id/pickup_location"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:hint="Pickup Location"
-                    android:paddingLeft="10dp"
-                    android:textColor="@color/black"
-                    android:textSize="12dp" />
+                    android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment" />
 
+            </LinearLayout>
 
-            </com.google.android.material.textfield.TextInputLayout>
-
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:background="@drawable/input_shape"
+            <LinearLayout
+                android:layout_margin="10dp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:textColorHint="@color/dark_grey">
+                android:orientation="vertical">
 
-                <EditText
-                    android:id="@+id/edit_text_return_location"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Return Location"
+                    android:layout_marginBottom="10dp"
+                    android:textColor="@color/black"
+                    android:textSize="12dp"/>
+
+                <fragment
+                    android:background="@drawable/input_shape"
+                    android:id="@+id/return_location"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:hint="Return Location"
-                    android:paddingLeft="10dp"
-                    android:textColor="@color/black"
-                    android:textSize="12dp" />
+                    android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment" />
 
+            </LinearLayout>
 
-            </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
 
