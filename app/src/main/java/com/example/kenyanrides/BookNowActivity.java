@@ -346,7 +346,9 @@ public class BookNowActivity extends AppCompatActivity implements View.OnClickLi
 
         if(view == btnBookNow){
 
-            BookCar();
+            //BookCar();
+            Intent intent = new Intent(BookNowActivity.this, PaymentActivity.class);
+            startActivity(intent);
 
         }
 

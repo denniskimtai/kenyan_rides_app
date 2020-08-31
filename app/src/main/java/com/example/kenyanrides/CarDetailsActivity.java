@@ -176,9 +176,6 @@ public class CarDetailsActivity extends AppCompatActivity {
                         }
 
 
-
-
-
                 }
             });
 
@@ -188,6 +185,8 @@ public class CarDetailsActivity extends AppCompatActivity {
 
             txt_price_per_day.setText("Ksh " + price_per_day);
             txt_driver_status.setText(driver_status);
+            btnBookNow.setVisibility(View.VISIBLE);
+            linearLayoutContact.setVisibility(View.GONE);
 
         }
 

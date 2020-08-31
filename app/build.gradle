@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.kenyanrides"
-        minSdkVersion 18
+        minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -88,6 +88,11 @@ dependencies {
 
     //places autocomplete
     implementation 'com.google.android.libraries.places:places:2.1.0'
+
+    //braintree payment gateway
+    implementation 'com.braintreepayments.api:drop-in:3.7.1'
+
+
 
 
 
