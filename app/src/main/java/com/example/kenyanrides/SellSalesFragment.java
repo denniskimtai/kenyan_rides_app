@@ -72,6 +72,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 import static android.app.Activity.RESULT_CANCELED;
@@ -125,6 +126,8 @@ public class SellSalesFragment extends Fragment {
     Uri videoUri;
     String imagePath;
     Spinner brandSpinner;
+
+    private String videoPath;
 
     private AlertDialog.Builder alertDialogBuilder;
 
@@ -395,7 +398,9 @@ public class SellSalesFragment extends Fragment {
                         int remaining_images = 5 - selectedImages;
                         text_view_remaining_images.setText("You can add " + remaining_images + "more images");
                         Bitmap selectedImage = (Bitmap) data.getExtras().get("data");
-                        uri.add(getImageUri(getActivity(), selectedImage));
+                        Bitmap resizeImage = Bitmap.createScaledBitmap(selectedImage, 200, 200, false);
+
+                        uri.add(getImageUri(getActivity(), resizeImage));
                         recyclerView.setVisibility(View.VISIBLE);
                         horizontalCarImagesAdapter.notifyDataSetChanged();
 
@@ -412,8 +417,10 @@ public class SellSalesFragment extends Fragment {
                             int remaining_images = 5 - selectedImages;
                             text_view_remaining_images.setText("You can add " + remaining_images + "more images");
                             //only one image is selected
-                            imageUri = data.getData();
-                            uri.add(imageUri);
+                            Bitmap selectedImage = (Bitmap) data.getExtras().get("data");
+                            Bitmap resizeImage = Bitmap.createScaledBitmap(selectedImage, 200, 200, false);
+                            uri.add(getImageUri(getActivity(), resizeImage));
+
                             recyclerView.setVisibility(View.VISIBLE);
                             horizontalCarImagesAdapter.notifyDataSetChanged();
 
@@ -434,9 +441,22 @@ public class SellSalesFragment extends Fragment {
                                 //selected images are 5 or less
 
                                 for (int i = 0; i < count; i++){
+
+                                    Bitmap selectedImage;
+
                                     selectedImages++;
+
                                     imageUri = data.getClipData().getItemAt(i).getUri();
-                                    uri.add(imageUri);
+
+                                    try {
+                                        selectedImage = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
+                                        Bitmap resizeImage = Bitmap.createScaledBitmap(selectedImage, 200, 200, false);
+                                        uri.add(getImageUri(getActivity(), resizeImage));
+
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+
                                     recyclerView.setVisibility(View.VISIBLE);
                                     horizontalCarImagesAdapter.notifyDataSetChanged();
                                 }
@@ -523,8 +543,6 @@ public class SellSalesFragment extends Fragment {
 
     }
 
-
-
     private String getPath(Uri uri){
         String path = null;
 
@@ -546,6 +564,23 @@ public class SellSalesFragment extends Fragment {
             cursor.close();
         }
 
+
+        return path;
+    }
+
+    public String getVideoPath(Uri uri) {
+        Cursor cursor = getActivity().getContentResolver().query(uri, null, null, null, null);
+        cursor.moveToFirst();
+        String document_id = cursor.getString(0);
+        document_id = document_id.substring(document_id.lastIndexOf(":") + 1);
+        cursor.close();
+
+        cursor = getActivity().getContentResolver().query(
+                android.provider.MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+                null, MediaStore.Images.Media._ID + " = ? ", new String[]{document_id}, null);
+        cursor.moveToFirst();
+        String path = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DATA));
+        cursor.close();
 
         return path;
     }
@@ -618,7 +653,6 @@ public class SellSalesFragment extends Fragment {
 
     //on click for button to post vehicles
     public void postVehicle(){
-
 
         //check if network is connected
         if (!isNetworkAvailable()){
@@ -784,131 +818,251 @@ public class SellSalesFragment extends Fragment {
 
         //get path of images
         image1Path = getPath(uri.get(0));
-        Toast.makeText(getActivity(), image1Path, Toast.LENGTH_SHORT).show();
         image2Path = getPath(uri.get(1));
         image3Path = getPath(uri.get(2));
         image4Path = getPath(uri.get(3));
         image5Path = getPath(uri.get(4));
 
 
+        //get video path and upload video
+        if (videoUri != null){
+            videoPath = getVideoPath(videoUri);
 
-        try{
+            try{
 
-            user user = SharedPrefManager.getInstance(getActivity()).getUser();
+                user user = SharedPrefManager.getInstance(getActivity()).getUser();
 
-            Toast.makeText(getActivity(), user.getEmail() , Toast.LENGTH_SHORT).show();
+                String uploadId = UUID.randomUUID().toString();
 
-            String uploadId = UUID.randomUUID().toString();
+                new MultipartUploadRequest(Objects.requireNonNull(getActivity()), uploadId, vehicle_on_sale_url)
+                        .addFileToUpload(image1Path, "image1")
+                        .addFileToUpload(image2Path, "image2")
+                        .addFileToUpload(image3Path, "image3")
+                        .addFileToUpload(image4Path, "image4")
+                        .addFileToUpload(image5Path, "image5")
+                        .addFileToUpload(videoPath, "car_video")
+                        .addParameter("vehicle_title", vehicleTitle)
+                        .addParameter("vehicle_brand", vehicleBrand)
+                        .addParameter("vehicle_overview", vehicleOverview)
+                        .addParameter("vehicle_price", vehiclePrice)
+                        .addParameter("fuel", vehicleFuel)
+                        .addParameter("vehicle_location", vehicleLocation)
+                        .addParameter("vehicle_model_year", vehicleModelYear)
+                        .addParameter("vehicle_seats", vehicleSeats)
+                        .addParameter("vehicle_driver_status", vehicleDriverStatus)
+                        .addParameter("airconditioner", airConditioner)
+                        .addParameter("powerdoorlocks", powerDoorLocks)
+                        .addParameter("antilockbrakingsystem", antiLockBrakingSystem)
+                        .addParameter("brakeassist", brakeAssist)
+                        .addParameter("powersteering", powerSteering)
+                        .addParameter("driverairbag", driverAirBag)
+                        .addParameter("passengerairbag", passengerAirBag)
+                        .addParameter("powerwindows", powerWindows)
+                        .addParameter("cdplayer", cdPlayer)
+                        .addParameter("centrallocking", centralLocking)
+                        .addParameter("crashsensor", crashSensor)
+                        .addParameter("leatherseats", leatherSeats)
+                        .addParameter("ownerid", user.getEmail())
+                        .addParameter("booked", "10")
+                        .setNotificationConfig(new UploadNotificationConfig())
+                        .setMaxRetries(2)
+                        .setDelegate(new UploadStatusDelegate() {
+                            @Override
+                            public void onProgress(Context context, UploadInfo uploadInfo) {
+                                dialog.setMessage("Uploading vehicle.\nPlease wait...");
+                                dialog.setCancelable(false);
+                                dialog.show();
 
-            new MultipartUploadRequest(getActivity(), uploadId, vehicle_on_sale_url)
-                    .addFileToUpload(image1Path, "image1")
-                    .addFileToUpload(image2Path, "image2")
-                    .addFileToUpload(image3Path, "image3")
-                    .addFileToUpload(image4Path, "image4")
-                    .addFileToUpload(image5Path, "image5")
-                    .addParameter("vehicle_title", vehicleTitle)
-                    .addParameter("vehicle_brand", vehicleBrand)
-                    .addParameter("vehicle_overview", vehicleOverview)
-                    .addParameter("vehicle_price", vehiclePrice)
-                    .addParameter("fuel", vehicleFuel)
-                    .addParameter("vehicle_location", vehicleLocation)
-                    .addParameter("vehicle_model_year", vehicleModelYear)
-                    .addParameter("vehicle_seats", vehicleSeats)
-                    .addParameter("vehicle_driver_status", vehicleDriverStatus)
-                    .addParameter("airconditioner", airConditioner)
-                    .addParameter("powerdoorlocks", powerDoorLocks)
-                    .addParameter("antilockbrakingsystem", antiLockBrakingSystem)
-                    .addParameter("brakeassist", brakeAssist)
-                    .addParameter("powersteering", powerSteering)
-                    .addParameter("driverairbag", driverAirBag)
-                    .addParameter("passengerairbag", passengerAirBag)
-                    .addParameter("powerwindows", powerWindows)
-                    .addParameter("cdplayer", cdPlayer)
-                    .addParameter("centrallocking", centralLocking)
-                    .addParameter("crashsensor", crashSensor)
-                    .addParameter("leatherseats", leatherSeats)
-                    .addParameter("ownerid", user.getEmail())
-                    .addParameter("booked", "10")
-                    .setNotificationConfig(new UploadNotificationConfig())
-                    .setMaxRetries(2)
-                    .setDelegate(new UploadStatusDelegate() {
-                        @Override
-                        public void onProgress(Context context, UploadInfo uploadInfo) {
-                            dialog.setMessage("Uploading vehicle.\nPlease wait...");
-                            dialog.setCancelable(false);
-                            dialog.show();
+                            }
 
-                        }
+                            @Override
+                            public void onError(Context context, UploadInfo uploadInfo, ServerResponse serverResponse, Exception exception) {
 
-                        @Override
-                        public void onError(Context context, UploadInfo uploadInfo, ServerResponse serverResponse, Exception exception) {
+                                dialog.dismiss();
 
-                            dialog.dismiss();
+                                alertDialogBuilder.setTitle("Failed!");
+                                alertDialogBuilder.setMessage("Vehicle was not uploaded! Please try uploading again");
+                                alertDialogBuilder.setCancelable(false);
+                                alertDialogBuilder.setPositiveButton("Try again", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
 
-                            alertDialogBuilder.setTitle("Failed!");
-                            alertDialogBuilder.setMessage("Vehicle was not uploaded! Please try uploading again");
-                            alertDialogBuilder.setCancelable(false);
-                            alertDialogBuilder.setPositiveButton("Try again", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    }
+                                });
+                                alertDialogBuilder.show();
 
-                                }
-                            });
-                            alertDialogBuilder.show();
+                            }
 
-                        }
+                            @Override
+                            public void onCompleted(Context context, UploadInfo uploadInfo, ServerResponse serverResponse) {
 
-                        @Override
-                        public void onCompleted(Context context, UploadInfo uploadInfo, ServerResponse serverResponse) {
+                                dialog.dismiss();
 
-                            dialog.dismiss();
+                                alertDialogBuilder.setTitle("Success!");
+                                alertDialogBuilder.setMessage("Vehicle was uploaded successfully");
+                                alertDialogBuilder.setCancelable(false);
+                                alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
 
-                            Toast.makeText(context, "completed", Toast.LENGTH_SHORT).show();
-
-                            alertDialogBuilder.setTitle("Success!");
-                            alertDialogBuilder.setMessage("Vehicle was uploaded succesfully");
-                            alertDialogBuilder.setCancelable(false);
-                            alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-
-                                   //go to main activity
-                                    Intent intent = new Intent(getActivity(), MainActivity.class);
-                                    getActivity().finish();
-                                    startActivity(intent);
-
-
-                                }
-                            });
-                            alertDialogBuilder.show();
-
-                        }
-
-                        @Override
-                        public void onCancelled(Context context, UploadInfo uploadInfo) {
-
-                            Toast.makeText(context, String.valueOf(uploadInfo) , Toast.LENGTH_SHORT).show();
-
-                            dialog.dismiss();
-
-                            alertDialogBuilder.setTitle("Failed!");
-                            alertDialogBuilder.setMessage("Vehicle was not uploaded! Please try uploading again");
-                            alertDialogBuilder.setCancelable(false);
-                            alertDialogBuilder.setPositiveButton("Try again", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-
-                                }
-                            });
-                            alertDialogBuilder.show();
-
-                        }
-                    })
-                    .startUpload();
+                                        //go to main activity
+                                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                                        getActivity().finish();
+                                        startActivity(intent);
 
 
+                                    }
+                                });
+                                alertDialogBuilder.show();
 
-        }catch (Exception e){
+                            }
+
+                            @Override
+                            public void onCancelled(Context context, UploadInfo uploadInfo) {
+
+                                Toast.makeText(context, String.valueOf(uploadInfo) , Toast.LENGTH_SHORT).show();
+
+                                dialog.dismiss();
+
+                                alertDialogBuilder.setTitle("Failed!");
+                                alertDialogBuilder.setMessage("Vehicle was not uploaded! Please try uploading again");
+                                alertDialogBuilder.setCancelable(false);
+                                alertDialogBuilder.setPositiveButton("Try again", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                                    }
+                                });
+                                alertDialogBuilder.show();
+
+                            }
+                        })
+                        .startUpload();
+
+
+
+            }catch (Exception e){
+
+            }
+
+        }else {
+
+            //upload without video path
+            try{
+
+                user user = SharedPrefManager.getInstance(getActivity()).getUser();
+
+                String uploadId = UUID.randomUUID().toString();
+
+                new MultipartUploadRequest(Objects.requireNonNull(getActivity()), uploadId, vehicle_on_sale_url)
+                        .addFileToUpload(image1Path, "image1")
+                        .addFileToUpload(image2Path, "image2")
+                        .addFileToUpload(image3Path, "image3")
+                        .addFileToUpload(image4Path, "image4")
+                        .addFileToUpload(image5Path, "image5")
+                        .addParameter("vehicle_title", vehicleTitle)
+                        .addParameter("vehicle_brand", vehicleBrand)
+                        .addParameter("vehicle_overview", vehicleOverview)
+                        .addParameter("vehicle_price", vehiclePrice)
+                        .addParameter("fuel", vehicleFuel)
+                        .addParameter("vehicle_location", vehicleLocation)
+                        .addParameter("vehicle_model_year", vehicleModelYear)
+                        .addParameter("vehicle_seats", vehicleSeats)
+                        .addParameter("vehicle_driver_status", vehicleDriverStatus)
+                        .addParameter("airconditioner", airConditioner)
+                        .addParameter("powerdoorlocks", powerDoorLocks)
+                        .addParameter("antilockbrakingsystem", antiLockBrakingSystem)
+                        .addParameter("brakeassist", brakeAssist)
+                        .addParameter("powersteering", powerSteering)
+                        .addParameter("driverairbag", driverAirBag)
+                        .addParameter("passengerairbag", passengerAirBag)
+                        .addParameter("powerwindows", powerWindows)
+                        .addParameter("cdplayer", cdPlayer)
+                        .addParameter("centrallocking", centralLocking)
+                        .addParameter("crashsensor", crashSensor)
+                        .addParameter("leatherseats", leatherSeats)
+                        .addParameter("ownerid", user.getEmail())
+                        .addParameter("booked", "10")
+                        .setNotificationConfig(new UploadNotificationConfig())
+                        .setMaxRetries(2)
+                        .setDelegate(new UploadStatusDelegate() {
+                            @Override
+                            public void onProgress(Context context, UploadInfo uploadInfo) {
+                                dialog.setMessage("Uploading vehicle.\nPlease wait...");
+                                dialog.setCancelable(false);
+                                dialog.show();
+
+                            }
+
+                            @Override
+                            public void onError(Context context, UploadInfo uploadInfo, ServerResponse serverResponse, Exception exception) {
+
+                                dialog.dismiss();
+
+                                alertDialogBuilder.setTitle("Failed!");
+                                alertDialogBuilder.setMessage("Vehicle was not uploaded! Please try uploading again");
+                                alertDialogBuilder.setCancelable(false);
+                                alertDialogBuilder.setPositiveButton("Try again", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                                    }
+                                });
+                                alertDialogBuilder.show();
+
+                            }
+
+                            @Override
+                            public void onCompleted(Context context, UploadInfo uploadInfo, ServerResponse serverResponse) {
+
+                                dialog.dismiss();
+
+                                alertDialogBuilder.setTitle("Success!");
+                                alertDialogBuilder.setMessage("Vehicle was uploaded successfully");
+                                alertDialogBuilder.setCancelable(false);
+                                alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                                        //go to main activity
+                                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                                        getActivity().finish();
+                                        startActivity(intent);
+
+
+                                    }
+                                });
+                                alertDialogBuilder.show();
+
+                            }
+
+                            @Override
+                            public void onCancelled(Context context, UploadInfo uploadInfo) {
+
+                                Toast.makeText(context, String.valueOf(uploadInfo) , Toast.LENGTH_SHORT).show();
+
+                                dialog.dismiss();
+
+                                alertDialogBuilder.setTitle("Failed!");
+                                alertDialogBuilder.setMessage("Vehicle was not uploaded! Please try uploading again");
+                                alertDialogBuilder.setCancelable(false);
+                                alertDialogBuilder.setPositiveButton("Try again", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                                    }
+                                });
+                                alertDialogBuilder.show();
+
+                            }
+                        })
+                        .startUpload();
+
+
+
+            }catch (Exception e){
+
+            }
 
         }
 
@@ -923,9 +1077,7 @@ public class SellSalesFragment extends Fragment {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
-
     //fetch brands from db
-
 
     private class BackTask extends AsyncTask<Void, Void, String> {
         ProgressDialog dialog;
@@ -1001,6 +1153,7 @@ public class SellSalesFragment extends Fragment {
             super.onPostExecute(s);
             dialog.dismiss();
 
+            brandsList.add(0, "SELECT");
 
             //Creating the ArrayAdapter instance having the bank name list
             ArrayAdapter brandAdapter = new ArrayAdapter(getActivity(),R.layout.spinner_item,brandsList);

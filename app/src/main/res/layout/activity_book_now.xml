@@ -148,7 +148,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Mpesa Number Transacting(+254)"
+                android:hint="Contact Phone Number"
                 android:inputType="phone"
                 android:paddingLeft="10dp"
                 android:textColor="@color/black"
@@ -221,7 +221,7 @@
             android:layout_margin="30dp"
             android:background="@drawable/buttom_background"
             android:padding="15dp"
-            android:text="BOOK NOW"
+            android:text="Proceed to payment"
             android:textColor="@color/white"
             android:textStyle="bold" />
 

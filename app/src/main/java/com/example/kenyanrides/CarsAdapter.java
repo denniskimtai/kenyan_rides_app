@@ -160,6 +160,7 @@ public class CarsAdapter extends RecyclerView.Adapter<CarsAdapter.MyViewHolder> 
 
                 } else {
 
+
                     //open details activity
 
                     Intent intent = new Intent(view.getContext(), CarDetailsActivity.class);
@@ -183,6 +184,8 @@ public class CarsAdapter extends RecyclerView.Adapter<CarsAdapter.MyViewHolder> 
                     intent.putExtra("image5", car.getImage5());
                     intent.putExtra("owner_id", car.getOwnerId());
                     intent.putExtra("reg_date", car.getRegDate());
+                    intent.putExtra("booked", car.getBooked());
+                    intent.putExtra("owner_phone_number", car.getOwner_phone_number());
 
                     //vehicle accessories
                     intent.putExtra("airConditioner", car.getAirConditioner());

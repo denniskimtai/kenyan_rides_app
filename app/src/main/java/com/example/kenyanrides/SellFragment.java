@@ -422,7 +422,8 @@ public class SellFragment extends Fragment  {
                     int remaining_images = 5 - selectedImages;
                     text_view_remaining_images.setText("You can add " + remaining_images + "more images");
                     Bitmap selectedImage = (Bitmap) data.getExtras().get("data");
-                    uri.add(getImageUri(getActivity(), selectedImage));
+                    Bitmap resizeImage = Bitmap.createScaledBitmap(selectedImage, 200, 200, false);
+                    uri.add(getImageUri(getActivity(), resizeImage));
                     recyclerView.setVisibility(View.VISIBLE);
                     horizontalCarImagesAdapter.notifyDataSetChanged();
 
@@ -439,8 +440,10 @@ public class SellFragment extends Fragment  {
                         int remaining_images = 5 - selectedImages;
                         text_view_remaining_images.setText("You can add " + remaining_images + "more images");
                         //only one image is selected
-                        imageUri = data.getData();
-                        uri.add(imageUri);
+                        Bitmap selectedImage = (Bitmap) data.getExtras().get("data");
+                        Bitmap resizeImage = Bitmap.createScaledBitmap(selectedImage, 200, 200, false);
+                        uri.add(getImageUri(getActivity(), resizeImage));
+
                         recyclerView.setVisibility(View.VISIBLE);
                         horizontalCarImagesAdapter.notifyDataSetChanged();
 
@@ -461,9 +464,20 @@ public class SellFragment extends Fragment  {
                             //selected images are 5 or less
 
                             for (int i = 0; i < count; i++){
+                                Bitmap selectedImage;
                                 selectedImages++;
+
                                 imageUri = data.getClipData().getItemAt(i).getUri();
-                                uri.add(imageUri);
+
+                                try {
+                                    selectedImage = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
+                                    Bitmap resizeImage = Bitmap.createScaledBitmap(selectedImage, 200, 200, false);
+                                    uri.add(getImageUri(getActivity(), resizeImage));
+
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+//                                uri.add(imageUri);
                                 recyclerView.setVisibility(View.VISIBLE);
                                 horizontalCarImagesAdapter.notifyDataSetChanged();
                             }
@@ -990,6 +1004,7 @@ private class BackTask extends AsyncTask<Void, Void, String> {
         super.onPostExecute(s);
         dialog.dismiss();
 
+        brandsList.add(0, "SELECT");
 
         //Creating the ArrayAdapter instance having the bank name list
         ArrayAdapter brandAdapter = new ArrayAdapter(getActivity(),R.layout.spinner_item,brandsList);

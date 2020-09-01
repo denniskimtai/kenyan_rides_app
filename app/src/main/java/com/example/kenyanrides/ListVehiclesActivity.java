@@ -142,7 +142,6 @@ public class ListVehiclesActivity extends AppCompatActivity{
 
                                     String vehicleImage = "https://kenyanrides.com/serviceprovider/img/vehicleimages/" + listedVehiclesObject.getString("Vimage1");
 
-
                                     //
                                     int id = listedVehiclesObject.getInt("id");
                                     String vehicleBrand = listedVehiclesObject.getString("brandName");

@@ -97,15 +97,21 @@ public class BookNowActivity extends AppCompatActivity implements View.OnClickLi
 
     private Button btnBookNow;
 
-    private DarajaApiClient mApiClient;
-
-    private String confirm_payment_url = "https://kenyanrides.com/android/verify_payment.php";
+    private String vehicle_id,user_email, price_per_day, vehicle_owner_email, vehicle_title, owner_phone_number;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_now);
+
+        //get strings from intent
+        vehicle_id = getIntent().getStringExtra("vehicle_id");
+        user_email = getIntent().getStringExtra("user_email");
+        price_per_day = getIntent().getStringExtra("price_per_day");
+        vehicle_owner_email = getIntent().getStringExtra("vehicle_owner_email");
+        owner_phone_number = getIntent().getStringExtra("owner_phone_number");
+        vehicle_title = getIntent().getStringExtra("vehicle_title");
 
 
         //initializing views
@@ -156,6 +162,15 @@ public class BookNowActivity extends AppCompatActivity implements View.OnClickLi
             }
         });
 
+        //places autocomplete
+        String apiKey = getString(R.string.api_key);
+        if (!Places.isInitialized()) {
+            Places.initialize(this.getApplicationContext(), apiKey);
+        }
+
+        // Create a new Places client instance.
+        PlacesClient placesClient = Places.createClient(this);
+
         // Initialize the return location fragment.
         AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
                 getSupportFragmentManager().findFragmentById(R.id.return_location);
@@ -190,30 +205,10 @@ public class BookNowActivity extends AppCompatActivity implements View.OnClickLi
         alertDialog = new AlertDialog.Builder(this);
 
         progressDialog = new ProgressDialog(this);
-        mApiClient = new DarajaApiClient();
-        mApiClient.setIsDebug(true); //Set True to enable logging, false to disable.
-
-        getAccessToken();
 
 
-    }
 
-    public void getAccessToken() {
-        mApiClient.setGetAccessToken(true);
-        mApiClient.mpesaService().getAccessToken().enqueue(new Callback<AccessToken>() {
-            @Override
-            public void onResponse(@NonNull Call<AccessToken> call, @NonNull Response<AccessToken> response) {
 
-                if (response.isSuccessful()) {
-                    mApiClient.setAuthToken(response.body().accessToken);
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<AccessToken> call, @NonNull Throwable t) {
-
-            }
-        });
     }
 
 
@@ -346,9 +341,7 @@ public class BookNowActivity extends AppCompatActivity implements View.OnClickLi
 
         if(view == btnBookNow){
 
-            //BookCar();
-            Intent intent = new Intent(BookNowActivity.this, PaymentActivity.class);
-            startActivity(intent);
+            BookCar();
 
         }
 
@@ -365,7 +358,7 @@ public class BookNowActivity extends AppCompatActivity implements View.OnClickLi
 
         mpesaNumber = editTextMpesaNumber.getText().toString();
         if(TextUtils.isEmpty(mpesaNumber)){
-            editTextMpesaNumber.setError("Please enter your Mpesa number that you will pay with");
+            editTextMpesaNumber.setError("Please enter your Phone Number that you the owner will contact you with");
             return;
         }
 
@@ -407,167 +400,31 @@ public class BookNowActivity extends AppCompatActivity implements View.OnClickLi
             return;
         }
 
-        //mpesa implementation
-        performSTKPush(mpesaNumber,"1");
+        Intent intent = new Intent(BookNowActivity.this, PaymentActivity.class);
+
+        //send car info to payment activity
+        intent.putExtra("vehicle_id", vehicle_id);
+        intent.putExtra("user_email", user_email);
+        intent.putExtra("price_per_day", price_per_day);
+        intent.putExtra("vehicle_owner_email", vehicle_owner_email);
+        intent.putExtra("vehicle_title", vehicle_title);
+
+        intent.putExtra("pickupDate", vehicle_title);
+        intent.putExtra("pickupTime", vehicle_id);
+        intent.putExtra("vehicleTravelDestination", vehicle_id);
+        intent.putExtra("returnDate", vehicle_id);
+        intent.putExtra("returnTime", vehicle_id);
+        intent.putExtra("customerPhoneNumber", vehicle_id);
+        intent.putExtra("pickupLocation", vehicle_id);
+        intent.putExtra("returnLocation", vehicle_id);
+        intent.putExtra("vehicle_id", vehicle_id);
+        intent.putExtra("owner_phone_number", owner_phone_number);
+
+        startActivity(intent);
+
 
     }
 
-    public void performSTKPush(String phone_number,String amount) {
-        progressDialog.setMessage("Processing your request");
-        progressDialog.setTitle("Please Wait...");
-        progressDialog.setCancelable(false);
-        progressDialog.setIndeterminate(true);
-        progressDialog.show();
-        String timestamp = Utils.getTimestamp();
-        STKPush stkPush = new STKPush(
-                BUSINESS_SHORT_CODE,
-                Utils.getPassword(BUSINESS_SHORT_CODE, PASSKEY, timestamp),
-                timestamp,
-                TRANSACTION_TYPE,
-                String.valueOf(amount),
-                Utils.sanitizePhoneNumber(phone_number),
-                PARTYB,
-                Utils.sanitizePhoneNumber(phone_number),
-                CALLBACKURL,
-                "MPESA Android Test", //Account reference
-                "Testing"  //Transaction description
-        );
-
-        mApiClient.setGetAccessToken(false);
-
-        //Sending the data to the Mpesa API, remember to remove the logging when in production.
-        mApiClient.mpesaService().sendPush(stkPush).enqueue(new Callback<STKPush>() {
-            @Override
-            public void onResponse(@NonNull Call<STKPush> call, @NonNull Response<STKPush> response) {
-                progressDialog.dismiss();
-                try {
-                    if (response.isSuccessful()) {
-                        //show alert dialog
-                        alertDialog.setMessage("Please check your phone for a service fee payment of 10%");
-                        alertDialog.setCancelable(false);
-                        alertDialog.setPositiveButton("I have paid", new DialogInterface.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-
-                                //get vehicle id and user email from intent
-                                int vehicleId = getIntent().getIntExtra("vehicle_id", 0);
-                                String userEmail = getIntent().getStringExtra("user_email");
-                                String vehicle_owner_email = getIntent().getStringExtra("vehicle_owner_email");
-                                String vehicle_title = getIntent().getStringExtra("vehicle_title");
-                                int price_per_day = (int) (getIntent().getIntExtra("price_per_day", 0)/1.1);
-
-
-
-                                //volley to verify transaction
-                                progressDialog.setMessage("verifying payment....");
-                                progressDialog.setCancelable(false);
-                                progressDialog.show();
-
-                                //fetch respose from api
-                                StringRequest stringRequest = new StringRequest(
-                                        Request.Method.POST,
-                                        confirm_payment_url,
-                                        response -> {
-                                            //check response returned
-
-                                            switch (response){
-
-                                                case "payment verified":
-
-                                                    alertDialog.setTitle("Verified!");
-                                                    alertDialog.setMessage("Payment is verified. Your booking request has been sent to the vehicle owner");
-                                                    alertDialog.setCancelable(false);
-                                                    alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(DialogInterface dialogInterface, int i) {
-
-                                                            Intent intent = new Intent(BookNowActivity.this, BookingsActivity.class);
-                                                            startActivity(intent);
-                                                            finish();
-
-                                                        }
-                                                    });
-                                                    alertDialog.show();
-
-                                                    break;
-
-                                                case "payment unverified":
-                                                    alertDialog.setTitle("Failed!");
-                                                    alertDialog.setMessage("We could not verify you payment. Please try again\nYou need to pay a 10% service fee ");
-                                                    alertDialog.setCancelable(false);
-                                                    alertDialog.setPositiveButton("Try again", (dialogInterface1, i1) -> {
-
-                                                    });
-                                                    alertDialog.show();
-
-                                                    break;
-
-                                            }
-
-
-                                        }, error -> Toast.makeText(BookNowActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show()
-
-                                ){
-                                    //send params needed to db
-                                    @Override
-                                    protected Map<String, String> getParams() throws AuthFailureError {
-                                        Map<String, String> params = new HashMap<>();
-
-                                        params.put("pickupDate", pickUpDate);
-                                        params.put("pickupTime", pickUpTime);
-                                        params.put("vehicleTravelDestination", vehicleTravelLocation);
-                                        params.put("returnDate", returnDate);
-                                        params.put("returnTime", returnTime);
-                                        params.put("phoneNumber", Utils.sanitizePhoneNumber(phone_number));
-                                        params.put("pickupLocation", pickupLocation);
-                                        params.put("returnLocation", returnLocation);
-                                        params.put("vehicle_id", String.valueOf(vehicleId));
-                                        params.put("userEmail", userEmail);
-                                        params.put("price_per_day", String.valueOf(price_per_day));
-                                        params.put("vehicle_owner_email", vehicle_owner_email);
-                                        params.put("vehicle_title", vehicle_title);
-
-                                        return params;
-
-                                    }
-                                };
-
-                                Volley.newRequestQueue(BookNowActivity.this).add(stringRequest);
-
-
-                            }
-                        });
-
-                        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                return;
-
-                            }
-                        });
-
-                    } else {
-                        //if stk push was not successful
-                        Toast.makeText(BookNowActivity.this, "Response %s" + response.errorBody().string(), Toast.LENGTH_SHORT).show();
-                        alertDialog.setTitle("Error");
-                        alertDialog.setMessage("There seems to be an issue getting your payment. Please ensure your phone number is correct");
-
-                    }
-                    alertDialog.show();
-                } catch (Exception e) {
-                    Toast.makeText(BookNowActivity.this, "here" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<STKPush> call, @NonNull Throwable t) {
-                progressDialog.dismiss();
-                Toast.makeText(BookNowActivity.this, "Mpesa failed to get you to pay! "+t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {

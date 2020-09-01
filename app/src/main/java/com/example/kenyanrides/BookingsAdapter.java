@@ -165,8 +165,6 @@ public class BookingsAdapter extends RecyclerView.Adapter<BookingsAdapter.MyView
                         Map<String, String> params = new HashMap<>();
                         params.put("VehicleId", String.valueOf(vehicleBookings.getId()));
                         params.put("user_email", user_email);
-                        params.put("from_date", vehicleBookings.getFromDate());
-                        params.put("to_date", vehicleBookings.getToDate());
                         params.put("status", "5");
 
                         return params;

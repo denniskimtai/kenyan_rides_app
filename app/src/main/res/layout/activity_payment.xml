@@ -40,19 +40,14 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/grey" />
+            android:background="@color/dark_grey" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:src="@drawable/icon_shopping" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:gravity="center_horizontal"
+            android:layout_marginLeft="10dp"
             android:text="Choose a Payment Method"
             android:textColor="@color/text_color_dark_grey"
             android:textSize="15dp"
@@ -73,16 +68,18 @@
                 android:elevation="5dp">
 
                 <LinearLayout
+                    android:id="@+id/layout_mpesa"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/rectangle"
+                    android:background="#A6D1F1B5"
+                    android:orientation="vertical"
                     android:gravity="center_horizontal">
 
                     <ImageView
                         android:layout_width="100dp"
                         android:layout_height="60dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_margin="19dp"
+                        android:layout_margin="30dp"
+                        android:layout_gravity="center_horizontal"
                         android:src="@drawable/mpesa_logo" />
 
                 </LinearLayout>
@@ -98,18 +95,19 @@
                 android:elevation="5dp">
 
                 <LinearLayout
+                    android:id="@+id/layout_credit_card"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/rectangle"
-                    android:gravity="center_horizontal">
+                    android:background="@color/white"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
 
                     <ImageView
                         android:layout_width="100dp"
                         android:layout_height="50dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_margin="24dp"
-                        android:src="@drawable/icon_card"
-                        app:tint="#34495E" />
+                        android:layout_margin="35dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/payment_logos" />
 
                 </LinearLayout>
 
@@ -119,9 +117,14 @@
 
         <TextView
             android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/grey"
+            android:layout_margin="10dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:gravity="center_horizontal"
             android:text="Order Summary"
             android:textColor="@color/text_color_dark_grey"
             android:textSize="15dp"
@@ -147,6 +150,7 @@
                 android:textColor="@color/text_color_dark_grey" />
 
             <TextView
+                android:id="@+id/text_view_total_price"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
@@ -179,6 +183,7 @@
                 android:textColor="@color/text_color_dark_grey" />
 
             <TextView
+                android:id="@+id/text_view_service_fee"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
@@ -211,6 +216,7 @@
                 android:textColor="@color/text_color_dark_grey" />
 
             <TextView
+                android:id="@+id/text_view_remaining_amount"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
@@ -223,21 +229,42 @@
 
         </LinearLayout>
 
-        <!--    <com.stripe.android.view.CardInputWidget-->
-        <!--        android:id="@+id/cardInputWidget"-->
-        <!--        android:background="@drawable/rectangle"-->
-        <!--        android:layout_width="match_parent"-->
-        <!--        android:layout_height="wrap_content"-->
-        <!--        android:padding="10dp"-->
-        <!--        android:layout_margin="10dp"/>-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/grey"
+            android:layout_margin="10dp"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/mpesa_number"
+            android:background="@drawable/input_shape"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:textColorHint="@color/dark_grey">
+
+            <EditText
+                android:id="@+id/edit_Text_mpesa_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Enter M-Pesa Number"
+                android:inputType="phone"
+                android:paddingLeft="10dp"
+                android:textColor="@color/black"
+                android:textSize="12dp" />
+
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/payWithCardButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:background="#34495E"
-            android:text="Pay with Card"
+            android:background="@color/green"
+            android:text="Pay with M-Pesa"
             android:textColor="@color/white" />
 
     </LinearLayout>

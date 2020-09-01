@@ -364,11 +364,13 @@ public class CarDetailsActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(CarDetailsActivity.this, BookNowActivity.class);
 
-                intent.putExtra("vehicle_id", vehicle_id);
+                intent.putExtra("vehicle_id", String.valueOf(vehicle_id));
                 intent.putExtra("user_email", user.getEmail());
-                intent.putExtra("price_per_day", price_per_day);
+                intent.putExtra("price_per_day", String.valueOf(price_per_day));
                 intent.putExtra("vehicle_owner_email", owner_id);
                 intent.putExtra("vehicle_title", vehicle_title);
+                intent.putExtra("owner_phone_number", owner_phone_number);
+
                 startActivity(intent);
 
 
