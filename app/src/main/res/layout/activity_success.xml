@@ -27,7 +27,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Vehicle owner will contact you"
+        android:text="Vehicle owner has been notified"
         android:textSize="15dp"
         android:textColor="@color/text_color_dark_grey"
         android:gravity="center_horizontal"/>

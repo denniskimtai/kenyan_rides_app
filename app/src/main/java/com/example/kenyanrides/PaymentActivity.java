@@ -4,11 +4,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -80,6 +84,8 @@ public class PaymentActivity extends AppCompatActivity {
 
     private TextView textViewTotalPrice, textViewServiceFee, textViewRemainingAmount;
 
+    private AlertDialog.Builder alertDialogBuilder;
+
     private String confirm_payment_url = "https://kenyanrides.com/android/verify_payment.php";
 
 
@@ -88,6 +94,26 @@ public class PaymentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
 
+        //check if network is connected
+        if (!isNetworkAvailable()){
+
+            alertDialogBuilder.setTitle("Network Failure");
+            alertDialogBuilder.setMessage("Please check your internet connection!");
+            alertDialogBuilder.setCancelable(false);
+            alertDialogBuilder.setPositiveButton("Try Again", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+
+                    finish();
+                    overridePendingTransition(0, 0);
+                    startActivity(getIntent());
+                    overridePendingTransition(0, 0);
+
+                }
+            });
+            alertDialogBuilder.show();
+            return;
+        }
 
 
         //get strings from booknow activity
@@ -109,6 +135,8 @@ public class PaymentActivity extends AppCompatActivity {
         //intialization
         payWithMpesaButton = findViewById(R.id.payWithCardButton);
 
+        alertDialogBuilder = new AlertDialog.Builder(this);
+
         layoutCreditCard = findViewById(R.id.layout_credit_card);
 
         layoutMpesa = findViewById(R.id.layout_mpesa);
@@ -122,6 +150,7 @@ public class PaymentActivity extends AppCompatActivity {
         textViewServiceFee = findViewById(R.id.text_view_service_fee);
 
         textViewRemainingAmount = findViewById(R.id.text_view_remaining_amount);
+
 
         //convert price
         priceToPayLater = (int)Math.round(Integer.parseInt(price_per_day)/1.1 * 100) / 100;
@@ -181,15 +210,15 @@ public class PaymentActivity extends AppCompatActivity {
 
         alertDialog = new AlertDialog.Builder(this);
 
-        //card payment token
-        getToken();
-
         //mpesa token
 
         mApiClient = new DarajaApiClient();
         mApiClient.setIsDebug(true); //Set True to enable logging, false to disable.
 
         getAccessToken();
+
+        //card payment token
+        getToken();
 
 
 
@@ -305,7 +334,7 @@ public class PaymentActivity extends AppCompatActivity {
                                         params.put("vehicleTravelDestination", vehicleTravelDestination);
                                         params.put("returnDate", returnDate);
                                         params.put("returnTime", returnTime);
-                                        params.put("phoneNumber", Utils.sanitizePhoneNumber(mpesaNumber));
+                                        params.put("phoneNumber", owner_phone_number);
                                         params.put("pickupLocation", pickupLocation);
                                         params.put("returnLocation", returnLocation);
                                         params.put("vehicle_id", vehicle_id);
@@ -377,6 +406,20 @@ public class PaymentActivity extends AppCompatActivity {
                 paramsHash = new HashMap<>();
                 paramsHash.put("amount", String.valueOf(1));
                 paramsHash.put("nonce", strNonce);
+
+                paramsHash.put("pickupDate", pickupDate);
+                paramsHash.put("pickupTime", pickupTime);
+                paramsHash.put("vehicleTravelDestination", vehicleTravelDestination);
+                paramsHash.put("returnDate", returnDate);
+                paramsHash.put("returnTime", returnTime);
+                paramsHash.put("phoneNumber", owner_phone_number);
+                paramsHash.put("pickupLocation", pickupLocation);
+                paramsHash.put("returnLocation", returnLocation);
+                paramsHash.put("vehicle_id", vehicle_id);
+                paramsHash.put("userEmail", user_email);
+                paramsHash.put("price_per_day", String.valueOf(priceToPayLater));
+                paramsHash.put("vehicle_owner_email", vehicle_owner_email);
+                paramsHash.put("vehicle_title", vehicle_title);
 
                 sendPayments();
 
@@ -466,6 +509,7 @@ public class PaymentActivity extends AppCompatActivity {
                 Map<String, String> params = new HashMap<>();
                 params.put("Content-type", "application/x-www-form-urlencoded");
 
+
                 return params;
 
             }
@@ -507,6 +551,14 @@ public class PaymentActivity extends AppCompatActivity {
 
         Volley.newRequestQueue(this).add(stringRequest);
 
+    }
+
+    public boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) this
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        @SuppressLint("MissingPermission") NetworkInfo activeNetworkInfo = connectivityManager
+                .getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
 }

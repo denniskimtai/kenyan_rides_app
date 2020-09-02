@@ -398,7 +398,7 @@ public class SellSalesFragment extends Fragment {
                         int remaining_images = 5 - selectedImages;
                         text_view_remaining_images.setText("You can add " + remaining_images + "more images");
                         Bitmap selectedImage = (Bitmap) data.getExtras().get("data");
-                        Bitmap resizeImage = Bitmap.createScaledBitmap(selectedImage, 200, 200, false);
+                        Bitmap resizeImage = Bitmap.createScaledBitmap(selectedImage, 900, 500, false);
 
                         uri.add(getImageUri(getActivity(), resizeImage));
                         recyclerView.setVisibility(View.VISIBLE);
@@ -418,7 +418,7 @@ public class SellSalesFragment extends Fragment {
                             text_view_remaining_images.setText("You can add " + remaining_images + "more images");
                             //only one image is selected
                             Bitmap selectedImage = (Bitmap) data.getExtras().get("data");
-                            Bitmap resizeImage = Bitmap.createScaledBitmap(selectedImage, 200, 200, false);
+                            Bitmap resizeImage = Bitmap.createScaledBitmap(selectedImage, 900, 500, false);
                             uri.add(getImageUri(getActivity(), resizeImage));
 
                             recyclerView.setVisibility(View.VISIBLE);
@@ -450,7 +450,7 @@ public class SellSalesFragment extends Fragment {
 
                                     try {
                                         selectedImage = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
-                                        Bitmap resizeImage = Bitmap.createScaledBitmap(selectedImage, 200, 200, false);
+                                        Bitmap resizeImage = Bitmap.createScaledBitmap(selectedImage, 900, 500, false);
                                         uri.add(getImageUri(getActivity(), resizeImage));
 
                                     } catch (IOException e) {

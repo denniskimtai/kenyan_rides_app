@@ -29,7 +29,7 @@ public class SuccessActivity extends AppCompatActivity {
 
         String phoneNumber = getIntent().getStringExtra("owner_phone_number");
 
-        textViewPhoneNumber.setText("Owner contact number: " + phoneNumber);
+        textViewPhoneNumber.setText(phoneNumber);
 
         //onclick listener phone call or text
         btnSms.setOnClickListener(new View.OnClickListener() {

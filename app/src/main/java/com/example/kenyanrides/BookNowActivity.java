@@ -358,7 +358,7 @@ public class BookNowActivity extends AppCompatActivity implements View.OnClickLi
 
         mpesaNumber = editTextMpesaNumber.getText().toString();
         if(TextUtils.isEmpty(mpesaNumber)){
-            editTextMpesaNumber.setError("Please enter your Phone Number that you the owner will contact you with");
+            editTextMpesaNumber.setError("Please enter your Phone Number that the owner will contact you with");
             return;
         }
 
@@ -409,14 +409,14 @@ public class BookNowActivity extends AppCompatActivity implements View.OnClickLi
         intent.putExtra("vehicle_owner_email", vehicle_owner_email);
         intent.putExtra("vehicle_title", vehicle_title);
 
-        intent.putExtra("pickupDate", vehicle_title);
-        intent.putExtra("pickupTime", vehicle_id);
-        intent.putExtra("vehicleTravelDestination", vehicle_id);
-        intent.putExtra("returnDate", vehicle_id);
-        intent.putExtra("returnTime", vehicle_id);
-        intent.putExtra("customerPhoneNumber", vehicle_id);
-        intent.putExtra("pickupLocation", vehicle_id);
-        intent.putExtra("returnLocation", vehicle_id);
+        intent.putExtra("pickupDate", pickUpDate);
+        intent.putExtra("pickupTime", pickUpTime);
+        intent.putExtra("vehicleTravelDestination", vehicleTravelLocation);
+        intent.putExtra("returnDate", returnDate);
+        intent.putExtra("returnTime", returnTime);
+        intent.putExtra("customerPhoneNumber", mpesaNumber);
+        intent.putExtra("pickupLocation", pickupLocation);
+        intent.putExtra("returnLocation", returnLocation);
         intent.putExtra("vehicle_id", vehicle_id);
         intent.putExtra("owner_phone_number", owner_phone_number);
 
