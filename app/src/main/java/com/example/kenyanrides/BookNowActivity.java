@@ -76,7 +76,7 @@ public class BookNowActivity extends AppCompatActivity implements View.OnClickLi
 
     private TextView TxtPickupDate, TxtPickupTime, TxtReturnDate, TxtReturnTime;
 
-    private EditText editTextVehicleTravelLocation, editTextMpesaNumber;
+    private EditText editTextMpesaNumber;
 
     private int mYear, mMonth, mDay, mHour, mMinute;
 
@@ -120,7 +120,6 @@ public class BookNowActivity extends AppCompatActivity implements View.OnClickLi
         TxtReturnDate = findViewById(R.id.returnDate);
         TxtReturnTime = findViewById(R.id.returnTime);
 
-        editTextVehicleTravelLocation = findViewById(R.id.edit_text_vehicle_travel_destination);
         editTextMpesaNumber = findViewById(R.id.edit_text_mpesa_number);
 
         btnBookNow = findViewById(R.id.btnBookNow);
@@ -131,6 +130,45 @@ public class BookNowActivity extends AppCompatActivity implements View.OnClickLi
         TxtReturnTime.setOnClickListener(this);
 
         btnBookNow.setOnClickListener(this);
+
+        //places autocomplete
+        String apiKey = getString(R.string.api_key);
+        if (!Places.isInitialized()) {
+            Places.initialize(this.getApplicationContext(), apiKey);
+        }
+
+        // Create a new Places client instance.
+        PlacesClient placesClient = Places.createClient(this);
+
+        // Initialize the vehicle travel destination location.
+        AutocompleteSupportFragment travel_destination_fragment = (AutocompleteSupportFragment)
+                getSupportFragmentManager().findFragmentById(R.id.travel_destination);
+        travel_destination_fragment.setCountry("KE");
+        travel_destination_fragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.PHOTO_METADATAS));
+        travel_destination_fragment.setHint("Travel Destination");
+        travel_destination_fragment.getView().findViewById(R.id.places_autocomplete_search_button).setVisibility(View.GONE);
+        travel_destination_fragment.getView().findViewById(R.id.places_autocomplete_clear_button).setVisibility(View.GONE);
+
+        //customise autocomplete edittext
+        EditText travel_destination_place = travel_destination_fragment.getView().findViewById(R.id.places_autocomplete_search_input);
+        travel_destination_place.setTextSize(12.0f);
+        travel_destination_place.setHintTextColor(getResources().getColor(R.color.black));
+        travel_destination_place.setGravity(Gravity.CENTER_VERTICAL);
+        travel_destination_place.setBackground(getResources().getDrawable(R.drawable.input_shape));
+        travel_destination_place.setPadding(15,25,15,60);
+
+        travel_destination_fragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(@NonNull Place place) {
+
+                vehicleTravelLocation = place.getName();
+            }
+
+            @Override
+            public void onError(@NonNull Status status) {
+                Toast.makeText(BookNowActivity.this, status.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
         // Initialize the pickup location.
         AutocompleteSupportFragment pickup_location_fragment = (AutocompleteSupportFragment)
@@ -162,14 +200,6 @@ public class BookNowActivity extends AppCompatActivity implements View.OnClickLi
             }
         });
 
-        //places autocomplete
-        String apiKey = getString(R.string.api_key);
-        if (!Places.isInitialized()) {
-            Places.initialize(this.getApplicationContext(), apiKey);
-        }
-
-        // Create a new Places client instance.
-        PlacesClient placesClient = Places.createClient(this);
 
         // Initialize the return location fragment.
         AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
@@ -350,9 +380,8 @@ public class BookNowActivity extends AppCompatActivity implements View.OnClickLi
     private void BookCar() {
 
         //check if every field has been field
-        vehicleTravelLocation = editTextVehicleTravelLocation.getText().toString();
-        if(TextUtils.isEmpty(vehicleTravelLocation)){
-            editTextVehicleTravelLocation.setError("Please enter your travel destination");
+        if (vehicleTravelLocation.isEmpty()){
+            Toast.makeText(this, "Please enter your travel destination", Toast.LENGTH_SHORT).show();
             return;
         }
 

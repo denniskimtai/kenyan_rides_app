@@ -13,7 +13,7 @@
         <ImageView
             android:id="@+id/image_view_for_sale"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="150dp"
             android:scaleType="fitXY"
             android:foreground="#BE000000"
             android:src="@drawable/for_rent" />

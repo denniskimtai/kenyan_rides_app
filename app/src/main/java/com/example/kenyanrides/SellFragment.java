@@ -440,7 +440,13 @@ public class SellFragment extends Fragment  {
                         int remaining_images = 5 - selectedImages;
                         text_view_remaining_images.setText("You can add " + remaining_images + "more images");
                         //only one image is selected
-                        Bitmap selectedImage = (Bitmap) data.getExtras().get("data");
+                        imageUri = data.getData();
+                        Bitmap selectedImage = null;
+                        try {
+                            selectedImage = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         Bitmap resizeImage = Bitmap.createScaledBitmap(selectedImage, 900, 500, false);
                         uri.add(getImageUri(getActivity(), resizeImage));
 

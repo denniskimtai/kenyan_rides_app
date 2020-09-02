@@ -12,35 +12,27 @@
         android:background="@color/white"
         android:orientation="vertical">
 
-        <LinearLayout
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal">
+            android:background="@color/white">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:src="@drawable/icon_book"
-                android:tint="@color/dark_grey" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Book Now"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="20dp" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="BOOK NOW"
-                android:textColor="@color/dark_grey"
-                android:textSize="15dp"
-                android:textStyle="bold" />
 
-        </LinearLayout>
+        </androidx.appcompat.widget.Toolbar>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_margin="8dp"
-            android:background="@color/grey"/>
+            android:background="@color/dark_grey" />
 
 
         <LinearLayout
@@ -50,12 +42,12 @@
             android:weightSum="2">
 
             <TextView
-                android:background="@drawable/input_shape"
                 android:id="@+id/pickupDate"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
+                android:background="@drawable/input_shape"
                 android:padding="15dp"
                 android:paddingLeft="10dp"
                 android:text="Pickup Date"
@@ -64,13 +56,13 @@
 
 
             <TextView
-                android:background="@drawable/input_shape"
                 android:id="@+id/pickupTime"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
+                android:background="@drawable/input_shape"
                 android:padding="15dp"
                 android:text="Pickup Time"
                 android:textColor="@color/black"
@@ -79,26 +71,29 @@
 
         </LinearLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:background="@drawable/input_shape"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:layout_weight="1"
-            android:textColorHint="@color/dark_grey">
+            android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/edit_text_vehicle_travel_destination"
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="Vehicle Travel Destination"
-                android:paddingLeft="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="Vehicle Travel Destination"
                 android:textColor="@color/black"
                 android:textSize="12dp" />
 
+            <fragment
+                android:id="@+id/travel_destination"
+                android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/input_shape" />
 
-        </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -107,12 +102,12 @@
             android:weightSum="2">
 
             <TextView
-                android:background="@drawable/input_shape"
                 android:id="@+id/returnDate"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
+                android:background="@drawable/input_shape"
                 android:padding="15dp"
                 android:paddingLeft="10dp"
                 android:text="Return Date"
@@ -121,13 +116,13 @@
 
 
             <TextView
-                android:background="@drawable/input_shape"
                 android:id="@+id/returnTime"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
+                android:background="@drawable/input_shape"
                 android:padding="15dp"
                 android:text="Return Time"
                 android:textColor="@color/black"
@@ -136,11 +131,11 @@
         </LinearLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:background="@drawable/input_shape"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:layout_weight="1"
+            android:background="@drawable/input_shape"
             android:textColorHint="@color/dark_grey">
 
             <EditText
@@ -164,9 +159,9 @@
             android:weightSum="2">
 
             <LinearLayout
-                android:layout_margin="10dp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dp"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
@@ -176,38 +171,38 @@
                     android:layout_marginBottom="10dp"
                     android:text="Pickup Location"
                     android:textColor="@color/black"
-                    android:textSize="12dp"/>
+                    android:textSize="12dp" />
 
                 <fragment
-                    android:background="@drawable/input_shape"
                     android:id="@+id/pickup_location"
+                    android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment" />
+                    android:background="@drawable/input_shape" />
 
             </LinearLayout>
 
             <LinearLayout
-                android:layout_margin="10dp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dp"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Return Location"
                     android:layout_marginBottom="10dp"
+                    android:text="Return Location"
                     android:textColor="@color/black"
-                    android:textSize="12dp"/>
+                    android:textSize="12dp" />
 
                 <fragment
-                    android:background="@drawable/input_shape"
                     android:id="@+id/return_location"
+                    android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment" />
+                    android:background="@drawable/input_shape" />
 
             </LinearLayout>
 
