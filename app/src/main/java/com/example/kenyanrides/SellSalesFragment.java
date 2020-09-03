@@ -138,7 +138,7 @@ public class SellSalesFragment extends Fragment {
     String vehicleFuel;
     String vehicleSeats;
     String vehicleDriverStatus;
-    String vehicleLocation;
+    String vehicleLocation = "";
 
     String airConditioner;
     String powerDoorLocks;
@@ -840,7 +840,7 @@ public class SellSalesFragment extends Fragment {
 
                 String uploadId = UUID.randomUUID().toString();
 
-                new MultipartUploadRequest(Objects.requireNonNull(getActivity()), uploadId, vehicle_on_sale_url)
+                new MultipartUploadRequest(getActivity(), uploadId, vehicle_on_sale_url)
                         .addFileToUpload(image1Path, "image1")
                         .addFileToUpload(image2Path, "image2")
                         .addFileToUpload(image3Path, "image3")

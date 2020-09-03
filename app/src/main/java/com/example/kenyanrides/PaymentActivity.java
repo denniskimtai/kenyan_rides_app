@@ -94,27 +94,6 @@ public class PaymentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
 
-        //check if network is connected
-        if (!isNetworkAvailable()){
-
-            alertDialogBuilder.setTitle("Network Failure");
-            alertDialogBuilder.setMessage("Please check your internet connection!");
-            alertDialogBuilder.setCancelable(false);
-            alertDialogBuilder.setPositiveButton("Try Again", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-
-                    finish();
-                    overridePendingTransition(0, 0);
-                    startActivity(getIntent());
-                    overridePendingTransition(0, 0);
-
-                }
-            });
-            alertDialogBuilder.show();
-            return;
-        }
-
 
         //get strings from booknow activity
         vehicle_id = getIntent().getStringExtra("vehicle_id");
@@ -553,12 +532,6 @@ public class PaymentActivity extends AppCompatActivity {
 
     }
 
-    public boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) this
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
-        @SuppressLint("MissingPermission") NetworkInfo activeNetworkInfo = connectivityManager
-                .getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
+
 
 }

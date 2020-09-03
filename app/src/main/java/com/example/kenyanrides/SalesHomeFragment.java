@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -208,6 +209,7 @@ public class SalesHomeFragment extends Fragment {
                         String regDate = carsObject.getString("RegDate");
                         String booked = carsObject.getString("booked");
                         String owner_phone_number = carsObject.getString("owner_phonenumber");
+                        String car_video = carsObject.getString("car_video");
 
 
                         car car = new car(vehicleImage, vehicleTitle, pricePerDay, id, vehicleBrand,
@@ -215,7 +217,7 @@ public class SalesHomeFragment extends Fragment {
                                 driverStatus, vehicleImage2, vehicleImage3, vehicleImage4, vehicleImage5,
                                 airConditioner, powerDoorLocks, antiLockBrakingSystem, brakeAssist, powerSteering,
                                 driverAirbag, passengerAirbag, powerWindows, cdPlayer, centralLocking,
-                                crashSensor, leatherSeats, ownerId, regDate, booked, owner_phone_number);
+                                crashSensor, leatherSeats, ownerId, regDate, booked, owner_phone_number, car_video);
 
                         carList.add(car);
 

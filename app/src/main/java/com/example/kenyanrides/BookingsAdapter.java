@@ -83,7 +83,7 @@ public class BookingsAdapter extends RecyclerView.Adapter<BookingsAdapter.MyView
     public void onBindViewHolder(@NonNull BookingsAdapter.MyViewHolder holder, int position) {
 
         VehicleBookings vehicleBookings = vehicleBookingsList.get(position);
-        holder.vehicleName.setText(vehicleBookings.getVehicleName());
+        holder.vehicleName.setText(vehicleBookings.getBrandName() + " " + vehicleBookings.getVehicleName());
         holder.fromDate.setText(vehicleBookings.getFromDate());
         holder.toDate.setText(vehicleBookings.getToDate());
         holder.travelDestination.setText(vehicleBookings.getTravelDestination());
@@ -177,12 +177,6 @@ public class BookingsAdapter extends RecyclerView.Adapter<BookingsAdapter.MyView
             }
         });
 
-//        holder.overflow.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                showPopupMenu(holder.overflow);
-//            }
-//        });
 
     }
 

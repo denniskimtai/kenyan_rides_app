@@ -1044,6 +1044,15 @@ public class EditVehicleActivity extends AppCompatActivity {
 
     public void uploadSingleImage(String imagepath, String image_number){
 
+        //check if network is connected
+        if (!isNetworkAvailable()){
+
+            alertDialogBuilder.setTitle("Network Failure");
+            alertDialogBuilder.setMessage("Please check your internet connection!");
+            alertDialogBuilder.show();
+            return;
+        }
+
         try{
             String uploadId = UUID.randomUUID().toString();
 

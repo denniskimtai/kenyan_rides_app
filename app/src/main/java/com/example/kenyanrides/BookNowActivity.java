@@ -3,12 +3,16 @@ package com.example.kenyanrides;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -80,14 +84,14 @@ public class BookNowActivity extends AppCompatActivity implements View.OnClickLi
 
     private int mYear, mMonth, mDay, mHour, mMinute;
 
-    String vehicleTravelLocation;
-    String mpesaNumber;
-    String pickupLocation;
-    String returnLocation;
-    String pickUpDate;
-    String pickUpTime;
-    String returnDate;
-    String returnTime;
+    String vehicleTravelLocation = "";
+    String mpesaNumber = "";
+    String pickupLocation = "";
+    String returnLocation = "";
+    String pickUpDate = "";
+    String pickUpTime = "";
+    String returnDate = "";
+    String returnTime = "";
 
     Date selectedPickupDate;
     Date selectedReturnDate;
@@ -392,12 +396,12 @@ public class BookNowActivity extends AppCompatActivity implements View.OnClickLi
         }
 
         if (pickupLocation.isEmpty()){
-            Toast.makeText(this, "Please select location of the vehicle", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please select pickup location of the vehicle", Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (returnLocation.isEmpty()){
-            Toast.makeText(this, "Please select location of the vehicle", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please select return location of the vehicle", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -417,15 +421,33 @@ public class BookNowActivity extends AppCompatActivity implements View.OnClickLi
 
         returnDate = TxtReturnDate.getText().toString();
 
-        if (returnDate.equals("Pickup Date")){
+        if (returnDate.equals("Return Date")){
             TxtReturnDate.setError("Please select a date you'll return the vehicle");
             return;
         }
 
         returnTime = TxtReturnTime.getText().toString();
 
-        if (returnTime.equals("Pickup Date")){
+        if (returnTime.equals("Return Time")){
             TxtReturnTime.setError("Please select a time you'll return the vehicle");
+            return;
+        }
+
+        //check if network is connected
+        if (!isNetworkAvailable()){
+
+            alertDialog.setTitle("Network Failure");
+            alertDialog.setMessage("Please check your internet connection!");
+            alertDialog.setCancelable(false);
+            alertDialog.setPositiveButton("Try Again", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+
+                    BookCar();
+
+                }
+            });
+            alertDialog.show();
             return;
         }
 
@@ -458,5 +480,13 @@ public class BookNowActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
 
+    }
+
+    public boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) this
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        @SuppressLint("MissingPermission") NetworkInfo activeNetworkInfo = connectivityManager
+                .getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }

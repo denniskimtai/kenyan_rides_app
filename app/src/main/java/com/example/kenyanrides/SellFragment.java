@@ -112,14 +112,6 @@ public class SellFragment extends Fragment  {
             "18 Seater", "24 Seater", "32 Seater", "40 Seater", "56 Seater"};
 
     String[] driver_status={"SELECT", "Self Driven","Driver Inclusive"};
-    String[] location={"Baringo County", "Bomet County", "Bungoma County", "Busia County", "Elgeyo Marakwet County", "Embu County"
-            , "Garissa County", "Homa Bay County", "Isiolo County", "Kajiado County", "Kakamega County", "Kericho County", "Kiambu County"
-            , "Kilifi County", "Kirinyaga County", "Kisii County", "Kisumu County", "Kitui County", "Kwale County", "Laikipia County"
-            , "Lamu County", "Machakos County", "Makueni County", "Mandera County", "Meru County", "Migori County", "Marsabit County"
-            , "Mombasa County", "Muranga County", "Nairobi County", "Nakuru County", "Nandi County", "Narok County", "Nyamira County"
-            , "Nyandarua County", "Nyeri County", "Samburu County", "Siaya County", "Taita Taveta County", "Tana River County", "Tharaka Nithi County"
-            , "Trans Nzoia County", "Turkana County", "Uasin Gishu County", "Vihiga County", "Wajir County", "West Pokot County"};
-
 
     private TextView image1FilePath;
     private TextView image2FilePath;
@@ -147,7 +139,7 @@ public class SellFragment extends Fragment  {
     String vehicleFuel;
     String vehicleSeats;
     String vehicleDriverStatus;
-    String vehicleLocation;
+    String vehicleLocation = "";
 
     String airConditioner;
     String powerDoorLocks;
@@ -399,9 +391,6 @@ public class SellFragment extends Fragment  {
             }
         });
 
-
-
-
         return myView;
 
     }
@@ -621,7 +610,6 @@ public class SellFragment extends Fragment  {
     //on click for button to post vehicles
     public void postVehicle(){
 
-
         //check if network is connected
         if (!isNetworkAvailable()){
 
@@ -631,6 +619,7 @@ public class SellFragment extends Fragment  {
             return;
         }
 
+        Toast.makeText(getActivity(), "1", Toast.LENGTH_SHORT).show();
         //get edit text strings
         String vehicleTitle = editTextVehicleTitle.getText().toString();
 
@@ -788,6 +777,8 @@ public class SellFragment extends Fragment  {
             return;
         }
 
+        Toast.makeText(getActivity(), "2", Toast.LENGTH_SHORT).show();
+
         //get path of images
         image1Path = getPath(uri.get(0));
         image2Path = getPath(uri.get(1));
@@ -795,16 +786,20 @@ public class SellFragment extends Fragment  {
         image4Path = getPath(uri.get(3));
         image5Path = getPath(uri.get(4));
 
-
+        Toast.makeText(getActivity(), "3", Toast.LENGTH_SHORT).show();
 
         try{
 
-            user user = SharedPrefManager.getInstance(getActivity()).getUser();
+            Toast.makeText(getActivity(), "4", Toast.LENGTH_SHORT).show();
 
+            user user = SharedPrefManager.getInstance(getActivity()).getUser();
 
             String uploadId = UUID.randomUUID().toString();
 
+            Toast.makeText(getActivity(), "5", Toast.LENGTH_SHORT).show();
+
             new MultipartUploadRequest(getActivity(), uploadId, add_vehicle_url)
+                    .setMethod("POST")
                     .addFileToUpload(image1Path, "image1")
                     .addFileToUpload(image2Path, "image2")
                     .addFileToUpload(image3Path, "image3")
@@ -838,6 +833,7 @@ public class SellFragment extends Fragment  {
                     .setDelegate(new UploadStatusDelegate() {
                         @Override
                         public void onProgress(Context context, UploadInfo uploadInfo) {
+                            Toast.makeText(getActivity(), "6", Toast.LENGTH_SHORT).show();
                             dialog.setMessage("Uploading vehicle.\nPlease wait..");
                             dialog.setCancelable(false);
                             dialog.show();
@@ -846,7 +842,7 @@ public class SellFragment extends Fragment  {
 
                         @Override
                         public void onError(Context context, UploadInfo uploadInfo, ServerResponse serverResponse, Exception exception) {
-
+                            Toast.makeText(getActivity(), "7", Toast.LENGTH_SHORT).show();
                             dialog.dismiss();
 
                             alertDialogBuilder.setTitle("Failed!");
@@ -865,8 +861,8 @@ public class SellFragment extends Fragment  {
                         @Override
                         public void onCompleted(Context context, UploadInfo uploadInfo, ServerResponse serverResponse) {
 
+                            Toast.makeText(getActivity(), "8", Toast.LENGTH_SHORT).show();
                             dialog.dismiss();
-
 
                             alertDialogBuilder.setTitle("Success!");
                             alertDialogBuilder.setMessage("Vehicle was uploaded succesfully");
@@ -907,13 +903,17 @@ public class SellFragment extends Fragment  {
                             alertDialogBuilder.show();
 
                         }
+
                     })
+
                     .startUpload();
+            Toast.makeText(getActivity(), "9", Toast.LENGTH_SHORT).show();
 
 
 
         }catch (Exception e){
 
+            Toast.makeText(getActivity(), "10", Toast.LENGTH_SHORT).show();
         }
 
 
@@ -929,7 +929,6 @@ public class SellFragment extends Fragment  {
 
 
     //fetch brands from db
-
 
 private class BackTask extends AsyncTask<Void, Void, String> {
     ProgressDialog dialog;

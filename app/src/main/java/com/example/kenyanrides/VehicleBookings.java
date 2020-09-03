@@ -11,10 +11,11 @@ public class VehicleBookings {
     private String vehicleImage;
     private int numberOfBookedVehicles;
     private int id;
+    private String BrandName;
 
 
     public VehicleBookings(String vehicleName, String fromDate, String toDate, String travelDestination, int priceDue, String vehicleImage,
-                           String vehicleStatus, int numberOfBookedVehicles, int id) {
+                           String vehicleStatus, int numberOfBookedVehicles, int id, String BrandName) {
         this.vehicleName = vehicleName;
         this.fromDate = fromDate;
         this.toDate = toDate;
@@ -24,6 +25,7 @@ public class VehicleBookings {
         this.vehicleStatus = vehicleStatus;
         this.numberOfBookedVehicles = numberOfBookedVehicles;
         this.id = id;
+        this.BrandName = BrandName;
     }
 
     public String getVehicleName() {
@@ -96,5 +98,13 @@ public class VehicleBookings {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getBrandName() {
+        return BrandName;
+    }
+
+    public void setBrandName(String brandName) {
+        BrandName = brandName;
     }
 }

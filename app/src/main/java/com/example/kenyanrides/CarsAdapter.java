@@ -125,6 +125,7 @@ public class CarsAdapter extends RecyclerView.Adapter<CarsAdapter.MyViewHolder> 
                     intent.putExtra("reg_date", car.getRegDate());
                     intent.putExtra("booked", car.getBooked());
                     intent.putExtra("owner_phone_number", car.getOwner_phone_number());
+                    intent.putExtra("car_video", car.getCar_video());
 
                     //vehicle accessories
                     intent.putExtra("airConditioner", car.getAirConditioner());
@@ -186,6 +187,8 @@ public class CarsAdapter extends RecyclerView.Adapter<CarsAdapter.MyViewHolder> 
                     intent.putExtra("reg_date", car.getRegDate());
                     intent.putExtra("booked", car.getBooked());
                     intent.putExtra("owner_phone_number", car.getOwner_phone_number());
+                    intent.putExtra("car_video", car.getCar_video());
+
 
                     //vehicle accessories
                     intent.putExtra("airConditioner", car.getAirConditioner());

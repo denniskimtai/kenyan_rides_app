@@ -13,15 +13,19 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -47,7 +51,13 @@ public class CarDetailsActivity extends AppCompatActivity {
 
     private CardView cardViewDriver;
 
-    private LinearLayout linearLayoutContact;
+    private LinearLayout linearLayoutContact, linearLayoutVideoView;
+
+
+    //video view
+    private VideoView videoView;
+    private int position = 0;
+    private MediaController mediaControls;
 
 
     @Override
@@ -66,12 +76,19 @@ public class CarDetailsActivity extends AppCompatActivity {
         txt_driver_status = findViewById(R.id.txt_vehicle_driver_status);
         txt_owner_reg_date = findViewById(R.id.txt_owner_reg_date);
         txt_day = findViewById(R.id.text_view_day);
+        videoView = findViewById(R.id.video_view);
+
 
         btnBookNow = findViewById(R.id.btnBookNow);
 
         cardViewDriver = findViewById(R.id.card_driver);
 
         linearLayoutContact = findViewById(R.id.linear_layout_contact);
+
+        linearLayoutVideoView = findViewById(R.id.videoViewLayout);
+
+        linearLayoutVideoView.setVisibility(View.GONE);
+
         text = findViewById(R.id.text);
         call = findViewById(R.id.call);
 
@@ -117,6 +134,7 @@ public class CarDetailsActivity extends AppCompatActivity {
         String centralLocking = getIntent().getStringExtra("centralLocking");
         String crashSensor = getIntent().getStringExtra("crashSensor");
         String leatherSeats = getIntent().getStringExtra("leatherSeats");
+        String car_video = getIntent().getStringExtra("car_video");
 
 
         //set text to their fields
@@ -135,6 +153,7 @@ public class CarDetailsActivity extends AppCompatActivity {
             cardViewDriver.setVisibility(View.GONE);
             btnBookNow.setVisibility(View.GONE);
             linearLayoutContact.setVisibility(View.VISIBLE);
+
 
             //onclick listener phone call or text
             text.setOnClickListener(new View.OnClickListener() {
@@ -179,6 +198,63 @@ public class CarDetailsActivity extends AppCompatActivity {
                 }
             });
 
+            //if car video exists
+            if (!car_video.equals("null")){
+
+                String video_url = "https://kenyanrides.com/serviceprovider/img/video/" + car_video;
+                        //show video if car has video
+                linearLayoutVideoView.setVisibility(View.VISIBLE);
+
+
+                // set the media controller buttons
+                if (mediaControls == null)
+                {
+                    mediaControls = new MediaController(CarDetailsActivity.this);
+                }
+
+
+                try
+                {
+
+                    // set the media controller in the VideoView
+                    videoView.setMediaController(mediaControls);
+
+                    // set the url of the video to be played
+                    videoView.setVideoPath(video_url);
+
+                } catch (Exception e)
+                {
+                    Log.e("Error", e.getMessage());
+                    e.printStackTrace();
+                }
+
+                videoView.requestFocus();
+
+                // we also set an setOnPreparedListener in order to know when the video
+                // file is ready for playback
+
+                videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener()
+                {
+
+                    public void onPrepared(MediaPlayer mediaPlayer)
+                    {
+                        // if we have a position on savedInstanceState, the video
+                        // playback should start from here
+                        videoView.seekTo(position);
+
+                        if (position == 0)
+                        {
+                            videoView.start();
+                        } else
+                        {
+                            // if we come from a resumed activity, video playback will
+                            // be paused
+                            videoView.pause();
+                        }
+                    }
+                });
+
+            }
 
 
         }else {

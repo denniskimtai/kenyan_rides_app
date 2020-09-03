@@ -53,7 +53,7 @@ public class ListVehiclesActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_vehicles);
 
-        recyclerView = (RecyclerView) findViewById(R.id.vehiclesListRecyclerView);
+        recyclerView = findViewById(R.id.vehiclesListRecyclerView);
         linearLayoutEmpty = findViewById(R.id.linearEmpty);
 
         listedVehiclesList = new ArrayList<>();

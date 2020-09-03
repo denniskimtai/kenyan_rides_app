@@ -37,11 +37,14 @@ public class car {
     public String booked;
     public String owner_phone_number;
 
+    public String car_video;
+
 
     public car(String image, String carName, int carPrice, int id, String vehicleBrand, String vehicleOverview, String poweredBy, String location, String modelYear,
                String seatingCapacity, String driverStatus, String image2, String image3, String image4, String image5, String airConditioner,
                String powerDoorLocks, String antiLockBrakingSystem, String brakeAssist, String powerSteering, String driverAirbag, String passengerAirbag,
-               String powerWindows, String cdPlayer, String centralLocking, String crashSensor, String leatherSeats, String ownerId, String regDate, String booked, String owner_phone_number ){
+               String powerWindows, String cdPlayer, String centralLocking, String crashSensor, String leatherSeats, String ownerId, String regDate
+            , String booked, String owner_phone_number, String car_video ){
 
         this.image =image;
         this.carName = carName;
@@ -75,6 +78,7 @@ public class car {
         this.regDate =regDate;
         this.booked =booked;
         this.owner_phone_number =owner_phone_number;
+        this.car_video =car_video;
 
     }
 
@@ -324,5 +328,13 @@ public class car {
 
     public void setOwner_phone_number(String owner_phone_number) {
         this.owner_phone_number = owner_phone_number;
+    }
+
+    public String getCar_video() {
+        return car_video;
+    }
+
+    public void setCar_video(String car_video) {
+        this.car_video = car_video;
     }
 }
