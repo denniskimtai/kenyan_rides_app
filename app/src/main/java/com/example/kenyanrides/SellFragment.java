@@ -12,10 +12,13 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.ImageDecoder;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
@@ -38,6 +41,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -47,6 +51,12 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.common.api.Status;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
@@ -68,6 +78,8 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -76,6 +88,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.Random;
 import java.util.UUID;
 
 import static android.app.Activity.RESULT_CANCELED;
@@ -112,12 +126,6 @@ public class SellFragment extends Fragment  {
             "18 Seater", "24 Seater", "32 Seater", "40 Seater", "56 Seater"};
 
     String[] driver_status={"SELECT", "Self Driven","Driver Inclusive"};
-
-    private TextView image1FilePath;
-    private TextView image2FilePath;
-    private TextView image3FilePath;
-    private TextView image4FilePath;
-    private TextView image5FilePath;
 
     public static final int IMAGE = 1;
     public static final int CAMERA = 2;
@@ -176,7 +184,6 @@ public class SellFragment extends Fragment  {
     private TextView text_view_remaining_images;
 
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -211,12 +218,6 @@ public class SellFragment extends Fragment  {
 
        //file chooser views
         ImageView imageChooser = myView.findViewById(R.id.image1);
-
-       image1FilePath = myView.findViewById(R.id.image1_file_path);
-       image2FilePath = myView.findViewById(R.id.image2_file_path);
-       image3FilePath = myView.findViewById(R.id.image3_file_path);
-       image4FilePath = myView.findViewById(R.id.image4_file_path);
-       image5FilePath = myView.findViewById(R.id.image5_file_path);
 
 
        //file chooser click listener
@@ -396,6 +397,7 @@ public class SellFragment extends Fragment  {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.P)
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
@@ -410,11 +412,15 @@ public class SellFragment extends Fragment  {
                     selectedImages ++;
                     int remaining_images = 5 - selectedImages;
                     text_view_remaining_images.setText("You can add " + remaining_images + "more images");
-                    Bitmap selectedImage = (Bitmap) data.getExtras().get("data");
-                    Bitmap resizeImage = Bitmap.createScaledBitmap(selectedImage, 900, 500, false);
-                    uri.add(getImageUri(getActivity(), resizeImage));
+
+                    imageUri = data.getData();
+
+                    uri.add(imageUri);
+
                     recyclerView.setVisibility(View.VISIBLE);
                     horizontalCarImagesAdapter.notifyDataSetChanged();
+
+                    Toast.makeText(getActivity(), "camera image selected!", Toast.LENGTH_SHORT).show();
 
                 }
                 break;
@@ -427,20 +433,15 @@ public class SellFragment extends Fragment  {
 
                         selectedImages++;
                         int remaining_images = 5 - selectedImages;
-                        text_view_remaining_images.setText("You can add " + remaining_images + "more images");
+                        text_view_remaining_images.setText("You can add " + remaining_images + " more images");
                         //only one image is selected
                         imageUri = data.getData();
-                        Bitmap selectedImage = null;
-                        try {
-                            selectedImage = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        Bitmap resizeImage = Bitmap.createScaledBitmap(selectedImage, 900, 500, false);
-                        uri.add(getImageUri(getActivity(), resizeImage));
+
+                        uri.add(imageUri);
 
                         recyclerView.setVisibility(View.VISIBLE);
                         horizontalCarImagesAdapter.notifyDataSetChanged();
+
 
                     } else{
                         //several images are selected
@@ -464,15 +465,8 @@ public class SellFragment extends Fragment  {
 
                                 imageUri = data.getClipData().getItemAt(i).getUri();
 
-                                try {
-                                    selectedImage = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
-                                    Bitmap resizeImage = Bitmap.createScaledBitmap(selectedImage, 900, 500, false);
-                                    uri.add(getImageUri(getActivity(), resizeImage));
+                                uri.add(imageUri);
 
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-//                                uri.add(imageUri);
                                 recyclerView.setVisibility(View.VISIBLE);
                                 horizontalCarImagesAdapter.notifyDataSetChanged();
                             }
@@ -487,7 +481,6 @@ public class SellFragment extends Fragment  {
         }else {
             Toast.makeText(getActivity(), "No images selected", Toast.LENGTH_SHORT).show();
         }
-
 
 
     }
@@ -547,16 +540,16 @@ public class SellFragment extends Fragment  {
     private String getPath(Uri uri){
         String path = null;
 
-        Cursor cursor =getActivity().getContentResolver().query(uri, null, null, null, null );
+        Cursor cursor = getActivity().getApplicationContext().getContentResolver().query(uri, null, null, null, null );
         if (cursor != null) {
             cursor.moveToFirst();
         }
         String document_id = cursor.getString(0);
 
-        document_id =document_id.substring(document_id.lastIndexOf(":")+1);
+        document_id = document_id.substring(document_id.lastIndexOf(":")+1);
         cursor.close();
 
-        cursor = getActivity().getContentResolver().query(
+        cursor = getActivity().getApplicationContext().getContentResolver().query(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                 null, MediaStore.Images.Media._ID + " = ? ", new String[]{document_id}, null);
         if (cursor != null && cursor.moveToFirst()) {
@@ -569,13 +562,6 @@ public class SellFragment extends Fragment  {
         return path;
     }
 
-
-    public Uri getImageUri(Context inContext, Bitmap inImage) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
-        return Uri.parse(path);
-    }
 
     //select image dialog method
     private void selectImage(Context context) {
@@ -619,7 +605,6 @@ public class SellFragment extends Fragment  {
             return;
         }
 
-        Toast.makeText(getActivity(), "1", Toast.LENGTH_SHORT).show();
         //get edit text strings
         String vehicleTitle = editTextVehicleTitle.getText().toString();
 
@@ -637,7 +622,6 @@ public class SellFragment extends Fragment  {
             editTextVehicleOverview.setError("Vehicle Overview cannot be empty");
             return;
         }
-
 
         //check text
         String vehiclePrice = editTextPrice.getText().toString();
@@ -659,8 +643,6 @@ public class SellFragment extends Fragment  {
             editTextModelYear.setError("Vehicle Model Year cannot be empty");
             return;
         }
-
-
 
         //checkbox initialization and saving value of checked
 
@@ -777,8 +759,6 @@ public class SellFragment extends Fragment  {
             return;
         }
 
-        Toast.makeText(getActivity(), "2", Toast.LENGTH_SHORT).show();
-
         //get path of images
         image1Path = getPath(uri.get(0));
         image2Path = getPath(uri.get(1));
@@ -786,20 +766,15 @@ public class SellFragment extends Fragment  {
         image4Path = getPath(uri.get(3));
         image5Path = getPath(uri.get(4));
 
-        Toast.makeText(getActivity(), "3", Toast.LENGTH_SHORT).show();
+        user user = SharedPrefManager.getInstance(getActivity()).getUser();
+
 
         try{
-
-            Toast.makeText(getActivity(), "4", Toast.LENGTH_SHORT).show();
-
-            user user = SharedPrefManager.getInstance(getActivity()).getUser();
-
             String uploadId = UUID.randomUUID().toString();
 
-            Toast.makeText(getActivity(), "5", Toast.LENGTH_SHORT).show();
 
-            new MultipartUploadRequest(getActivity(), uploadId, add_vehicle_url)
-                    .setMethod("POST")
+            new MultipartUploadRequest(Objects.requireNonNull(getActivity()), uploadId,
+                    add_vehicle_url)
                     .addFileToUpload(image1Path, "image1")
                     .addFileToUpload(image2Path, "image2")
                     .addFileToUpload(image3Path, "image3")
@@ -833,7 +808,6 @@ public class SellFragment extends Fragment  {
                     .setDelegate(new UploadStatusDelegate() {
                         @Override
                         public void onProgress(Context context, UploadInfo uploadInfo) {
-                            Toast.makeText(getActivity(), "6", Toast.LENGTH_SHORT).show();
                             dialog.setMessage("Uploading vehicle.\nPlease wait..");
                             dialog.setCancelable(false);
                             dialog.show();
@@ -842,7 +816,6 @@ public class SellFragment extends Fragment  {
 
                         @Override
                         public void onError(Context context, UploadInfo uploadInfo, ServerResponse serverResponse, Exception exception) {
-                            Toast.makeText(getActivity(), "7", Toast.LENGTH_SHORT).show();
                             dialog.dismiss();
 
                             alertDialogBuilder.setTitle("Failed!");
@@ -855,13 +828,13 @@ public class SellFragment extends Fragment  {
                                 }
                             });
                             alertDialogBuilder.show();
+                            Toast.makeText(context, exception.getMessage() , Toast.LENGTH_SHORT).show();
 
                         }
 
                         @Override
                         public void onCompleted(Context context, UploadInfo uploadInfo, ServerResponse serverResponse) {
 
-                            Toast.makeText(getActivity(), "8", Toast.LENGTH_SHORT).show();
                             dialog.dismiss();
 
                             alertDialogBuilder.setTitle("Success!");
@@ -885,8 +858,6 @@ public class SellFragment extends Fragment  {
                         @Override
                         public void onCancelled(Context context, UploadInfo uploadInfo) {
 
-                            Toast.makeText(context, String.valueOf(uploadInfo) , Toast.LENGTH_SHORT).show();
-
                             if(dialog.isShowing()){
                                 dialog.dismiss();
                             }
@@ -907,13 +878,11 @@ public class SellFragment extends Fragment  {
                     })
 
                     .startUpload();
-            Toast.makeText(getActivity(), "9", Toast.LENGTH_SHORT).show();
-
 
 
         }catch (Exception e){
 
-            Toast.makeText(getActivity(), "10", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
 

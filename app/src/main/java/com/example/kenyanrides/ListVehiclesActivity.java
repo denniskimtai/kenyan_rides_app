@@ -140,8 +140,6 @@ public class ListVehiclesActivity extends AppCompatActivity{
 
                                     int pricePerDay = listedVehiclesObject.getInt("PricePerDay");
 
-                                    String vehicleImage = "https://kenyanrides.com/serviceprovider/img/vehicleimages/" + listedVehiclesObject.getString("Vimage1");
-
                                     //
                                     int id = listedVehiclesObject.getInt("id");
                                     String vehicleBrand = listedVehiclesObject.getString("brandName");
@@ -151,10 +149,16 @@ public class ListVehiclesActivity extends AppCompatActivity{
                                     String modelYear = listedVehiclesObject.getString("ModelYear");
                                     String seatingCapacity = listedVehiclesObject.getString("SeatingCapacity");
                                     String driverStatus = listedVehiclesObject.getString("Dstatus");
+                                    String vehicleImage = "https://kenyanrides.com/serviceprovider/img/vehicleimages/" + listedVehiclesObject.getString("Vimage1");
+                                    String image1Editted = vehicleImage.replace(" ", "%20");
                                     String vehicleImage2 = "https://kenyanrides.com/serviceprovider/img/vehicleimages/" + listedVehiclesObject.getString("Vimage2");
+                                    String image2Editted = vehicleImage2.replace(" ", "%20");
                                     String vehicleImage3 = "https://kenyanrides.com/serviceprovider/img/vehicleimages/" + listedVehiclesObject.getString("Vimage3");
+                                    String image3Editted = vehicleImage3.replace(" ", "%20");
                                     String vehicleImage4 = "https://kenyanrides.com/serviceprovider/img/vehicleimages/" + listedVehiclesObject.getString("Vimage4");
+                                    String image4Editted = vehicleImage4.replace(" ", "%20");
                                     String vehicleImage5 = "https://kenyanrides.com/serviceprovider/img/vehicleimages/" + listedVehiclesObject.getString("Vimage5");
+                                    String image5Editted = vehicleImage5.replace(" ", "%20");
                                     String airConditioner = listedVehiclesObject.getString("AirConditioner");
                                     String powerDoorLocks = listedVehiclesObject.getString("PowerDoorLocks");
                                     String antiLockBrakingSystem = listedVehiclesObject.getString("AntiLockBrakingSystem");
@@ -171,9 +175,9 @@ public class ListVehiclesActivity extends AppCompatActivity{
                                     String regDate = listedVehiclesObject.getString("RegDate");
                                     String booked = listedVehiclesObject.getString("booked");
 
-                                    ListVehicle listVehicle = new ListVehicle(vehicleImage, vehicleTitle, pricePerDay, id, vehicleBrand,
+                                    ListVehicle listVehicle = new ListVehicle(image1Editted, vehicleTitle, pricePerDay, id, vehicleBrand,
                                             vehicleOverview, poweredBy, fuelType, modelYear, seatingCapacity,
-                                            driverStatus, vehicleImage2, vehicleImage3, vehicleImage4, vehicleImage5,
+                                            driverStatus, image2Editted, image3Editted, image4Editted, image5Editted,
                                             airConditioner, powerDoorLocks, antiLockBrakingSystem, brakeAssist, powerSteering,
                                             driverAirbag, passengerAirbag, powerWindows, cdPlayer, centralLocking,
                                             crashSensor, leatherSeats, ownerId, regDate, booked);

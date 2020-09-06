@@ -138,10 +138,11 @@ public class BookingsActivity extends AppCompatActivity {
                                     int totalpricedue = bookingsObject.getInt("totalpricedue");
                                     String TravelDestination = bookingsObject.getString("TravelDestination");
                                     String Vimage1 = "https://kenyanrides.com/serviceprovider/img/vehicleimages/" + bookingsObject.getString("Vimage1");
+                                    String image1Editted = Vimage1.replace(" ", "%20");
                                     String BrandName = bookingsObject.getString("BrandName");
 
                                     VehicleBookings vehicleBookings = new VehicleBookings(vehicleTitle, FromDate, ToDate, TravelDestination,
-                                            totalpricedue, Vimage1, Status, bookingsJson.length(), vehicleId, BrandName);
+                                            totalpricedue, image1Editted, Status, bookingsJson.length(), vehicleId, BrandName);
 
                                     vehicleBookingsList.add(vehicleBookings);
 

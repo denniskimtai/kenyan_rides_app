@@ -650,13 +650,6 @@ public class EditVehicleActivity extends AppCompatActivity {
             case IMAGE1:
                 imageUri = data.getData();
 
-                try {
-                    bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
                 image1Path = getPath(imageUri);
                 //upload image to db
                 uploadSingleImage(image1Path, "1");
@@ -793,7 +786,6 @@ public class EditVehicleActivity extends AppCompatActivity {
 
         return path;
     }
-
 
 
     //on click for button to post vehicles
@@ -1098,7 +1090,7 @@ public class EditVehicleActivity extends AppCompatActivity {
                             }
 
                             alertDialogBuilder.setTitle("Success!");
-                            alertDialogBuilder.setMessage("Image was uploaded succesfully");
+                            alertDialogBuilder.setMessage("Image was uploaded successfully");
                             alertDialogBuilder.setCancelable(false);
                             alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                 @Override

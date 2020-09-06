@@ -397,10 +397,11 @@ public class SellSalesFragment extends Fragment {
                         selectedImages ++;
                         int remaining_images = 5 - selectedImages;
                         text_view_remaining_images.setText("You can add " + remaining_images + "more images");
-                        Bitmap selectedImage = (Bitmap) data.getExtras().get("data");
-                        Bitmap resizeImage = Bitmap.createScaledBitmap(selectedImage, 900, 500, false);
 
-                        uri.add(getImageUri(getActivity(), resizeImage));
+                        imageUri = data.getData();
+
+                        uri.add(imageUri);
+
                         recyclerView.setVisibility(View.VISIBLE);
                         horizontalCarImagesAdapter.notifyDataSetChanged();
 
@@ -418,14 +419,8 @@ public class SellSalesFragment extends Fragment {
                             text_view_remaining_images.setText("You can add " + remaining_images + "more images");
                             //only one image is selected
                             imageUri = data.getData();
-                            Bitmap selectedImage = null;
-                            try {
-                                selectedImage = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            Bitmap resizeImage = Bitmap.createScaledBitmap(selectedImage, 900, 500, false);
-                            uri.add(getImageUri(getActivity(), resizeImage));
+
+                            uri.add(imageUri);
 
                             recyclerView.setVisibility(View.VISIBLE);
                             horizontalCarImagesAdapter.notifyDataSetChanged();
@@ -454,14 +449,7 @@ public class SellSalesFragment extends Fragment {
 
                                     imageUri = data.getClipData().getItemAt(i).getUri();
 
-                                    try {
-                                        selectedImage = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
-                                        Bitmap resizeImage = Bitmap.createScaledBitmap(selectedImage, 900, 500, false);
-                                        uri.add(getImageUri(getActivity(), resizeImage));
-
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
+                                    uri.add(imageUri);
 
                                     recyclerView.setVisibility(View.VISIBLE);
                                     horizontalCarImagesAdapter.notifyDataSetChanged();
@@ -1020,7 +1008,7 @@ public class SellSalesFragment extends Fragment {
 
                             @Override
                             public void onCompleted(Context context, UploadInfo uploadInfo, ServerResponse serverResponse) {
-
+                                Toast.makeText(getActivity(), serverResponse.toString(), Toast.LENGTH_SHORT).show();
                                 dialog.dismiss();
 
                                 alertDialogBuilder.setTitle("Success!");

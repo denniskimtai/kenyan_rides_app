@@ -189,8 +189,6 @@ public class HomeFragment extends Fragment {
 
                         int pricePerDay = carsObject.getInt("PricePerDay");
 
-                        String vehicleImage = "https://kenyanrides.com/serviceprovider/img/vehicleimages/" + carsObject.getString("Vimage1");
-
                         int id = carsObject.getInt("id");
                         String vehicleBrand = carsObject.getString("brandName");
                         String vehicleOverview = carsObject.getString("VehiclesOverview");
@@ -199,10 +197,16 @@ public class HomeFragment extends Fragment {
                         String modelYear = carsObject.getString("ModelYear");
                         String seatingCapacity = carsObject.getString("SeatingCapacity");
                         String driverStatus = carsObject.getString("Dstatus");
+                        String vehicleImage = "https://kenyanrides.com/serviceprovider/img/vehicleimages/" + carsObject.getString("Vimage1");
+                        String image1Editted = vehicleImage.replace(" ", "%20");
                         String vehicleImage2 = "https://kenyanrides.com/serviceprovider/img/vehicleimages/" + carsObject.getString("Vimage2");
+                        String image2Editted = vehicleImage2.replace(" ", "%20");
                         String vehicleImage3 = "https://kenyanrides.com/serviceprovider/img/vehicleimages/" + carsObject.getString("Vimage3");
+                        String image3Editted = vehicleImage3.replace(" ", "%20");
                         String vehicleImage4 = "https://kenyanrides.com/serviceprovider/img/vehicleimages/" + carsObject.getString("Vimage4");
+                        String image4Editted = vehicleImage4.replace(" ", "%20");
                         String vehicleImage5 = "https://kenyanrides.com/serviceprovider/img/vehicleimages/" + carsObject.getString("Vimage5");
+                        String image5Editted = vehicleImage5.replace(" ", "%20");
                         String airConditioner = carsObject.getString("AirConditioner");
                         String powerDoorLocks = carsObject.getString("PowerDoorLocks");
                         String antiLockBrakingSystem = carsObject.getString("AntiLockBrakingSystem");
@@ -222,9 +226,9 @@ public class HomeFragment extends Fragment {
                         String car_video = carsObject.getString("car_video");
 
 
-                        car car = new car(vehicleImage, vehicleTitle, pricePerDay, id, vehicleBrand,
+                        car car = new car(image1Editted, vehicleTitle, pricePerDay, id, vehicleBrand,
                                 vehicleOverview, poweredBy, fuelType, modelYear, seatingCapacity,
-                                driverStatus, vehicleImage2, vehicleImage3, vehicleImage4, vehicleImage5,
+                                driverStatus, image2Editted, image3Editted, image4Editted, image5Editted,
                                 airConditioner, powerDoorLocks, antiLockBrakingSystem, brakeAssist, powerSteering,
                                 driverAirbag, passengerAirbag, powerWindows, cdPlayer, centralLocking,
                                 crashSensor, leatherSeats, ownerId, regDate, booked, owner_phone_number, car_video);
