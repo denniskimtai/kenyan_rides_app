@@ -202,6 +202,10 @@ public class CarDetailsActivity extends AppCompatActivity {
             if (!car_video.equals("null")){
 
                 String video_url = "https://kenyanrides.com/serviceprovider/img/video/" + car_video;
+                String videoUrlEditted = video_url.replace(" ", "%20");
+
+                Toast.makeText(this, car_video, Toast.LENGTH_SHORT).show();
+
                         //show video if car has video
                 linearLayoutVideoView.setVisibility(View.VISIBLE);
 
@@ -220,7 +224,7 @@ public class CarDetailsActivity extends AppCompatActivity {
                     videoView.setMediaController(mediaControls);
 
                     // set the url of the video to be played
-                    videoView.setVideoPath(video_url);
+                    videoView.setVideoPath(videoUrlEditted);
 
                 } catch (Exception e)
                 {
@@ -254,6 +258,71 @@ public class CarDetailsActivity extends AppCompatActivity {
                     }
                 });
 
+            }else {
+                linearLayoutVideoView.setVisibility(View.GONE);
+            }
+
+            if (!car_video.isEmpty()){
+
+
+                String video_url = "https://kenyanrides.com/serviceprovider/img/video/" + car_video;
+                String videoUrlEditted = video_url.replace(" ", "%20");
+
+                //show video if car has video
+                linearLayoutVideoView.setVisibility(View.VISIBLE);
+
+
+                // set the media controller buttons
+                if (mediaControls == null)
+                {
+                    mediaControls = new MediaController(CarDetailsActivity.this);
+                }
+
+
+                try
+                {
+
+                    // set the media controller in the VideoView
+                    videoView.setMediaController(mediaControls);
+
+                    // set the url of the video to be played
+                    videoView.setVideoPath(videoUrlEditted);
+
+                } catch (Exception e)
+                {
+                    Log.e("Error", e.getMessage());
+                    e.printStackTrace();
+                }
+
+                //videoView.requestFocus();
+
+                // we also set an setOnPreparedListener in order to know when the video
+                // file is ready for playback
+
+                videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener()
+                {
+
+                    public void onPrepared(MediaPlayer mediaPlayer)
+                    {
+                        // if we have a position on savedInstanceState, the video
+                        // playback should start from here
+                        videoView.seekTo(position);
+
+                        if (position == 0)
+                        {
+                            videoView.pause();
+                        } else
+                        {
+                            // if we come from a resumed activity, video playback will
+                            // be paused
+                            videoView.pause();
+                        }
+                    }
+                });
+
+
+            }else {
+                linearLayoutVideoView.setVisibility(View.GONE);
             }
 
 

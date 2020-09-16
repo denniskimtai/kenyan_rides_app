@@ -115,11 +115,12 @@ public class BookingsActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
 
-                        //fetch json object returned by api
-                        try {
-                            JSONArray bookingsJson = new JSONArray(response);
 
-                            if (bookingsJson.length() != 0) {
+                        if (!(response.equals("No records matching your query were found."))) {
+
+                            //fetch json object returned by api
+                            try {
+                                JSONArray bookingsJson = new JSONArray(response);
 
                                 recyclerView.setVisibility(View.VISIBLE);
                                 linearLayoutEmpty.setVisibility(View.GONE);
@@ -148,22 +149,22 @@ public class BookingsActivity extends AppCompatActivity {
 
 
                                 }
-                            }else {
 
-                                recyclerView.setVisibility(View.GONE);
-                                linearLayoutEmpty.setVisibility(View.VISIBLE);
-
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
 
-                            progressDialog.dismiss();
+                        }else {
 
-                            adapter = new BookingsAdapter(BookingsActivity.this, vehicleBookingsList);
-                            recyclerView.setAdapter(adapter);
+                            recyclerView.setVisibility(View.GONE);
+                            linearLayoutEmpty.setVisibility(View.VISIBLE);
 
-                        } catch (JSONException e) {
-                            e.printStackTrace();
                         }
 
+                        progressDialog.dismiss();
+
+                        adapter = new BookingsAdapter(BookingsActivity.this, vehicleBookingsList);
+                        recyclerView.setAdapter(adapter);
                     }
                 }, new Response.ErrorListener() {
             @Override

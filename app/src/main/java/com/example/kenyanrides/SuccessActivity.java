@@ -16,7 +16,7 @@ import android.widget.TextView;
 public class SuccessActivity extends AppCompatActivity {
 
     private TextView textViewPhoneNumber;
-    private Button btnCall, btnSms;
+    private Button btnCall, btnSms, btnProceed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,11 +25,22 @@ public class SuccessActivity extends AppCompatActivity {
 
         btnCall = findViewById(R.id.btn_call);
         btnSms = findViewById(R.id.btnSms);
+        btnProceed =findViewById(R.id.btnProceed);
+
+        btnProceed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SuccessActivity.this, BookingsActivity.class);
+                finish();
+                startActivity(intent);
+            }
+        });
+
         textViewPhoneNumber = findViewById(R.id.text_view_phone_number);
 
         String phoneNumber = getIntent().getStringExtra("owner_phone_number");
 
-        textViewPhoneNumber.setText(phoneNumber);
+        textViewPhoneNumber.setText("Owner phone number " + phoneNumber);
 
         //onclick listener phone call or text
         btnSms.setOnClickListener(new View.OnClickListener() {

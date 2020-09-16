@@ -51,7 +51,7 @@
             android:textColorHint="@color/dark_grey">
 
             <EditText
-                android:id="@+id/edit_text_vehicle_title"
+                android:id="@+id/edit_text_sale_vehicle_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Vehicle Title"
@@ -171,7 +171,7 @@
             android:textSize="12dp">
 
             <EditText
-                android:id="@+id/edit_text_vehicle_overview"
+                android:id="@+id/edit_text_sale_vehicle_overview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -281,7 +281,7 @@
             android:textSize="12dp">
 
             <EditText
-                android:id="@+id/edit_text_price"
+                android:id="@+id/edit_text_sale_price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Car Price(in Ksh)"
@@ -304,7 +304,7 @@
             android:textSize="12dp">
 
             <EditText
-                android:id="@+id/edit_text_model_year"
+                android:id="@+id/edit_text_sale_model_year"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Vehicle Model Year"
@@ -482,7 +482,7 @@
 
 
         <Button
-            android:id="@+id/btnPostVehicle"
+            android:id="@+id/btnPostVehicleForSale"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"

@@ -97,35 +97,35 @@ import static android.app.Activity.RESULT_OK;
 
 public class SellFragment extends Fragment  {
 
-    String brands_url = "https://kenyanrides.com/android/fetch_brands.php";
+    private String brands_url = "https://kenyanrides.com/android/fetch_brands.php";
 
-    List<String> brandsList = new ArrayList<>();
-    List<Integer> brandsId = new ArrayList<Integer>();
+    private List<String> brandsList = new ArrayList<>();
+    private List<Integer> brandsId = new ArrayList<Integer>();
 
     private Bitmap bitmap;
     String imageString;
-    String image1Path;
+    private String image1Path;
 
     String image2String;
-    String image2Path;
+    private String image2Path;
 
     String image3String;
-    String image3Path;
+    private String image3Path;
 
     String image4String;
-    String image4Path;
+    private String image4Path;
 
     String image5String;
-    String image5Path;
+    private String image5Path;
 
 
-    String[] fuel={"SELECT", "Petrol","Diesel","Hybrid"};
+    private String[] fuel={"SELECT", "Petrol","Diesel","Hybrid"};
 
-    String[] seats={"SELECT", "2 Seater", "4 Seater", "5 Seater", "7 Seater", "8 Seater",
+    private String[] seats={"SELECT", "2 Seater", "4 Seater", "5 Seater", "7 Seater", "8 Seater",
             "9 Seater", "10 Seater", "11 Seater", "12 Seater", "13 Seater", "14 Seater",
             "18 Seater", "24 Seater", "32 Seater", "40 Seater", "56 Seater"};
 
-    String[] driver_status={"SELECT", "Self Driven","Driver Inclusive"};
+    private String[] driver_status={"SELECT", "Self Driven","Driver Inclusive"};
 
     public static final int IMAGE = 1;
     public static final int CAMERA = 2;
@@ -134,46 +134,46 @@ public class SellFragment extends Fragment  {
 
     private EditText editTextVehicleOverview, editTextVehicleTitle, editTextPrice, editTextModelYear;
 
-    Uri imageUri;
-    String imagePath;
-    Spinner brandSpinner;
+    private Uri imageUri;
+    private String imagePath;
+    private Spinner brandSpinner;
 
     private AlertDialog.Builder alertDialogBuilder;
 
     private ProgressDialog dialog;
 
     //upload strings
-    String vehicleBrand;
-    String vehicleFuel;
-    String vehicleSeats;
-    String vehicleDriverStatus;
-    String vehicleLocation = "";
+    private String vehicleBrand;
+    private String vehicleFuel;
+    private String vehicleSeats;
+    private String vehicleDriverStatus;
+    private String vehicleLocation = "";
 
-    String airConditioner;
-    String powerDoorLocks;
-    String antiLockBrakingSystem;
-    String brakeAssist;
-    String powerSteering;
-    String driverAirBag;
-    String passengerAirBag;
-    String powerWindows;
-    String cdPlayer;
-    String centralLocking;
-    String crashSensor;
-    String leatherSeats;
+    private String airConditioner;
+    private String powerDoorLocks;
+    private String antiLockBrakingSystem;
+    private String brakeAssist;
+    private String powerSteering;
+    private String driverAirBag;
+    private String passengerAirBag;
+    private String powerWindows;
+    private String cdPlayer;
+    private String centralLocking;
+    private String crashSensor;
+    private String leatherSeats;
 
-    CheckBox checkBoxAirconditioner;
-    CheckBox checkBoxPowerDoorLocks;
-    CheckBox checkBoxAntiLockBrakingSystem;
-    CheckBox checkBoxBrakeAssist;
-    CheckBox checkBoxPowerSteering;
-    CheckBox checkBoxDriverAirbag;
-    CheckBox checkBoxPassengerAirbag;
-    CheckBox checkBoxPowerWindows;
-    CheckBox checkBoxCDPlayer;
-    CheckBox checkBoxCentralLocking;
-    CheckBox checkBoxCrashSensor;
-    CheckBox checkBoxLeatherSeats;
+    private CheckBox checkBoxAirconditioner;
+    private CheckBox checkBoxPowerDoorLocks;
+    private CheckBox checkBoxAntiLockBrakingSystem;
+    private CheckBox checkBoxBrakeAssist;
+    private CheckBox checkBoxPowerSteering;
+    private CheckBox checkBoxDriverAirbag;
+    private CheckBox checkBoxPassengerAirbag;
+    private CheckBox checkBoxPowerWindows;
+    private CheckBox checkBoxCDPlayer;
+    private CheckBox checkBoxCentralLocking;
+    private CheckBox checkBoxCrashSensor;
+    private CheckBox checkBoxLeatherSeats;
 
     private RecyclerView recyclerView;
     private HorizontalCarImagesAdapter horizontalCarImagesAdapter;
@@ -397,7 +397,6 @@ public class SellFragment extends Fragment  {
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.P)
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
@@ -419,8 +418,6 @@ public class SellFragment extends Fragment  {
 
                     recyclerView.setVisibility(View.VISIBLE);
                     horizontalCarImagesAdapter.notifyDataSetChanged();
-
-                    Toast.makeText(getActivity(), "camera image selected!", Toast.LENGTH_SHORT).show();
 
                 }
                 break;

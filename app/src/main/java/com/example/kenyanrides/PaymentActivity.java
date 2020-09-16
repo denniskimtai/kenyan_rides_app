@@ -313,7 +313,7 @@ public class PaymentActivity extends AppCompatActivity {
                                         params.put("vehicleTravelDestination", vehicleTravelDestination);
                                         params.put("returnDate", returnDate);
                                         params.put("returnTime", returnTime);
-                                        params.put("phoneNumber", owner_phone_number);
+                                        params.put("phoneNumber", customerPhoneNumber);
                                         params.put("pickupLocation", pickupLocation);
                                         params.put("returnLocation", returnLocation);
                                         params.put("vehicle_id", vehicle_id);
@@ -321,6 +321,7 @@ public class PaymentActivity extends AppCompatActivity {
                                         params.put("price_per_day", String.valueOf(priceToPayLater));
                                         params.put("vehicle_owner_email", vehicle_owner_email);
                                         params.put("vehicle_title", vehicle_title);
+                                        params.put("mpesa_payment_number", Utils.sanitizePhoneNumber(mpesaNumber));
 
                                         return params;
 
@@ -378,6 +379,10 @@ public class PaymentActivity extends AppCompatActivity {
 
             if (resultCode == RESULT_OK) {
 
+                progressDialog.setMessage("Processing payment...");
+                progressDialog.setCancelable(false);
+                progressDialog.show();
+
                 DropInResult result = data.getParcelableExtra(DropInResult.EXTRA_DROP_IN_RESULT);
                 PaymentMethodNonce nonce = result.getPaymentMethodNonce();
                 String strNonce = nonce.getNonce();
@@ -431,6 +436,8 @@ public class PaymentActivity extends AppCompatActivity {
                         //check if transaction was successful
                         if (response.contains("Successful")){
 
+
+                            progressDialog.dismiss();
                             //transaction is successful
                             //go to success page
                             Intent intent = new Intent(PaymentActivity.this, SuccessActivity.class);
@@ -496,7 +503,7 @@ public class PaymentActivity extends AppCompatActivity {
 
         queue.add(stringRequest);
 
-
+        progressDialog.dismiss();
 
     }
 

@@ -12,4 +12,5 @@
       android:layout_gravity="center"
       android:src="@drawable/car"
       android:scaleType="fitXY" />
+
 </FrameLayout>

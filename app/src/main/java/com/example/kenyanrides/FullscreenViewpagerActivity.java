@@ -35,8 +35,6 @@ public class FullscreenViewpagerActivity extends AppCompatActivity {
         String image5 = getIntent().getStringExtra("Image5");
         currentPage = getIntent().getIntExtra("clicked_position", 0);
 
-        Toast.makeText(this, String.valueOf(currentPage), Toast.LENGTH_SHORT).show();
-
         IMAGES = new String[]{image1, image2, image3, image4, image5};
 
         init();

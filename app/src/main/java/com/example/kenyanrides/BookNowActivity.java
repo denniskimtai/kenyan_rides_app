@@ -26,53 +26,17 @@ import android.widget.TimePicker;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
-
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.api.Status;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.api.model.TypeFilter;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import Model.AccessToken;
-import Model.STKPush;
-
-import Services.DarajaApiClient;
-import Services.Utils;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import timber.log.Timber;
-
-import static com.example.kenyanrides.Constants.BUSINESS_SHORT_CODE;
-import static com.example.kenyanrides.Constants.CALLBACKURL;
-import static com.example.kenyanrides.Constants.PARTYB;
-import static com.example.kenyanrides.Constants.PASSKEY;
-import static com.example.kenyanrides.Constants.TRANSACTION_TYPE;
 
 
 
@@ -239,9 +203,6 @@ public class BookNowActivity extends AppCompatActivity implements View.OnClickLi
         alertDialog = new AlertDialog.Builder(this);
 
         progressDialog = new ProgressDialog(this);
-
-
-
 
     }
 
