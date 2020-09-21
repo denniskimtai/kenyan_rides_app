@@ -17,7 +17,8 @@
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:tabIndicatorColor="@color/colorPrimary"
-        app:tabTextColor="@color/colorPrimary" />
+        app:tabTextColor="@color/grey"
+        app:tabSelectedTextColor="@color/colorPrimary"/>
 
     <TextView
         android:id="@+id/view"

@@ -21,8 +21,6 @@ public class TablayoutFragment extends Fragment {
 
         View myView = inflater.inflate(R.layout.fragment_tablayout, null);
 
-
-
         //tablayout menu
         TabLayout tabLayout = myView.findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("Rentals"));
