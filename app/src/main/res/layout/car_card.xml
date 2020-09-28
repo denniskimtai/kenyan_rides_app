@@ -15,6 +15,7 @@
         android:background="@color/colorPrimary">
 
         <RelativeLayout
+            android:id="@+id/car_relative_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/green">

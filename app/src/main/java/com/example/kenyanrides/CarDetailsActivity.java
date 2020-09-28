@@ -204,9 +204,7 @@ public class CarDetailsActivity extends AppCompatActivity {
                 String video_url = "https://kenyanrides.com/serviceprovider/img/video/" + car_video;
                 String videoUrlEditted = video_url.replace(" ", "%20");
 
-                Toast.makeText(this, car_video, Toast.LENGTH_SHORT).show();
-
-                        //show video if car has video
+                //show video if car has video
                 linearLayoutVideoView.setVisibility(View.VISIBLE);
 
 

@@ -41,9 +41,9 @@
         android:layout_below="@id/view2"
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:tabIndicatorColor="@color/black"
+        app:tabIndicatorColor="@color/green"
         app:tabTextColor="@color/grey"
-        app:tabSelectedTextColor="@color/black"/>
+        app:tabSelectedTextColor="@color/green"/>
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/mybooking_pager"

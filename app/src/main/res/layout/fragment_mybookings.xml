@@ -7,6 +7,8 @@
     android:orientation="vertical">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:id="@+id/bookingsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

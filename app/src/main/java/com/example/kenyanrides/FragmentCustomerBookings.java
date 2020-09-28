@@ -40,7 +40,7 @@ public class FragmentCustomerBookings extends Fragment {
 
     private RecyclerView recyclerView;
     private LinearLayout linearLayoutEmpty;
-    private ListedVehiclesAdapter adapter;
+    private CustomerBookingsAdapter adapter;
     private List<ListVehicle> listedVehiclesList;
 
     private AlertDialog.Builder alertDialogBuilder;
@@ -192,7 +192,7 @@ public class FragmentCustomerBookings extends Fragment {
 
                             progressDialog.dismiss();
 
-                            adapter = new ListedVehiclesAdapter(getActivity(), listedVehiclesList);
+                            adapter = new CustomerBookingsAdapter(getActivity(), listedVehiclesList);
                             recyclerView.setAdapter(adapter);
 
                         } catch (JSONException e) {

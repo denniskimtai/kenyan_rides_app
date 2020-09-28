@@ -3,13 +3,16 @@ package com.example.kenyanrides;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -28,12 +31,14 @@ public class CarsAdapter extends RecyclerView.Adapter<CarsAdapter.MyViewHolder> 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView carPrice, carName;
         public ImageView thumbnail;
+        public RelativeLayout car_relative_layout;
 
         public MyViewHolder(View view) {
             super(view);
             carName = view.findViewById(R.id.carName);
             carPrice =  view.findViewById(R.id.carPrice);
             thumbnail =  view.findViewById(R.id.thumbnail);
+            car_relative_layout = view.findViewById(R.id.car_relative_layout);
 
         }
 
@@ -73,6 +78,9 @@ public class CarsAdapter extends RecyclerView.Adapter<CarsAdapter.MyViewHolder> 
         if (car.getBooked().equals("10")){
 
             holder.carPrice.setText("Ksh " + formatted);
+            holder.car_relative_layout.setBackgroundColor(Color.parseColor("#ffffff"));
+            holder.carPrice.setTextColor(ContextCompat.getColor(mContext, R.color.green));
+            holder.carName.setTextColor(ContextCompat.getColor(mContext, R.color.black));
 
         }else {
 

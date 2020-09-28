@@ -1,40 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_height="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:layout_height="match_parent"
     android:background="@color/white"
-    android:weightSum="5">
+    android:orientation="vertical"
+    android:weightSum="6">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:background="@color/colorPrimaryDark"
-        android:layout_alignParentLeft="true">
+        android:layout_alignParentLeft="true"
+        android:background="@color/white">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Kenyan Rides"
-            android:textColor="@color/white"
-            android:textSize="20dp"/>
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="20dp" />
 
     </androidx.appcompat.widget.Toolbar>
 
+    <TextView
+        android:id="@+id/view2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/toolbar2"
+        android:background="@color/grey" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_margin="20dp"
+        android:layout_weight="1"
+        android:src="@drawable/ic_baseline_cloud_upload_24"
+        android:tint="@color/green" />
+
 
     <TextView
-        android:layout_marginBottom="20dp"
-        android:layout_weight="1"
-        android:layout_marginTop="40dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
         android:text="Please upload images of client, client Id and Drivers License for security purpose"
         android:textColor="@color/black"
-        android:gravity="center_horizontal"
-        android:typeface="serif"
-        android:textSize="18dp"/>
+        android:textSize="18dp"
+        android:typeface="serif" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -50,6 +64,7 @@
             android:id="@+id/image1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:padding="10dp"
             android:text="Client Image"
@@ -65,6 +80,7 @@
         <TextView
             android:id="@+id/image1_file_path"
             android:layout_width="0dp"
+            android:layout_gravity="center_vertical"
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:padding="10dp"
@@ -89,6 +105,7 @@
             android:id="@+id/image2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:padding="10dp"
             android:text="Driving License"
@@ -104,6 +121,7 @@
         <TextView
             android:id="@+id/image2_file_path"
             android:layout_width="0dp"
+            android:layout_gravity="center_vertical"
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:padding="10dp"
@@ -128,6 +146,7 @@
             android:id="@+id/image3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:padding="10dp"
             android:text="National Id"
@@ -146,6 +165,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:padding="10dp"
+            android:layout_gravity="center_vertical"
             android:text="No file choosen"
             android:textColor="@color/dark_grey"
             android:textSize="12dp" />
@@ -157,13 +177,10 @@
         android:id="@+id/btnUpload"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:background="@color/green"
         android:text="Upload"
-        android:textColor="@color/white"
-        android:background="@drawable/buttom_background"
-        android:layout_margin="20dp"/>
-
-
-
+        android:textColor="@color/white" />
 
 
 </LinearLayout>
