@@ -6,16 +6,14 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -43,11 +41,14 @@ public class ListedVehiclesAdapter extends RecyclerView.Adapter<ListedVehiclesAd
 
     String delete_vehicle_url = "https://kenyanrides.com/android/delete_vehicle.php";
     private final String updateVehicleStatusUrl = "https://kenyanrides.com/android/update_vehicle_status.php";
+    private final String updateOnSaleVehicleStatusUrl = "https://kenyanrides.com/android/update_onsale_vehicle_status.php";
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView listedVehicleTitle, listedVehiclePrice, listedVehicleStatus, textViewComplete, textViewDelete, textViewLocation;
+        public TextView listedVehicleTitle, listedVehiclePrice, listedVehicleStatus, textViewComplete, textViewDelete, textViewLocation, textViewCompleteSale,
+        textViewDeleteSale,textViewSold;
         public ImageView listedVehicleImage;
+        public LinearLayout linear_layout_contact, linear_layout_contact_for_sale;
 
 
 
@@ -59,11 +60,18 @@ public class ListedVehiclesAdapter extends RecyclerView.Adapter<ListedVehiclesAd
             listedVehicleStatus = view.findViewById(R.id.textViewStatus);
             textViewComplete = view.findViewById(R.id.textViewComplete);
             textViewDelete = view.findViewById(R.id.btnListedVehicleDelete);
+            textViewCompleteSale = view.findViewById(R.id.textViewCompleteSale);
+            textViewDeleteSale = view.findViewById(R.id.btnListedVehicleDeleteSale);
+            textViewSold = view.findViewById(R.id.btnListedVehicleSold);
+
             textViewLocation = view.findViewById(R.id.textViewLocation);
+            linear_layout_contact = view.findViewById(R.id.linear_layout_contact);
+            linear_layout_contact_for_sale = view.findViewById(R.id.linear_layout_contact_for_sale);
 
             alertDialogBuilder = new AlertDialog.Builder(mContext);
             progressDialog = new ProgressDialog(mContext);
         }
+
     }
 
     public ListedVehiclesAdapter(Context mContext, List<ListVehicle> ListedVehiclesList) {
@@ -71,15 +79,14 @@ public class ListedVehiclesAdapter extends RecyclerView.Adapter<ListedVehiclesAd
         this.ListedVehiclesList = ListedVehiclesList;
     }
 
-
     @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ListedVehiclesAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.listed_vehicles_card_layout, parent, false);
 
-        return new MyViewHolder(itemView);
+        return new ListedVehiclesAdapter.MyViewHolder(itemView);
 
     }
 
@@ -255,27 +262,26 @@ public class ListedVehiclesAdapter extends RecyclerView.Adapter<ListedVehiclesAd
                 holder.textViewComplete.setVisibility(View.VISIBLE);
                 holder.textViewComplete.setOnClickListener(view -> {
 
-                   //check if client has marked vehicle as delivered
-                alertDialogBuilder.setMessage("Please ask client to mark the vehicle as delivered to continue");
-                alertDialogBuilder.setCancelable(false);
-                alertDialogBuilder.setPositiveButton("Done", (dialogInterface, i) -> {
+                    alertDialogBuilder.setMessage("Error! You cannot edit a car that is already booked.");
+                    alertDialogBuilder.setCancelable(false);
+                    alertDialogBuilder.setPositiveButton("Ok", (dialogInterface, i) -> {
 
-                    Intent intent = ((Activity)mContext).getIntent();
-                    ((Activity)mContext).finish();
-                    view.getContext().startActivity(intent);
-
-                });
-                alertDialogBuilder.setNegativeButton("Cancel", (dialogInterface, i) -> {
-
-                });
-                alertDialogBuilder.show();
+                    });
+                    alertDialogBuilder.show();
 
 
                 });
+
                 holder.textViewDelete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(mContext, "Error! You can't delete a car that is booked!", Toast.LENGTH_LONG).show();
+
+                        alertDialogBuilder.setMessage("Error! You can't delete a car that is booked.");
+                        alertDialogBuilder.setCancelable(false);
+                        alertDialogBuilder.setPositiveButton("Ok", (dialogInterface, i) -> {
+
+                        });
+                        alertDialogBuilder.show();
                     }
                 });
                 break;
@@ -283,15 +289,14 @@ public class ListedVehiclesAdapter extends RecyclerView.Adapter<ListedVehiclesAd
             case "5":
                 holder.listedVehicleStatus.setText("Delivered");
                 holder.textViewComplete.setVisibility(View.VISIBLE);
-                holder.textViewComplete.setText("Upload Documents");
                 holder.textViewComplete.setOnClickListener(view -> {
 
-                    //upload images
-                    //go to upload client image activity
-                    Intent intent = new Intent(view.getContext(), ClientImageUploadActivity.class);
-                    intent.putExtra("vehicle_id", listVehicle.getId());
-                    view.getContext().startActivity(intent);
+                    alertDialogBuilder.setMessage("Error! You cannot edit a car that is already booked.");
+                    alertDialogBuilder.setCancelable(false);
+                    alertDialogBuilder.setPositiveButton("Ok", (dialogInterface, i) -> {
 
+                    });
+                    alertDialogBuilder.show();
 
 
                 });
@@ -299,7 +304,13 @@ public class ListedVehiclesAdapter extends RecyclerView.Adapter<ListedVehiclesAd
                 holder.textViewDelete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(mContext, "Error! You can't delete a car that is booked!", Toast.LENGTH_LONG).show();
+
+                        alertDialogBuilder.setMessage("Error! You can't delete a car that is booked.");
+                        alertDialogBuilder.setCancelable(false);
+                        alertDialogBuilder.setPositiveButton("Ok", (dialogInterface, i) -> {
+
+                        });
+                        alertDialogBuilder.show();
                     }
                 });
 
@@ -309,64 +320,18 @@ public class ListedVehiclesAdapter extends RecyclerView.Adapter<ListedVehiclesAd
             case "7":
                 holder.listedVehicleStatus.setText("Returned");
                 holder.textViewComplete.setVisibility(View.VISIBLE);
-                holder.textViewComplete.setText("Make Vehicle Available");
-                holder.textViewComplete.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
+                holder.textViewComplete.setOnClickListener(view -> {
 
-                        //update status of vehicle to 5
-                        progressDialog.setMessage("Loading...");
-                        progressDialog.setCancelable(false);
-                        progressDialog.show();
+                    alertDialogBuilder.setMessage("Error! You cannot edit a car that is already booked.");
+                    alertDialogBuilder.setCancelable(false);
+                    alertDialogBuilder.setPositiveButton("Ok", (dialogInterface, i) -> {
 
-                        //getting the current user
-                        user user = SharedPrefManager.getInstance(mContext).getUser();
-
-                        String user_email = user.getEmail();
-
-                        //fetch from database
-                        StringRequest stringRequest = new StringRequest(
-                                Request.Method.POST,
-                                updateVehicleStatusUrl,
-                                new Response.Listener<String>() {
-                                    @Override
-                                    public void onResponse(String response) {
-                                        progressDialog.dismiss();
-                                        Toast.makeText(mContext, "Update Successful", Toast.LENGTH_LONG).show();
-                                        Intent intent = new Intent(mContext, MainActivity.class);
-                                        ((Activity)mContext).finish();
-                                        view.getContext().startActivity(intent);
+                    });
+                    alertDialogBuilder.show();
 
 
-
-                                    }
-                                }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-
-                                Toast.makeText(mContext, error.getMessage(), Toast.LENGTH_SHORT).show();
-
-                            }
-                        }
-
-                        ){
-                            //send params needed to db
-                            @Override
-                            protected Map<String, String> getParams() throws AuthFailureError {
-                                Map<String, String> params = new HashMap<>();
-                                params.put("VehicleId", String.valueOf(listVehicle.getId()));
-                                params.put("user_email", user_email);
-                                params.put("status", "1");
-
-                                return params;
-
-                            }
-                        };
-
-                        Volley.newRequestQueue(mContext).add(stringRequest);
-
-                    }
                 });
+
                 //delete vehicle from db
                 holder.textViewDelete.setOnClickListener(view -> {
 
@@ -608,10 +573,14 @@ public class ListedVehiclesAdapter extends RecyclerView.Adapter<ListedVehiclesAd
 
                 holder.listedVehicleStatus.setText("For Sale");
 
+                //set layout for cars for sale
+                holder.linear_layout_contact_for_sale.setVisibility(View.VISIBLE);
+                holder.linear_layout_contact.setVisibility(View.GONE);
+
                 //if car listed is for sale
-                holder.textViewComplete.setText("Edit Vehicle");
+                holder.textViewCompleteSale.setText("Edit Vehicle");
                 //go to edit vehicle
-                holder.textViewComplete.setOnClickListener(view -> {
+                holder.textViewCompleteSale.setOnClickListener(view -> {
 
                     //go to edit activity
                     Intent intent = new Intent(view.getContext(), EditVehicleActivity.class);
@@ -658,7 +627,7 @@ public class ListedVehiclesAdapter extends RecyclerView.Adapter<ListedVehiclesAd
                 });
 
                 //delete vehicle from db
-                holder.textViewDelete.setOnClickListener(view -> {
+                holder.textViewDeleteSale.setOnClickListener(view -> {
 
                     alertDialogBuilder.setTitle("Warning!");
                     alertDialogBuilder.setMessage("You are about to delete " + listVehicle.getCarName() + " from the system!\n This process cannot be undone");
@@ -748,6 +717,82 @@ public class ListedVehiclesAdapter extends RecyclerView.Adapter<ListedVehiclesAd
 
                 });
 
+                //mark vehicle as sold from db
+                holder.textViewSold.setOnClickListener(view -> {
+
+                            //set status of vehicle as sold (20)
+                            progressDialog.setMessage("Loading...");
+                            progressDialog.setCancelable(false);
+                            progressDialog.show();
+
+                            StringRequest stringRequest = new StringRequest(
+                                    Request.Method.POST,
+                                    updateOnSaleVehicleStatusUrl,
+                                    response -> {
+                                        //fetch results from api
+                                        switch (response) {
+
+                                            case "Vehicle updated successfully":
+                                                alertDialogBuilder.setMessage("Vehicle Sold. Thank you for using Kenyan Rides :)");
+                                                alertDialogBuilder.setCancelable(false);
+                                                alertDialogBuilder.setPositiveButton("Continue Viewing", (dialogInterface1, i1) -> {
+
+                                                    //go to main activity
+                                                    Intent intent = new Intent(mContext, MainActivity.class);
+                                                    mContext.startActivity(intent);
+                                                    ((Activity) mContext).finish();
+
+                                                });
+                                                alertDialogBuilder.show();
+
+                                                break;
+
+                                            case "Error updating vehicle":
+                                                alertDialogBuilder.setTitle("Failed!");
+                                                alertDialogBuilder.setMessage("Vehicle not updated! Please check your internet connection and try again");
+                                                alertDialogBuilder.setCancelable(false);
+                                                alertDialogBuilder.setPositiveButton("Try again", (dialogInterface12, i12) -> {
+
+                                                });
+                                                alertDialogBuilder.show();
+
+                                                break;
+                                        }
+
+                                        progressDialog.dismiss();
+
+
+                                    }, error -> {
+
+                                progressDialog.dismiss();
+
+                                Toast.makeText(mContext, error.getMessage(), Toast.LENGTH_SHORT).show();
+
+                            }){
+                                //send params needed to db
+                                @Override
+                                protected Map<String, String> getParams() throws AuthFailureError {
+                                    Map<String, String> params = new HashMap<>();
+
+                                    params.put("VehicleId", String.valueOf(listVehicle.getId()));
+                                    params.put("status", "20");
+
+
+                                    return params;
+
+                                }
+                            };
+
+                            Volley.newRequestQueue(mContext).add(stringRequest);
+                });
+                break;
+
+            case "20":
+                holder.listedVehicleStatus.setText("Sold");
+
+                //remove layout for buttons
+                holder.linear_layout_contact_for_sale.setVisibility(View.GONE);
+                holder.linear_layout_contact.setVisibility(View.GONE);
 
                 break;
 
@@ -765,4 +810,5 @@ public class ListedVehiclesAdapter extends RecyclerView.Adapter<ListedVehiclesAd
     public int getItemCount() {
         return ListedVehiclesList.size();
     }
+
 }
