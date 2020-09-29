@@ -253,7 +253,6 @@ public class ListedVehiclesAdapter extends RecyclerView.Adapter<ListedVehiclesAd
 
                 });
 
-
                 break;
 
             case "3":
@@ -267,7 +266,6 @@ public class ListedVehiclesAdapter extends RecyclerView.Adapter<ListedVehiclesAd
 
                     });
                     alertDialogBuilder.show();
-
 
                 });
 
