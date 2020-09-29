@@ -257,7 +257,6 @@ public class ListedVehiclesAdapter extends RecyclerView.Adapter<ListedVehiclesAd
                 break;
 
             case "3":
-
                 holder.listedVehicleStatus.setText("Booked");
                 holder.textViewComplete.setVisibility(View.VISIBLE);
                 holder.textViewComplete.setOnClickListener(view -> {

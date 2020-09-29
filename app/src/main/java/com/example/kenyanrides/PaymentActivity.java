@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -16,7 +15,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,7 +46,6 @@ import static com.example.kenyanrides.Constants.CALLBACKURL;
 import static com.example.kenyanrides.Constants.PARTYB;
 import static com.example.kenyanrides.Constants.PASSKEY;
 import static com.example.kenyanrides.Constants.TRANSACTION_TYPE;
-
 
 public class PaymentActivity extends AppCompatActivity {
 
@@ -173,10 +170,12 @@ public class PaymentActivity extends AppCompatActivity {
                 if(TextUtils.isEmpty(mpesaNumber)){
                     editTextMpesaNumber.setError("Please enter your Mpesa number that you will pay with");
                     return;
-                }
+                } else{
 
-                //mpesa implementation
-                performSTKPush(mpesaNumber,"1");
+                    //mpesa implementation
+                    performSTKPush(mpesaNumber,"1");
+
+                }
 
 
             }
@@ -239,8 +238,8 @@ public class PaymentActivity extends AppCompatActivity {
                 PARTYB,
                 Utils.sanitizePhoneNumber(phone_number),
                 CALLBACKURL,
-                "MPESA Android Test", //Account reference
-                "Testing"  //Transaction description
+                "Progressive Fibre ltd", //Account reference
+                "Progressive Fibre ltd"  //Transaction description
         );
 
         mApiClient.setGetAccessToken(false);
@@ -265,17 +264,17 @@ public class PaymentActivity extends AppCompatActivity {
                                 progressDialog.setCancelable(false);
                                 progressDialog.show();
 
-                                //fetch respose from api
+                                //fetch response from api
                                 StringRequest stringRequest = new StringRequest(
                                         Request.Method.POST,
                                         confirm_payment_url,
                                         response -> {
                                             //check response returned
-
                                             switch (response){
 
                                                 case "payment verified":
                                                     //go to success page
+                                                    progressDialog.dismiss();
                                                     Intent intent = new Intent(PaymentActivity.this, SuccessActivity.class);
                                                     finish();
                                                     intent.putExtra("owner_phone_number", owner_phone_number);
@@ -284,6 +283,7 @@ public class PaymentActivity extends AppCompatActivity {
                                                     break;
 
                                                 case "payment unverified":
+                                                    progressDialog.dismiss();
                                                     alertDialog.setTitle("Failed!");
                                                     alertDialog.setMessage("We could not verify you payment. Please try again\nYou need to pay a 10% service fee ");
                                                     alertDialog.setCancelable(false);
@@ -294,10 +294,20 @@ public class PaymentActivity extends AppCompatActivity {
 
                                                     break;
 
+                                                default:
+                                                    Intent intent2 = new Intent(PaymentActivity.this, SuccessActivity.class);
+                                                    finish();
+                                                    intent2.putExtra("owner_phone_number", owner_phone_number);
+                                                    startActivity(intent2);
+                                                    break;
+
                                             }
 
 
-                                        }, error -> Toast.makeText(PaymentActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show()
+                                        }, error -> {
+                                            progressDialog.dismiss();
+                                            Toast.makeText(PaymentActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
 
                                 ){
                                     //send params needed to db
@@ -319,6 +329,7 @@ public class PaymentActivity extends AppCompatActivity {
                                         params.put("vehicle_owner_email", vehicle_owner_email);
                                         params.put("vehicle_title", vehicle_title);
                                         params.put("mpesa_payment_number", Utils.sanitizePhoneNumber(mpesaNumber));
+                                        params.put("service_fee", String.valueOf(priceToPayNow));
 
                                         return params;
 
@@ -331,7 +342,7 @@ public class PaymentActivity extends AppCompatActivity {
                             }
                         });
 
-                        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        alertDialog.setNegativeButton("Change Payment Method", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 return;
@@ -343,7 +354,7 @@ public class PaymentActivity extends AppCompatActivity {
                         //if stk push was not successful
                         Toast.makeText(PaymentActivity.this, "Response %s" + response.errorBody().string(), Toast.LENGTH_SHORT).show();
                         alertDialog.setTitle("Error");
-                        alertDialog.setMessage("There seems to be an issue getting your payment. Please ensure your phone number is correct");
+                        alertDialog.setMessage("There seems to be an issue getting your payment. ");
 
                     }
                     alertDialog.show();
@@ -364,6 +375,7 @@ public class PaymentActivity extends AppCompatActivity {
     private void submitPayment() {
 
         DropInRequest dropInRequest = new DropInRequest().clientToken(token);
+        dropInRequest.disablePayPal();
         startActivityForResult(dropInRequest.getIntent(this), REQUEST_CODE);
 
     }
