@@ -173,7 +173,7 @@ public class PaymentActivity extends AppCompatActivity {
                 } else{
 
                     //mpesa implementation
-                    performSTKPush(mpesaNumber,"1");
+                    performSTKPush(mpesaNumber, String.valueOf(priceToPayNow));
 
                 }
 
