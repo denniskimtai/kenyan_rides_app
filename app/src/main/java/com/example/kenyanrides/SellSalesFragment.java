@@ -917,7 +917,6 @@ public class SellSalesFragment extends Fragment {
                                         getActivity().finish();
                                         startActivity(intent);
 
-
                                     }
                                 });
                                 alertDialogBuilder.show();

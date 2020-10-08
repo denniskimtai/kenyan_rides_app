@@ -388,11 +388,18 @@ public class SellFragment extends Fragment  {
             @Override
             public void onClick(View view) {
 
-                postVehicle();
+//                postVehicle();
+                toast();
             }
         });
 
         return myView;
+
+    }
+
+    public void toast(){
+
+        Toast.makeText(getActivity(), vehicleBrand, Toast.LENGTH_SHORT).show();
 
     }
 
@@ -971,6 +978,7 @@ private class BackTask extends AsyncTask<Void, Void, String> {
         dialog.dismiss();
 
         brandsList.add(0, "SELECT");
+        brandsId.add(0, 0);
 
         //Creating the ArrayAdapter instance having the bank name list
         ArrayAdapter brandAdapter = new ArrayAdapter(getActivity(),R.layout.spinner_item,brandsList);
@@ -986,7 +994,6 @@ private class BackTask extends AsyncTask<Void, Void, String> {
                 if (item != null) {
 
                     vehicleBrand = brandsId.get(i).toString();
-
 
                 }
 
