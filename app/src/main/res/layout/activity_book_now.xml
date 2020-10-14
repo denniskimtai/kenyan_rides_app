@@ -139,6 +139,8 @@
             android:textColorHint="@color/dark_grey">
 
             <EditText
+                android:background="@android:color/transparent"
+                android:padding="10dp"
                 android:id="@+id/edit_text_mpesa_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

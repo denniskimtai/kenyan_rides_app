@@ -1,14 +1,18 @@
 package com.example.kenyanrides;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -25,11 +29,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.braintreepayments.api.dropin.DropInActivity;
-import com.braintreepayments.api.dropin.DropInRequest;
-import com.braintreepayments.api.dropin.DropInResult;
-import com.braintreepayments.api.models.PaymentMethodNonce;
 import com.google.android.material.textfield.TextInputLayout;
+import com.kevinomyonga.pesapaldroid.PesapalDroidFragment;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -53,9 +54,9 @@ public class PaymentActivity extends AppCompatActivity {
     final String URL_GET_TOKEN = "https://kenyanrides.com/android/braintree/main.php";
     final String URL_CHECKOUT = "https://kenyanrides.com/android/braintree/checkout.php";
 
-    private Button payWithMpesaButton;
+    private Button payWithMpesaButton, payWithCardButton;
 
-    private LinearLayout layoutMpesa, layoutCreditCard;
+    private LinearLayout layoutMpesa, layoutCreditCard, layoutPesaPalPaymentForm;
 
     private TextInputLayout mpesaNumberInput;
 
@@ -63,7 +64,7 @@ public class PaymentActivity extends AppCompatActivity {
 
     private AlertDialog.Builder alertDialog;
 
-    private String token;
+    private String paymentFirstName, paymentLastName, paymentPhoneNumber, paymentEmailAddress;
 
     private Map<String, String> paramsHash;
 
@@ -72,7 +73,7 @@ public class PaymentActivity extends AppCompatActivity {
 
     private int priceToPayNow, priceToPayLater;
 
-    private EditText editTextMpesaNumber;
+    private EditText editTextMpesaNumber, editTextFirstName, editTextLastName, editTextEmailAddress, editTextPhoneNumber;
 
     private DarajaApiClient mApiClient;
 
@@ -106,7 +107,11 @@ public class PaymentActivity extends AppCompatActivity {
         returnLocation = getIntent().getStringExtra("returnLocation");
 
         //intialization
-        payWithMpesaButton = findViewById(R.id.payWithCardButton);
+        payWithMpesaButton = findViewById(R.id.payWithMpesaButton);
+
+        payWithCardButton = findViewById(R.id.payWithCardButton);
+
+        layoutPesaPalPaymentForm = findViewById(R.id.pesapal_payment_form);
 
         alertDialogBuilder = new AlertDialog.Builder(this);
 
@@ -123,6 +128,14 @@ public class PaymentActivity extends AppCompatActivity {
         textViewServiceFee = findViewById(R.id.text_view_service_fee);
 
         textViewRemainingAmount = findViewById(R.id.text_view_remaining_amount);
+
+        editTextFirstName = findViewById(R.id.edit_text_payment_first_name);
+
+        editTextLastName = findViewById(R.id.edit_text_payment_last_name);
+
+        editTextPhoneNumber = findViewById(R.id.edit_text_payment_phone_number);
+
+        editTextEmailAddress = findViewById(R.id.edit_text_payment_email_address);
 
 
         //convert price
@@ -143,6 +156,10 @@ public class PaymentActivity extends AppCompatActivity {
             public void onClick(View view) {
                 layoutMpesa.setBackgroundColor(Color.parseColor("#A6D1F1B5"));
                 layoutCreditCard.setBackgroundColor(getResources().getColor(android.R.color.white));
+                layoutPesaPalPaymentForm.setVisibility(View.GONE);
+                mpesaNumberInput.setVisibility(View.VISIBLE);
+                payWithMpesaButton.setVisibility(View.VISIBLE);
+                payWithCardButton.setVisibility(View.GONE);
             }
         });
 
@@ -152,13 +169,20 @@ public class PaymentActivity extends AppCompatActivity {
 
                 layoutCreditCard.setBackgroundColor(Color.parseColor("#C2DEEF"));
                 layoutMpesa.setBackgroundColor(getResources().getColor(android.R.color.white));
-                submitPayment();
+
+                //show layout to get pesapal required details and disable mpesa number option
+                mpesaNumberInput.setVisibility(View.GONE);
+                layoutPesaPalPaymentForm.setVisibility(View.VISIBLE);
+                payWithMpesaButton.setVisibility(View.GONE);
+                payWithCardButton.setVisibility(View.VISIBLE);
 
             }
         });
 
         //set text of button
         payWithMpesaButton.setText("Pay Ksh " + priceToPayNow + " with M-Pesa");
+
+        payWithCardButton.setText("Pay Ksh " + priceToPayNow + " with card");
 
         payWithMpesaButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -181,6 +205,70 @@ public class PaymentActivity extends AppCompatActivity {
             }
         });
 
+        //pesapal implementation
+        payWithCardButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //check if all fields are filled
+                paymentFirstName = editTextFirstName.getText().toString();
+                if(TextUtils.isEmpty(paymentFirstName)){
+                    editTextFirstName.setError("Please enter your First Name to proceed");
+                    return;
+                }
+
+                paymentLastName = editTextLastName.getText().toString();
+                if(TextUtils.isEmpty(paymentLastName)){
+                    editTextLastName.setError("Please enter your Last Name to proceed");
+                    return;
+                }
+
+                paymentEmailAddress = editTextEmailAddress.getText().toString();
+                if(TextUtils.isEmpty(paymentEmailAddress)){
+                    editTextEmailAddress.setError("Please enter your Email Address to proceed");
+                    return;
+                }
+
+                paymentPhoneNumber = editTextPhoneNumber.getText().toString();
+                if(TextUtils.isEmpty(paymentPhoneNumber)){
+                    editTextPhoneNumber.setError("Please enter your Phone Number to proceed");
+                    return;
+                }
+
+                if (!isNetworkAvailable()){
+                    //if the user is not connected to the internet
+                    alertDialogBuilder.setTitle("Network Failure");
+                    alertDialogBuilder.setMessage("Please check your internet connection!");
+                    alertDialogBuilder.setPositiveButton("Try again", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    });
+                    alertDialogBuilder.setCancelable(false);
+                    alertDialogBuilder.show();
+                    return;
+
+                }else {
+
+                    //go to pesapal portal to initialize payment and send customer information
+                    Intent intent = new Intent(PaymentActivity.this, PesaPalPayment.class);
+
+                    intent.putExtra("first_name", paymentFirstName);
+                    intent.putExtra("last_name", paymentLastName);
+                    intent.putExtra("email_address", paymentEmailAddress);
+                    intent.putExtra("phone_number", paymentPhoneNumber);
+                    intent.putExtra("amount", String.valueOf(priceToPayNow));
+                    intent.putExtra("vehicle_title", vehicle_title);
+
+                    startActivity(intent);
+
+                }
+
+            }
+        });
+
+
         progressDialog = new ProgressDialog(this);
 
         alertDialog = new AlertDialog.Builder(this);
@@ -191,12 +279,6 @@ public class PaymentActivity extends AppCompatActivity {
         mApiClient.setIsDebug(true); //Set True to enable logging, false to disable.
 
         getAccessToken();
-
-        //card payment token
-        getToken();
-
-
-
 
     }
 
@@ -219,7 +301,6 @@ public class PaymentActivity extends AppCompatActivity {
             }
         });
     }
-
 
     public void performSTKPush(String phone_number,String amount) {
         progressDialog.setMessage("Processing your request");
@@ -372,182 +453,13 @@ public class PaymentActivity extends AppCompatActivity {
         });
     }
 
-    private void submitPayment() {
-
-        DropInRequest dropInRequest = new DropInRequest().clientToken(token);
-        dropInRequest.disablePayPal();
-        startActivityForResult(dropInRequest.getIntent(this), REQUEST_CODE);
-
+    public boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) this
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        @SuppressLint("MissingPermission") NetworkInfo activeNetworkInfo = connectivityManager
+                .getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE && data != null) {
-
-            if (resultCode == RESULT_OK) {
-
-                progressDialog.setMessage("Processing payment...");
-                progressDialog.setCancelable(false);
-                progressDialog.show();
-
-                DropInResult result = data.getParcelableExtra(DropInResult.EXTRA_DROP_IN_RESULT);
-                PaymentMethodNonce nonce = result.getPaymentMethodNonce();
-                String strNonce = nonce.getNonce();
-
-                paramsHash = new HashMap<>();
-                paramsHash.put("amount", String.valueOf(1));
-                paramsHash.put("nonce", strNonce);
-
-                paramsHash.put("pickupDate", pickupDate);
-                paramsHash.put("pickupTime", pickupTime);
-                paramsHash.put("vehicleTravelDestination", vehicleTravelDestination);
-                paramsHash.put("returnDate", returnDate);
-                paramsHash.put("returnTime", returnTime);
-                paramsHash.put("phoneNumber", owner_phone_number);
-                paramsHash.put("pickupLocation", pickupLocation);
-                paramsHash.put("returnLocation", returnLocation);
-                paramsHash.put("vehicle_id", vehicle_id);
-                paramsHash.put("userEmail", user_email);
-                paramsHash.put("price_per_day", String.valueOf(priceToPayLater));
-                paramsHash.put("vehicle_owner_email", vehicle_owner_email);
-                paramsHash.put("vehicle_title", vehicle_title);
-
-                sendPayments();
-
-
-            } else if (resultCode == RESULT_CANCELED) {
-                Toast.makeText(this, "Cancelled", Toast.LENGTH_SHORT).show();
-            } else {
-
-                Exception exception = (Exception) data.getSerializableExtra(DropInActivity.EXTRA_ERROR);
-                Toast.makeText(this, exception.toString(), Toast.LENGTH_SHORT).show();
-
-            }
-        }
-
-    }
-
-
-    //make payment of car
-    private void sendPayments() {
-
-        //volley
-        RequestQueue queue = Volley.newRequestQueue(PaymentActivity.this);
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST,
-                URL_CHECKOUT,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-
-                        //check if transaction was successful
-                        if (response.contains("Successful")){
-
-
-                            progressDialog.dismiss();
-                            //transaction is successful
-                            //go to success page
-                            Intent intent = new Intent(PaymentActivity.this, SuccessActivity.class);
-                            finish();
-                            intent.putExtra("owner_phone_number", owner_phone_number);
-                            startActivity(intent);
-
-
-                        }else{
-
-                            //Transaction failed
-                            alertDialog.setMessage("Transaction Failed! Please try again\n Response: " + response);
-                            alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-
-                                }
-                            });
-                            alertDialog.show();
-
-                        }
-
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-                Toast.makeText(PaymentActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
-
-            }
-        }) {
-
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-
-                if(paramsHash == null)
-                    return null;
-
-
-                Map<String, String> params = new HashMap<>();
-
-                for (String key:paramsHash.keySet()){
-
-                    params.put(key, paramsHash.get(key));
-
-                }
-
-                return params;
-            }
-
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-
-                Map<String, String> params = new HashMap<>();
-                params.put("Content-type", "application/x-www-form-urlencoded");
-
-
-                return params;
-
-            }
-        };
-
-        queue.add(stringRequest);
-
-        progressDialog.dismiss();
-
-    }
-
-    //get token string from api
-    private void getToken(){
-
-        progressDialog.setCancelable(false);
-        progressDialog.setMessage("Please wait...");
-        progressDialog.show();
-
-        //Login and fetch result from database
-        StringRequest stringRequest = new StringRequest(
-                Request.Method.GET,
-                URL_GET_TOKEN,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        progressDialog.dismiss();
-                        token = response;
-
-                    }
-                } , new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
-
-                Toast.makeText(PaymentActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
-
-            }
-        });
-
-        Volley.newRequestQueue(this).add(stringRequest);
-
-    }
-
 
 
 }

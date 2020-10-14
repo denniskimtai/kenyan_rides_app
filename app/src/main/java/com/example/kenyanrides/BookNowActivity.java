@@ -433,6 +433,7 @@ public class BookNowActivity extends AppCompatActivity implements View.OnClickLi
         intent.putExtra("owner_phone_number", owner_phone_number);
 
         startActivity(intent);
+        finish();
 
 
     }

@@ -6,6 +6,8 @@
     <string name="title_home">Home</string>
     <string name="title_sell">sell</string>
     <string name="api_key">AIzaSyBO5Else2rW4UNyXiCMp3y20JV7BseTMys</string>
+    <string name="consumer_key">SBli0KAJfdVvPfNhtOIHTPLUhpq72mkX</string>
+    <string name="consumer_secret">HKYQc/gRyTBZSIGjVXbhPxw4Txs=</string>
 
 
 </resources>
