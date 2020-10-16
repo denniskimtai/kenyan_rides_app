@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -14,7 +15,11 @@ import java.net.URLEncoder;
 
 public class PesaPalPayment extends AppCompatActivity {
 
-    private String customerFirstName, customerLastName, customerEmailAddress, customerPhoneNumber, priceToPayNow, vehicle_title;
+    private String customerFirstName, customerLastName, customerEmailAddress, priceToPayNow;
+
+    private String vehicle_id, user_email, price_per_day, vehicle_owner_email, vehicle_title, pickupDate, pickupTime, vehicleTravelDestination,
+            returnDate, returnTime, customerPhoneNumber, customerContactPhoneNumber, pickupLocation, returnLocation, mpesaNumber, owner_phone_number;
+
     private ProgressDialog progressDialog;
 
     private String PESAPAL_PAYMENT_PAGE_URL = "https://kenyanrides.com/android/pesapal_iframe.php";
@@ -37,6 +42,22 @@ public class PesaPalPayment extends AppCompatActivity {
         customerPhoneNumber = getIntent().getStringExtra("phone_number");
         priceToPayNow = getIntent().getStringExtra("amount");
         vehicle_title = getIntent().getStringExtra("vehicle_title");
+
+        //get vehicle detail from intent
+        vehicle_id = getIntent().getStringExtra("vehicle_id");
+        user_email = getIntent().getStringExtra("user_email");
+        price_per_day = getIntent().getStringExtra("price_per_day");
+        owner_phone_number = getIntent().getStringExtra("owner_phone_number");
+        vehicle_owner_email = getIntent().getStringExtra("vehicle_owner_email");
+        pickupDate = getIntent().getStringExtra("pickup_date");
+        pickupTime = getIntent().getStringExtra("pickup_time");
+        vehicleTravelDestination = getIntent().getStringExtra("vehicle_travel_destination");
+        returnDate = getIntent().getStringExtra("return_date");
+        returnTime = getIntent().getStringExtra("return_time");
+        customerContactPhoneNumber = getIntent().getStringExtra("customer_phone_number");
+        pickupLocation = getIntent().getStringExtra("pickup_location");
+        returnLocation = getIntent().getStringExtra("return_location");
+
 
         //initialization
         progressDialog = new ProgressDialog(this);
@@ -97,8 +118,29 @@ public class PesaPalPayment extends AppCompatActivity {
                             transactionId = transactionId.substring(transactionId.indexOf("=") + 1);
                             transactionId = transactionId.substring(0, transactionId.indexOf("&"));
 
-                            alertDialog.setMessage("Transaction id is: " + transactionId + "\n" + " url is: " + view.getUrl());
-                            alertDialog.show();
+                            Intent intent = new Intent(PesaPalPayment.this, PesapalSuccessActivity.class);
+
+                            intent.putExtra("transaction_id", transactionId);
+                            //car booked details
+                            intent.putExtra("vehicle_id", vehicle_id);
+                            intent.putExtra("user_email", user_email);
+                            intent.putExtra("price_per_day", price_per_day);
+                            intent.putExtra("owner_phone_number", owner_phone_number);
+                            intent.putExtra("vehicle_owner_email", vehicle_owner_email);
+                            intent.putExtra("pickup_date", pickupDate);
+                            intent.putExtra("pickup_time", pickupTime);
+                            intent.putExtra("vehicle_travel_destination", vehicleTravelDestination);
+                            intent.putExtra("return_date", returnDate);
+                            intent.putExtra("return_time", returnTime);
+                            intent.putExtra("customer_phone_number", customerPhoneNumber);
+                            intent.putExtra("pickup_location", pickupLocation);
+                            intent.putExtra("return_location", returnLocation);
+                            intent.putExtra("amount", String.valueOf(priceToPayNow));
+                            intent.putExtra("vehicle_title", vehicle_title);
+
+
+                            finish();
+                            startActivity(intent);
 
                         }
 

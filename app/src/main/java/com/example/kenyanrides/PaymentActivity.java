@@ -261,6 +261,23 @@ public class PaymentActivity extends AppCompatActivity {
                     intent.putExtra("amount", String.valueOf(priceToPayNow));
                     intent.putExtra("vehicle_title", vehicle_title);
 
+                    //car booked details
+                    intent.putExtra("vehicle_id", vehicle_id);
+                    intent.putExtra("user_email", user_email);
+                    intent.putExtra("price_per_day", price_per_day);
+                    intent.putExtra("owner_phone_number", owner_phone_number);
+                    intent.putExtra("vehicle_owner_email", vehicle_owner_email);
+                    intent.putExtra("pickup_date", pickupDate);
+                    intent.putExtra("pickup_time", pickupTime);
+                    intent.putExtra("vehicle_travel_destination", vehicleTravelDestination);
+                    intent.putExtra("return_date", returnDate);
+                    intent.putExtra("return_time", returnTime);
+                    intent.putExtra("customer_phone_number", customerPhoneNumber);
+                    intent.putExtra("pickup_location", pickupLocation);
+                    intent.putExtra("return_location", returnLocation);
+                    intent.putExtra("price_to_pay_later", String.valueOf(priceToPayLater));
+
+
                     startActivity(intent);
 
                 }

@@ -27,7 +27,8 @@
         android:theme="@style/Theme.Design.Light.NoActionBar"
         android:usesCleartextTraffic="true"
         tools:replace="android:icon">
-        <activity android:name=".PesaPalPayment"></activity>
+        <activity android:name=".PesapalSuccessActivity"></activity>
+        <activity android:name=".PesaPalPayment" />
         <activity android:name=".SuccessActivity" />
         <activity android:name=".PaymentActivity" />
         <activity android:name=".FullscreenViewpagerActivity" />
@@ -48,8 +49,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- braintree browser switch activity -->
-
+        </activity>
     </application>
 
 </manifest>
