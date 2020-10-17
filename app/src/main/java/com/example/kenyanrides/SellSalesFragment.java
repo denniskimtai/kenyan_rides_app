@@ -1039,6 +1039,7 @@ public class SellSalesFragment extends Fragment {
             dialog.dismiss();
 
             brandsList.add(0, "SELECT");
+            brandsId.add(0, 0);
 
             //Creating the ArrayAdapter instance having the bank name list
             ArrayAdapter brandAdapter = new ArrayAdapter(getActivity(),R.layout.spinner_item,brandsList);

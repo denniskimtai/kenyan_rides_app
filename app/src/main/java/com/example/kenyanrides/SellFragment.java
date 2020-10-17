@@ -388,21 +388,13 @@ public class SellFragment extends Fragment  {
             @Override
             public void onClick(View view) {
 
-//                postVehicle();
-                toast();
+                postVehicle();
             }
         });
 
         return myView;
 
     }
-
-    public void toast(){
-
-        Toast.makeText(getActivity(), vehicleBrand, Toast.LENGTH_SHORT).show();
-
-    }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
