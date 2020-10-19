@@ -89,11 +89,12 @@ dependencies {
     //places autocomplete
     implementation 'com.google.android.libraries.places:places:2.1.0'
 
-    //braintree payment gateway
-//    implementation 'com.braintreepayments.api:drop-in:3.7.1'
 
     //pesapal implementation
     compile 'com.kevinomyonga.pesapaldroid:library:1.0.0'
+
+    //picasso
+    implementation 'com.squareup.picasso:picasso:2.71828'
 
 
 }

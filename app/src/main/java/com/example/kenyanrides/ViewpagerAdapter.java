@@ -2,12 +2,15 @@ package com.example.kenyanrides;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -15,6 +18,8 @@ import androidx.annotation.Nullable;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
 
@@ -52,8 +57,45 @@ public class ViewpagerAdapter extends PagerAdapter {
         final ImageView imageView = (ImageView) imageLayout
                 .findViewById(R.id.image);
 
+        ProgressBar progressBar = imageLayout.findViewById(R.id.progress_bar);
 
-        Glide.with(context).load(images.get(position)).into(imageView);
+        progressBar.setVisibility(View.VISIBLE);
+
+
+        //Glide.with(context).load(images.get(position)).into(imageView);
+        Picasso.get().load(images.get(position)).into(new Target() {
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+
+                //check if bitmap is potrait
+                if(bitmap.getHeight()>bitmap.getWidth()){
+
+                    progressBar.setVisibility(View.INVISIBLE);
+                    //load to imageview and set scale type to center crop
+                    imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                    imageView.setImageBitmap(bitmap);
+
+                }else {
+
+                    progressBar.setVisibility(View.INVISIBLE);
+                    //load to imageview and set scale type to fitxy
+                    imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                    imageView.setImageBitmap(bitmap);
+
+                }
+
+            }
+
+            @Override
+            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+            }
+        });
 
         container.addView(imageLayout, 0);
 

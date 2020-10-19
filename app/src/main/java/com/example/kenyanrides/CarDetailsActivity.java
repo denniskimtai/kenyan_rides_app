@@ -230,7 +230,7 @@ public class CarDetailsActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                videoView.requestFocus();
+                //videoView.requestFocus();
 
                 // we also set an setOnPreparedListener in order to know when the video
                 // file is ready for playback
@@ -261,7 +261,6 @@ public class CarDetailsActivity extends AppCompatActivity {
             }
 
             if (!car_video.isEmpty()){
-
 
                 String video_url = "https://kenyanrides.com/serviceprovider/img/video/" + car_video;
                 String videoUrlEditted = video_url.replace(" ", "%20");
@@ -533,10 +532,7 @@ public class CarDetailsActivity extends AppCompatActivity {
 
         mPager = (ViewPager) findViewById(R.id.pager);
 
-
         mPager.setAdapter(new ViewpagerAdapter(ImagesArray,CarDetailsActivity.this));
-
-
 
         final float density = getResources().getDisplayMetrics().density;
 

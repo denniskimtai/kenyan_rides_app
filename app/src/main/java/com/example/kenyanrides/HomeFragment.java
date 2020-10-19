@@ -264,6 +264,7 @@ public class HomeFragment extends Fragment {
                 alertDialogBuilder.setPositiveButton("Try again", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+
                         prepareCars();
                     }
                 });
