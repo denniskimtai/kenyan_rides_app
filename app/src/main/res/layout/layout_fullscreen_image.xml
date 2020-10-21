@@ -6,10 +6,14 @@
     <ImageView
         android:id="@+id/imgDisplay"
         android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_centerInParent="true"/>
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:scaleType="fitCenter"
-        android:layout_centerInParent="true"
-        android:src="@drawable/mazda"/>
+        android:layout_centerInParent="true"/>
 
     <ImageView
         android:id="@+id/btnClose"

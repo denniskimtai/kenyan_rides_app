@@ -33,6 +33,7 @@ public class FullscreenViewpagerActivity extends AppCompatActivity {
         String image3 = getIntent().getStringExtra("Image3");
         String image4 = getIntent().getStringExtra("Image4");
         String image5 = getIntent().getStringExtra("Image5");
+
         currentPage = getIntent().getIntExtra("clicked_position", 0);
 
         IMAGES = new String[]{image1, image2, image3, image4, image5};
