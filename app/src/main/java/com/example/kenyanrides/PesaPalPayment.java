@@ -6,6 +6,8 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.DisplayMetrics;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -83,8 +85,9 @@ public class PesaPalPayment extends AppCompatActivity {
         setContentView(webview);
 
         webview.getSettings().setJavaScriptEnabled(true);
-        webview.getSettings().setLoadWithOverviewMode(true);
-        webview.getSettings().setUseWideViewPort(false);
+        webview.getSettings().setLoadWithOverviewMode(false);
+        webview.getSettings().setUseWideViewPort(true);
+
 
         webview.getSettings().setSupportZoom(true);
         webview.getSettings().setBuiltInZoomControls(true);

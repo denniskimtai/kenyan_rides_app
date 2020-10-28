@@ -249,7 +249,7 @@ public class SalesHomeFragment extends Fragment {
             public void onErrorResponse(VolleyError error) {
                 progressDialog.dismiss();
                 alertDialogBuilder.setTitle("Error occurred");
-                alertDialogBuilder.setMessage("Please ensure you have stable internet connection!\n error: " + error.getMessage());
+                alertDialogBuilder.setMessage("Please ensure you have stable internet connection!");
                 alertDialogBuilder.setCancelable(false);
                 alertDialogBuilder.setPositiveButton("Try again", new DialogInterface.OnClickListener() {
                     @Override
