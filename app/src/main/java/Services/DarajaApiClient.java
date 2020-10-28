@@ -3,7 +3,6 @@ package Services;
 
 import Interceptor.AccessTokenInterceptor;
 import Interceptor.AuthInterceptor;
-import Services.STKPushService;
 
 import java.util.concurrent.TimeUnit;
 
@@ -12,10 +11,10 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static com.example.kenyanrides.Constants.BASE_URL;
-import static com.example.kenyanrides.Constants.CONNECT_TIMEOUT;
-import static com.example.kenyanrides.Constants.READ_TIMEOUT;
-import static com.example.kenyanrides.Constants.WRITE_TIMEOUT;
+import static com.gcodedevelopers.kenyanrides.Constants.BASE_URL;
+import static com.gcodedevelopers.kenyanrides.Constants.CONNECT_TIMEOUT;
+import static com.gcodedevelopers.kenyanrides.Constants.READ_TIMEOUT;
+import static com.gcodedevelopers.kenyanrides.Constants.WRITE_TIMEOUT;
 
 
 public class DarajaApiClient {

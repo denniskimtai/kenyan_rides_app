@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.example.kenyanrides.HomeFragment"
+        android:name="com.gcodedevelopers.kenyanrides.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
@@ -15,13 +15,13 @@
 
     <fragment
         android:id="@+id/navigation_sell"
-        android:name="com.example.kenyanrides.SellFragment"
+        android:name="com.gcodedevelopers.kenyanrides.SellFragment"
         android:label="@string/title_sell"
         tools:layout="@layout/fragment_sell" />
 
     <fragment
         android:id="@+id/navigation_bookings"
-        android:name="com.example.kenyanrides.AccountFragment"
+        android:name="com.gcodedevelopers.kenyanrides.AccountFragment"
         android:label="@string/title_sell"
         tools:layout="@layout/fragment_account" />
 </navigation>
