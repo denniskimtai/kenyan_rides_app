@@ -157,14 +157,10 @@ public class CarDetailsActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
 
-                    //request permission
-                    requestSmsPermission();
-
                     //open sms
                     String number = owner_phone_number;  // The number on which you want to send SMS
 
-                    Uri uri = Uri.parse("smsto:" + number);
-                    Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("sms:" + number));
                     startActivity(intent);
 
 
@@ -174,22 +170,13 @@ public class CarDetailsActivity extends AppCompatActivity {
             call.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    //open dial pad
 
-                    //check if permission is granted
-                    int permissionCheck = ContextCompat.checkSelfPermission(CarDetailsActivity.this, Manifest.permission.CALL_PHONE);
-
-                        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-                            ActivityCompat.requestPermissions(
-                                    CarDetailsActivity.this,
-                                    new String[]{Manifest.permission.CALL_PHONE},
-                                    101);
-                        } else {
-
-                        //open dial pad
-                        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + owner_phone_number));
+                    Intent intent = new Intent(Intent.ACTION_DIAL);
+                    intent.setData(Uri.parse("tel:" + owner_phone_number));
+                    if (intent.resolveActivity(getPackageManager()) != null) {
                         startActivity(intent);
-
-                        }
+                    }
 
 
                 }
@@ -522,8 +509,6 @@ public class CarDetailsActivity extends AppCompatActivity {
 //
     private void init(){
 
-
-
         for(int i=0;i<IMAGES.length;i++)
             ImagesArray.add(IMAGES[i]);
 
@@ -558,41 +543,6 @@ public class CarDetailsActivity extends AppCompatActivity {
 
     }
 
-    private void requestSmsPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_DENIED)
-            return;
-
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.SEND_SMS)) {
-            //If the user has denied the permission previously your code will come to this block
-            //Here you can explain why you need this permission
-            //Explain here why you need this permission
-        }
-        //And finally ask for the permission
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS}, 102);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-
-        if(requestCode == 101){
-            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                Toast.makeText(this, "Call permission Granted", Toast.LENGTH_SHORT).show();
-
-            }else {
-                Toast.makeText(this, "Call permission not Granted", Toast.LENGTH_SHORT).show();
-            }
-        }
-
-        if(requestCode == 102){
-            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                Toast.makeText(this, "Sms permission Granted", Toast.LENGTH_SHORT).show();
-
-            }else {
-                Toast.makeText(this, "Sms permission not Granted", Toast.LENGTH_SHORT).show();
-            }
-        }
-
-    }
 
 
 }

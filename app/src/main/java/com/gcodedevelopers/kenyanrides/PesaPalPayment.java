@@ -98,7 +98,7 @@ public class PesaPalPayment extends AppCompatActivity {
                 + "&last_name=" + URLEncoder.encode(customerLastName, "UTF-8")
                 + "&email_address=" + URLEncoder.encode(customerEmailAddress, "UTF-8")
                 + "&phone_number=" + URLEncoder.encode(customerPhoneNumber, "UTF-8")
-                + "&amount=" + URLEncoder.encode("1", "UTF-8");
+                + "&amount=" + URLEncoder.encode(priceToPayNow, "UTF-8");
 
         webview.postUrl(PESAPAL_PAYMENT_PAGE_URL,postData.getBytes());
 

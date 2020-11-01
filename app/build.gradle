@@ -13,9 +13,12 @@ android {
         applicationId "com.gcodedevelopers.kenyanrides"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 1
+        versionCode 7
         versionName "1.0"
         multiDexEnabled true
+        ndk {
+            abiFilters  "armeabi-v7a", "arm64-v8a"
+        }
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -88,10 +91,6 @@ dependencies {
 
     //places autocomplete
     implementation 'com.google.android.libraries.places:places:2.1.0'
-
-
-    //pesapal implementation
-    compile 'com.kevinomyonga.pesapaldroid:library:1.0.0'
 
     //picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
