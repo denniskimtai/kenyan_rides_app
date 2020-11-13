@@ -27,6 +27,8 @@
 
                 <androidx.viewpager.widget.ViewPager
                     android:id="@+id/pager"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
                     android:layout_width="match_parent"
                     android:layout_height="270dp">
 
@@ -57,6 +59,7 @@
                             android:typeface="serif" />
 
                         <ImageView
+                            android:id="@+id/imgShareButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
@@ -358,6 +361,7 @@
                         android:weightSum="2">
 
                         <LinearLayout
+                            android:id="@+id/call"
                             android:background="@drawable/rectangle"
                             android:padding="10dp"
                             android:layout_width="0dp"
@@ -375,7 +379,6 @@
                                 android:tint="@color/black" />
 
                             <TextView
-                                android:id="@+id/call"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
@@ -389,6 +392,7 @@
 
 
                         <LinearLayout
+                            android:id="@+id/text"
                             android:background="@drawable/rectangle"
                             android:padding="10dp"
                             android:gravity="center_horizontal"
@@ -406,7 +410,6 @@
                                 android:tint="@color/black" />
 
                             <TextView
-                                android:id="@+id/text"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Text"

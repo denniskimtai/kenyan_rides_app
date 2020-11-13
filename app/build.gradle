@@ -13,7 +13,7 @@ android {
         applicationId "com.gcodedevelopers.kenyanrides"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 18
+        versionCode 20
         versionName "1.0"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -231,8 +232,6 @@ public class HomeFragment extends Fragment {
 
                         carList.add(car);
 
-
-
                     }
 
                 }else {
@@ -245,6 +244,7 @@ public class HomeFragment extends Fragment {
 
                 carsAdapter = new CarsAdapter(getActivity(), carList);
                 recyclerView.setAdapter(carsAdapter);
+
 
             } catch (JSONException e) {
                 e.printStackTrace();

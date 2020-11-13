@@ -179,10 +179,45 @@ public class LoginActivity extends AppCompatActivity {
                             //storing the user in shared preferences
                             SharedPrefManager.getInstance(this).userLogin(user);
 
-                            //start main activity
-                            Intent intent = new Intent(this, MainActivity.class);
-                            startActivity(intent);
-                            finish();
+                            String deep_link = "";
+
+                            deep_link = getIntent().getStringExtra("deep_link");
+
+                            //check if string is null
+                            if (deep_link == null){
+
+                                //start main activity
+                                Intent intent = new Intent(this, MainActivity.class);
+                                startActivity(intent);
+                                finish();
+
+                            }else{
+
+                                //get strings from intent
+                                String vehicle_id = getIntent().getStringExtra("vehicle_id");
+                                String price_per_day = getIntent().getStringExtra("price_per_day");
+                                String vehicle_owner_email = getIntent().getStringExtra("vehicle_owner_email");
+                                String owner_phone_number = getIntent().getStringExtra("owner_phone_number");
+                                String vehicle_title = getIntent().getStringExtra("vehicle_title");
+
+                                //getting the current user
+                                user user2 = SharedPrefManager.getInstance(LoginActivity.this).getUser();
+
+                                Intent intent = new Intent(LoginActivity.this, BookNowActivity.class);
+
+                                intent.putExtra("vehicle_id", String.valueOf(vehicle_id));
+                                intent.putExtra("user_email", user2.getEmail());
+                                intent.putExtra("price_per_day", String.valueOf(price_per_day));
+                                intent.putExtra("vehicle_owner_email", vehicle_owner_email);
+                                intent.putExtra("vehicle_title", vehicle_title);
+                                intent.putExtra("owner_phone_number", owner_phone_number);
+
+                                startActivity(intent);
+
+                            }
+
+
+
 
 
                         } else {
