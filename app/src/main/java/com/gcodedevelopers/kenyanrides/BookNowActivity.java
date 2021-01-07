@@ -37,7 +37,6 @@ import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 
 
-
 public class BookNowActivity extends AppCompatActivity implements View.OnClickListener {
 
     private TextView TxtPickupDate, TxtPickupTime, TxtReturnDate, TxtReturnTime;
@@ -64,7 +63,6 @@ public class BookNowActivity extends AppCompatActivity implements View.OnClickLi
     private Button btnBookNow;
 
     private String vehicle_id,user_email, price_per_day, vehicle_owner_email, vehicle_title, owner_phone_number;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -176,7 +174,7 @@ public class BookNowActivity extends AppCompatActivity implements View.OnClickLi
         autocompleteFragment.getView().findViewById(R.id.places_autocomplete_search_button).setVisibility(View.GONE);
         autocompleteFragment.getView().findViewById(R.id.places_autocomplete_clear_button).setVisibility(View.GONE);
 
-        //customise autocomplete edittext
+        //customise autocomplete edit text
         EditText editTextPlace = autocompleteFragment.getView().findViewById(R.id.places_autocomplete_search_input);
         editTextPlace.setTextSize(12.0f);
         editTextPlace.setHintTextColor(getResources().getColor(R.color.black));

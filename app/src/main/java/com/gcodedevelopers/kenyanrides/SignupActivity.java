@@ -44,8 +44,6 @@ public class SignupActivity extends AppCompatActivity {
 
     String strFirstName,strSecondName,strNationalId,strPhoneNumber,strEmail,strPassword,strConfirmPassword, strRegDate;
 
-
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

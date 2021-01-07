@@ -94,7 +94,6 @@ public class HomeFragment extends Fragment {
         alertDialogBuilder = new AlertDialog.Builder(getActivity());
 
 
-
         prepareCars();
 
         final SwipeRefreshLayout pullToRefresh = myView.findViewById(R.id.pullToRefresh);
@@ -164,7 +163,6 @@ public class HomeFragment extends Fragment {
             alertDialogBuilder.show();
             return;
         }
-
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, vehicles_url, response -> {
 
