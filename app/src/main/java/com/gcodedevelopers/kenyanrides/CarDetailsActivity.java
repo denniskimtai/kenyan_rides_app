@@ -67,7 +67,7 @@ public class CarDetailsActivity extends AppCompatActivity {
     private ImageView imgAirConditioner, imgAntilockBrakingSystem, imgPowerSteering, imgPowerWindows, imgCdPlayer, imgLeatherSeats, imgCentralLocking,
     imgPowerDoorLocks, imgBrakeAssist, imgDriverAirbag, imgPassengerAirbag, imgCrashSensor;
 
-    private Button btnBookNow;
+    private Button btnBookNow, btnChat;
 
     private CardView cardViewDriver;
 
@@ -218,6 +218,8 @@ public class CarDetailsActivity extends AppCompatActivity {
 
                             btnBookNow = findViewById(R.id.btnBookNow);
 
+                            btnChat = findViewById(R.id.btnChat);
+
                             cardViewDriver = findViewById(R.id.card_driver);
 
                             linearLayoutContact = findViewById(R.id.linear_layout_contact);
@@ -274,6 +276,8 @@ public class CarDetailsActivity extends AppCompatActivity {
                                 txt_day.setVisibility(View.GONE);
                                 cardViewDriver.setVisibility(View.GONE);
                                 btnBookNow.setVisibility(View.GONE);
+                                btnChat.setVisibility(View.GONE);
+
                                 linearLayoutContact.setVisibility(View.VISIBLE);
 
 
@@ -761,6 +765,8 @@ public class CarDetailsActivity extends AppCompatActivity {
 
             btnBookNow = findViewById(R.id.btnBookNow);
 
+            btnChat = findViewById(R.id.btnChat);
+
             cardViewDriver = findViewById(R.id.card_driver);
 
             linearLayoutContact = findViewById(R.id.linear_layout_contact);
@@ -817,6 +823,7 @@ public class CarDetailsActivity extends AppCompatActivity {
                 txt_day.setVisibility(View.GONE);
                 cardViewDriver.setVisibility(View.GONE);
                 btnBookNow.setVisibility(View.GONE);
+                btnChat.setVisibility(View.GONE);
                 linearLayoutContact.setVisibility(View.VISIBLE);
 
 
@@ -980,6 +987,7 @@ public class CarDetailsActivity extends AppCompatActivity {
                 txt_price_per_day.setText("Ksh " + price_per_day);
                 txt_driver_status.setText(driver_status);
                 btnBookNow.setVisibility(View.VISIBLE);
+                btnChat.setVisibility(View.VISIBLE);
                 linearLayoutContact.setVisibility(View.GONE);
 
             }
@@ -1158,6 +1166,19 @@ public class CarDetailsActivity extends AppCompatActivity {
 
                     startActivity(intent);
 
+
+                }
+            });
+
+            btnChat.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    //go to chat area activity
+                    Intent intent = new Intent(CarDetailsActivity.this, ChatAreaActivity.class);
+                    intent.putExtra("chat_with", owner_id);
+                    intent.putExtra("chat_with_phone_number", owner_phone_number);
+                    startActivity(intent);
 
                 }
             });

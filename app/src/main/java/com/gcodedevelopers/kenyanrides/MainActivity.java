@@ -73,6 +73,20 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
                 break;
 
+            case R.id.navigation_messages:
+                //if the user is not logged in
+                //starting the login activity
+                if (!SharedPrefManager.getInstance(this).isLoggedIn()) {
+
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(intent);
+
+                }else {
+                    fragment = new FragmentChatsActivity();
+                }
+
+                break;
+
             case R.id.navigation_motors:
                 //if the user is not logged in
                 //starting the login activity

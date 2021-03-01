@@ -342,16 +342,38 @@
                         android:layout_marginBottom="10dp"
                         android:background="@color/grey" />
 
-                    <Button
-                        android:id="@+id/btnBookNow"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/wave"
-                        android:text="Book Now"
-                        android:visibility="gone"
-                        android:textColor="@color/white"
-                        android:textStyle="bold" />
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <Button
+                            android:id="@+id/btnBookNow"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/wave"
+                            android:text="Book Now"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"
+                            android:visibility="gone" />
+
+                        <Button
+                            android:id="@+id/btnChat"
+                            android:layout_width="0dp"
+                            android:visibility="gone"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/green_button"
+                            android:text="Chat with seller"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/linear_layout_contact"
@@ -412,7 +434,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Text"
+                                android:text="Chat with seller"
                                 android:textStyle="bold"
                                 android:layout_marginTop="4dp"
                                 android:textColor="@color/green"
@@ -430,28 +452,28 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/grey"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="10dp"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/grey"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"/>
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:text="VEHICLE VIDEO"
-                        android:textColor="#878783"
-                        android:textSize="12dp"
-                        android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="VEHICLE VIDEO"
+                            android:textColor="#878783"
+                            android:textSize="12dp"
+                            android:textStyle="bold" />
 
-                    <VideoView
-                        android:id="@+id/video_view"
-                        android:layout_width="match_parent"
-                        android:layout_margin="10dp"
-                        android:layout_height="200dp"
-                        android:backgroundTint="@color/grey" />
+                        <VideoView
+                            android:id="@+id/video_view"
+                            android:layout_width="match_parent"
+                            android:layout_margin="10dp"
+                            android:layout_height="200dp"
+                            android:backgroundTint="@color/grey" />
 
                     </LinearLayout>
 

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "537600980624",
+    "firebase_url": "https://kenyanrideschat-default-rtdb.firebaseio.com",
+    "project_id": "kenyanrideschat",
+    "storage_bucket": "kenyanrideschat.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:537600980624:android:a044a9dd0bf0b29ba64a15",
+        "android_client_info": {
+          "package_name": "com.gcodedevelopers.kenyanrides"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "537600980624-ivmhrnui8p3ikc958hb4e5hjmm24anom.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gcodedevelopers.kenyanrides",
+            "certificate_hash": "dab41e5b4cf2c3251f939aab6170ebb612e3485e"
+          }
+        },
+        {
+          "client_id": "537600980624-iho2jr3q2536r8f7on7e5quu19ra8ftq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA0bxgPKa5T-VtaCDLcQNAqZzfWGnjhClQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "537600980624-iho2jr3q2536r8f7on7e5quu19ra8ftq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
