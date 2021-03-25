@@ -10,12 +10,20 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,6 +37,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,6 +54,8 @@ public class HomeFragment extends Fragment {
     private CarsAdapter carsAdapter;
     private List<car> carList;
 
+    private ImageView iconFilter;
+
     private AlertDialog.Builder alertDialogBuilder;
 
     private ProgressDialog progressDialog;
@@ -52,13 +64,24 @@ public class HomeFragment extends Fragment {
 
     private static final String vehicles_url = "https://kenyanrides.com/android/fetch_api.php";
 
+    private String[] carTypes = {"SELECT","SALOON","SUV","PSV","COMMERCIAL","OTHERS"};
+    int carTypeCode = 0;
+    String minPrice;
+    String maxPrice;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View myView = inflater.inflate(R.layout.fragment_home, null);
 
+        if( getArguments() != null) {
+            String car_category = getArguments().getString("selected_car_category");
+            Toast.makeText(getActivity(), car_category, Toast.LENGTH_SHORT).show();
+        }
+
         editTextSearch = myView.findViewById(R.id.searchBar);
+
+        iconFilter = myView.findViewById(R.id.icon_filter);
 
         editTextSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -93,6 +116,14 @@ public class HomeFragment extends Fragment {
 
         alertDialogBuilder = new AlertDialog.Builder(getActivity());
 
+        iconFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                    showFilterDialog();
+
+            }
+        });
 
         prepareCars();
 
@@ -110,6 +141,174 @@ public class HomeFragment extends Fragment {
 
         return myView;
 
+
+    }
+
+    private void showFilterDialog(){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        View view = getLayoutInflater().inflate(R.layout.filter_dialog_layout, null);
+
+        Spinner carTypeSpinner = view.findViewById(R.id.simpleSpinner);
+        EditText editTextMinPrice = view.findViewById(R.id.edt_min_price);
+        EditText editTextMaxPrice = view.findViewById(R.id.edt_max_price);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+                R.layout.spinner_item, carTypes);
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        carTypeSpinner.setAdapter(adapter);
+
+        builder.setPositiveButton("Filter", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                switch (carTypeSpinner.getSelectedItem().toString()){
+
+                    case "SALOON":
+                        carTypeCode = 1;
+                        minPrice = editTextMinPrice.getText().toString().trim();
+                        maxPrice = editTextMaxPrice.getText().toString().trim();
+                        priceFilter(minPrice, maxPrice);
+                        carListFilter(carTypeCode);
+                        break;
+
+                    case "SUV":
+                        carTypeCode = 2;
+                        minPrice = editTextMinPrice.getText().toString().trim();
+                        maxPrice = editTextMaxPrice.getText().toString().trim();
+                        priceFilter(minPrice, maxPrice);
+                        carListFilter(carTypeCode);
+                        break;
+
+                    case "PSV":
+                        carTypeCode = 3;
+                        minPrice = editTextMinPrice.getText().toString().trim();
+                        maxPrice = editTextMaxPrice.getText().toString().trim();
+                        priceFilter(minPrice, maxPrice);
+                        carListFilter(carTypeCode);
+                        break;
+
+                    case "COMMERCIAL":
+                        carTypeCode = 4;
+                        minPrice = editTextMinPrice.getText().toString().trim();
+                        maxPrice = editTextMaxPrice.getText().toString().trim();
+                        priceFilter(minPrice, maxPrice);
+                        carListFilter(carTypeCode);
+                        break;
+
+                    case "OTHERS":
+                        carTypeCode = 5;
+                        minPrice = editTextMinPrice.getText().toString().trim();
+                        maxPrice = editTextMaxPrice.getText().toString().trim();
+                        priceFilter(minPrice, maxPrice);
+                        carListFilter(carTypeCode);
+                        break;
+                }
+
+
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                dialogInterface.dismiss();
+
+            }
+        });
+
+        //setting the view of the builder to our custom view that we already inflated
+        builder.setView(view);
+
+        //finally creating the alert dialog and displaying it
+        AlertDialog alertDialog = builder.create();
+        alertDialog.setCancelable(false);
+        alertDialog.show();
+
+        Button nbutton = alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+
+        //Set negative button text color
+        nbutton.setTextColor(getResources().getColor(R.color.colorPrimary));
+
+        LinearLayout.LayoutParams nButtonLL = (LinearLayout.LayoutParams) nbutton.getLayoutParams();
+        nButtonLL.gravity = Gravity.LEFT;
+        nbutton.setLayoutParams(nButtonLL);
+
+        Button pbutton = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+        //Set negative button text color
+        pbutton.setTextColor(getResources().getColor(R.color.colorPrimary));
+
+    }
+
+    private void priceFilter(String minPrice, String maxPrice){
+
+        if (!TextUtils.isEmpty(minPrice) && TextUtils.isEmpty(maxPrice)){
+
+            ArrayList<car> filteredList = new ArrayList<>();
+
+            for(car item : carList){
+
+                if (item.getCarPrice()>= Integer.parseInt(minPrice)){
+
+                    filteredList.add(item);
+
+                }
+
+            }
+            carsAdapter.filteredList(filteredList);
+
+        }else if (TextUtils.isEmpty(minPrice) && !TextUtils.isEmpty(maxPrice)){
+
+            ArrayList<car> filteredList = new ArrayList<>();
+
+            for(car item : carList){
+
+                if (item.getCarPrice()<= Integer.parseInt(maxPrice)){
+
+                    filteredList.add(item);
+
+                }
+
+            }
+            carsAdapter.filteredList(filteredList);
+
+        }else{
+
+            ArrayList<car> filteredList = new ArrayList<>();
+
+            for(car item : carList){
+
+                if (item.getCarPrice()>= Integer.parseInt(minPrice) && item.getCarPrice()<= Integer.parseInt(maxPrice)){
+
+                    filteredList.add(item);
+
+                }
+
+            }
+            carsAdapter.filteredList(filteredList);
+
+        }
+
+    }
+
+    private void carListFilter(int categoryCode){
+
+        ArrayList<car> filteredList = new ArrayList<>();
+
+        for(car item : carList){
+
+            if (item.getVehicle_category().equals(String.valueOf(categoryCode))){
+
+                filteredList.add(item);
+
+            }
+
+        }
+        carsAdapter.filteredList(filteredList);
 
     }
 
@@ -219,6 +418,7 @@ public class HomeFragment extends Fragment {
                         String booked = carsObject.getString("booked");
                         String owner_phone_number = carsObject.getString("owner_phonenumber");
                         String car_video = carsObject.getString("car_video");
+                        String vehicle_category = carsObject.getString("vehicle_category");
 
 
                         car car = new car(image1Editted, vehicleTitle, pricePerDay, id, vehicleBrand,
@@ -226,7 +426,7 @@ public class HomeFragment extends Fragment {
                                 driverStatus, image2Editted, image3Editted, image4Editted, image5Editted,
                                 airConditioner, powerDoorLocks, antiLockBrakingSystem, brakeAssist, powerSteering,
                                 driverAirbag, passengerAirbag, powerWindows, cdPlayer, centralLocking,
-                                crashSensor, leatherSeats, ownerId, regDate, booked, owner_phone_number, car_video);
+                                crashSensor, leatherSeats, ownerId, regDate, booked, owner_phone_number, car_video, vehicle_category);
 
                         carList.add(car);
 

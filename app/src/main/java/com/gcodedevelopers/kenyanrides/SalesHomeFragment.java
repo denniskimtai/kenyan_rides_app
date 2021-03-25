@@ -213,6 +213,7 @@ public class SalesHomeFragment extends Fragment {
                         String booked = carsObject.getString("booked");
                         String owner_phone_number = carsObject.getString("owner_phonenumber");
                         String car_video = carsObject.getString("car_video");
+                        String vehicle_category = carsObject.getString("vehicle_category");
 
 
                         car car = new car(image1Editted, vehicleTitle, pricePerDay, id, vehicleBrand,
@@ -220,7 +221,7 @@ public class SalesHomeFragment extends Fragment {
                                 driverStatus, image2Editted, image3Editted, image4Editted, image5Editted,
                                 airConditioner, powerDoorLocks, antiLockBrakingSystem, brakeAssist, powerSteering,
                                 driverAirbag, passengerAirbag, powerWindows, cdPlayer, centralLocking,
-                                crashSensor, leatherSeats, ownerId, regDate, booked, owner_phone_number, car_video);
+                                crashSensor, leatherSeats, ownerId, regDate, booked, owner_phone_number, car_video, vehicle_category);
 
                         carList.add(car);
 

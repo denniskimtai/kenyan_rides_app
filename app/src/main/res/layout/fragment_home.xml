@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -18,30 +17,47 @@
 
 
         <androidx.cardview.widget.CardView
-            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:elevation="15dp"
-            android:layout_marginRight="15dp">
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="15dp"
+            android:elevation="15dp">
 
-            <EditText
-                android:drawableLeft="@drawable/search_icon"
-                android:drawableTint="@color/colorPrimary"
-                android:drawablePadding="5dp"
-                android:id="@+id/searchBar"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Search"
-                android:background="@android:color/transparent"
-                android:padding="10dp"
-                android:textColorHint="@color/grey"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+            <EditText
+                android:id="@+id/searchBar"
+                android:layout_width="0dp"
+                android:layout_weight="2.5"
+                android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
-                android:textColor="@color/black"/>
+                android:background="@android:color/transparent"
+                android:drawableLeft="@drawable/search_icon"
+                android:drawablePadding="5dp"
+                android:drawableTint="@color/colorPrimary"
+                android:hint="Search"
+                android:padding="10dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/grey" />
+
+                <ImageView
+                    android:id="@+id/icon_filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:tint="@color/colorPrimary"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/icon_filter"
+                    android:layout_weight="0.5"/>
+
+            </LinearLayout>
 
         </androidx.cardview.widget.CardView>
 
     </androidx.appcompat.widget.Toolbar>
-
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/pullToRefresh"
