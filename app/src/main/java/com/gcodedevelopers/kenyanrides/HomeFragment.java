@@ -65,7 +65,7 @@ public class HomeFragment extends Fragment {
     private static final String vehicles_url = "https://kenyanrides.com/android/fetch_api.php";
 
     private String[] carTypes = {"SELECT","SALOON","SUV","PSV","COMMERCIAL","OTHERS"};
-    int carTypeCode = 0;
+    int carTypeCode;
     String minPrice;
     String maxPrice;
 
@@ -171,40 +171,41 @@ public class HomeFragment extends Fragment {
                         carTypeCode = 1;
                         minPrice = editTextMinPrice.getText().toString().trim();
                         maxPrice = editTextMaxPrice.getText().toString().trim();
-                        priceFilter(minPrice, maxPrice);
-                        carListFilter(carTypeCode);
+                        carListFilter(carTypeCode,minPrice,maxPrice);
                         break;
 
                     case "SUV":
                         carTypeCode = 2;
                         minPrice = editTextMinPrice.getText().toString().trim();
                         maxPrice = editTextMaxPrice.getText().toString().trim();
-                        priceFilter(minPrice, maxPrice);
-                        carListFilter(carTypeCode);
+                        carListFilter(carTypeCode,minPrice,maxPrice);
                         break;
 
                     case "PSV":
                         carTypeCode = 3;
                         minPrice = editTextMinPrice.getText().toString().trim();
                         maxPrice = editTextMaxPrice.getText().toString().trim();
-                        priceFilter(minPrice, maxPrice);
-                        carListFilter(carTypeCode);
+                        carListFilter(carTypeCode,minPrice,maxPrice);
                         break;
 
                     case "COMMERCIAL":
                         carTypeCode = 4;
                         minPrice = editTextMinPrice.getText().toString().trim();
                         maxPrice = editTextMaxPrice.getText().toString().trim();
-                        priceFilter(minPrice, maxPrice);
-                        carListFilter(carTypeCode);
+                        carListFilter(carTypeCode,minPrice,maxPrice);
                         break;
 
                     case "OTHERS":
                         carTypeCode = 5;
                         minPrice = editTextMinPrice.getText().toString().trim();
                         maxPrice = editTextMaxPrice.getText().toString().trim();
-                        priceFilter(minPrice, maxPrice);
-                        carListFilter(carTypeCode);
+                        carListFilter(carTypeCode,minPrice,maxPrice);
+                        break;
+
+                    default:
+                        minPrice = editTextMinPrice.getText().toString().trim();
+                        maxPrice = editTextMaxPrice.getText().toString().trim();
+                        carListFilter(carTypeCode,minPrice,maxPrice);
                         break;
                 }
 
@@ -295,20 +296,130 @@ public class HomeFragment extends Fragment {
 
     }
 
-    private void carListFilter(int categoryCode){
+    private void carListFilter(int categoryCode, String minPrice, String maxPrice){
 
-        ArrayList<car> filteredList = new ArrayList<>();
+        //min price is the only field with value
+        if(!TextUtils.isEmpty(minPrice) && TextUtils.isEmpty(maxPrice) && TextUtils.isEmpty(String.valueOf(categoryCode))){
 
-        for(car item : carList){
+            ArrayList<car> filteredList = new ArrayList<>();
 
-            if (item.getVehicle_category().equals(String.valueOf(categoryCode))){
+            for(car item : carList){
 
-                filteredList.add(item);
+                if (item.getCarPrice()>= Integer.parseInt(minPrice)){
+
+                    filteredList.add(item);
+
+                }
 
             }
+            carsAdapter.filteredList(filteredList);
+
 
         }
-        carsAdapter.filteredList(filteredList);
+        //only max price has a value
+        else if(TextUtils.isEmpty(minPrice) && !TextUtils.isEmpty(maxPrice) && TextUtils.isEmpty(String.valueOf(categoryCode))){
+
+            ArrayList<car> filteredList = new ArrayList<>();
+
+            for(car item : carList){
+
+                if (item.getCarPrice()<= Integer.parseInt(maxPrice)){
+
+                    filteredList.add(item);
+
+                }
+
+            }
+            carsAdapter.filteredList(filteredList);
+
+        }
+        //only search category has a value
+        else if (TextUtils.isEmpty(minPrice) && TextUtils.isEmpty(maxPrice) && !TextUtils.isEmpty(String.valueOf(categoryCode))){
+
+            ArrayList<car> filteredList = new ArrayList<>();
+
+            for(car item : carList){
+
+                if (item.getVehicle_category().equals(String.valueOf(categoryCode))){
+
+                    filteredList.add(item);
+
+                }
+
+            }
+            carsAdapter.filteredList(filteredList);
+
+        }
+        //only min and max price have a value
+        else if (!TextUtils.isEmpty(minPrice) && !TextUtils.isEmpty(maxPrice) && TextUtils.isEmpty(String.valueOf(categoryCode))){
+
+            ArrayList<car> filteredList = new ArrayList<>();
+
+            for(car item : carList){
+
+                if (item.getCarPrice()>= Integer.parseInt(minPrice) && item.getCarPrice()<= Integer.parseInt(maxPrice)){
+
+                    filteredList.add(item);
+
+                }
+
+            }
+            carsAdapter.filteredList(filteredList);
+
+
+        }
+        //only min price and category have a value
+        else if (!TextUtils.isEmpty(minPrice) && TextUtils.isEmpty(maxPrice) && !TextUtils.isEmpty(String.valueOf(categoryCode))){
+
+            ArrayList<car> filteredList = new ArrayList<>();
+
+            for(car item : carList){
+
+                if (item.getCarPrice()>= Integer.parseInt(minPrice) && item.getVehicle_category().equals(String.valueOf(categoryCode))){
+
+                    filteredList.add(item);
+
+                }
+
+            }
+            carsAdapter.filteredList(filteredList);
+
+        }//only max price and category have a value
+        else if (TextUtils.isEmpty(minPrice) && !TextUtils.isEmpty(maxPrice) && !TextUtils.isEmpty(String.valueOf(categoryCode))){
+
+            ArrayList<car> filteredList = new ArrayList<>();
+
+            for(car item : carList){
+
+                if (item.getCarPrice()<= Integer.parseInt(maxPrice) && item.getVehicle_category().equals(String.valueOf(categoryCode))){
+
+                    filteredList.add(item);
+
+                }
+
+            }
+            carsAdapter.filteredList(filteredList);
+
+        }//all have a value
+        else if (!TextUtils.isEmpty(minPrice) && !TextUtils.isEmpty(maxPrice) && !TextUtils.isEmpty(String.valueOf(categoryCode))){
+
+            ArrayList<car> filteredList = new ArrayList<>();
+
+            for(car item : carList){
+
+                if (item.getCarPrice()>= Integer.parseInt(minPrice) && item.getCarPrice()<= Integer.parseInt(maxPrice) && item.getVehicle_category().equals(String.valueOf(categoryCode))){
+
+                    filteredList.add(item);
+
+                }
+
+            }
+            carsAdapter.filteredList(filteredList);
+
+        }
+
+
+
 
     }
 
@@ -340,7 +451,7 @@ public class HomeFragment extends Fragment {
 
     private void prepareCars() {
 
-        progressDialog.setMessage("Loading...");
+        progressDialog.setMessage("Loading Please wait...");
         progressDialog.setCancelable(false);
         progressDialog.show();
 
@@ -437,11 +548,10 @@ public class HomeFragment extends Fragment {
                     linearLayoutEmpty.setVisibility(View.VISIBLE);
                 }
 
-
                 progressDialog.dismiss();
-
                 carsAdapter = new CarsAdapter(getActivity(), carList);
                 recyclerView.setAdapter(carsAdapter);
+
 
 
             } catch (JSONException e) {

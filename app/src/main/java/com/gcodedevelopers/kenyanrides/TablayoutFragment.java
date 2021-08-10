@@ -32,6 +32,7 @@ public class TablayoutFragment extends Fragment {
         tabLayout.addTab(tabLayout.newTab().setText("Rentals"));
         tabLayout.addTab(tabLayout.newTab().setText("Car Sales"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
         final ViewPager viewPager = myView.findViewById(R.id.pager);
         final PagerAdapter adapter = new TabLayoutMenuAdapter(getActivity().getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(adapter);

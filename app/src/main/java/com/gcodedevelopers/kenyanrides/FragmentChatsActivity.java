@@ -1,5 +1,6 @@
 package com.gcodedevelopers.kenyanrides;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,36 +38,53 @@ public class FragmentChatsActivity extends Fragment {
 
         View myView = inflater.inflate(R.layout.fragment_chats_activity, null);
 
-        chatsRef = FirebaseDatabase.getInstance().getReference("messages");
+        //getting the current user
+        user user2 = SharedPrefManager.getInstance(getActivity()).getUser();
+
+        chatsRef = FirebaseDatabase.getInstance().getReference("Chats");
 
         rv = myView.findViewById(R.id.recyclerview);
         rv.setHasFixedSize(true);
         rv.setLayoutManager(new LinearLayoutManager(getActivity()));
         chatsDataList = new ArrayList<>();
 
-        //getting the current user
-        user user2 = SharedPrefManager.getInstance(getActivity()).getUser();
 
-        DatabaseReference userChatRef = chatsRef.child(user2.getMobile_number());
 
-        userChatRef.addValueEventListener(new ValueEventListener() {
+        chatsRef.addValueEventListener(new ValueEventListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
+                chatsDataList.clear();
+
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot chatsSnapshot : dataSnapshot.getChildren()) {
-                        //Log.i(TAG, zoneSnapshot.child("ZNAME").getValue(String.class));
 
-                        String[] parts = chatsSnapshot.getKey().split("_");
-                        String[] parts2 = parts[1].split(":");
+                        Chat chat = chatsSnapshot.getValue(Chat.class);
 
-                        chatsData chatsData = new chatsData(parts2[1], parts2[0]);
-                        chatsDataList.add(chatsData);
+                        if (chat.getSender().equals(user2.getMobile_number())){
+
+                            chatsData chatsData = new chatsData(chat.getReceiver(), chat.getReceiver());
+
+                            chatsDataList.add(chatsData);
+
+                        }
+
+                        if (chat.getReceiver().equals(user2.getMobile_number())){
+
+                            chatsData chatsData = new chatsData(chat.getSender(), chat.getSender());
+
+                            chatsDataList.add(chatsData);
+
+                        }
+
+                        adapter = new ChatsAdapter(getActivity(), chatsDataList);
+                        rv.setAdapter(adapter);
 
                     }
 
-                    adapter = new ChatsAdapter(getActivity(), chatsDataList);
-                    rv.setAdapter(adapter);
+
+
 
                 }
 

@@ -90,5 +90,12 @@ dependencies {
     //picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
 
+    //notifications
+    implementation 'com.google.firebase:firebase-messaging:21.1.0'
+    implementation 'com.firebaseui:firebase-ui-database:6.0.2'
+
+    //cirle image view
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
 
 }
